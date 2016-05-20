@@ -1,0 +1,6 @@
+c:\users\jpejuan\documents\visual studio 2015\Projects\SurveyMonkeyImplementation\SurveyMonkeyImplementation\bin\Debug\SurveyMonkeyImplementation.exe.config
+c:\users\jpejuan\documents\visual studio 2015\Projects\SurveyMonkeyImplementation\SurveyMonkeyImplementation\bin\Debug\SurveyMonkeyImplementation.exe
+c:\users\jpejuan\documents\visual studio 2015\Projects\SurveyMonkeyImplementation\SurveyMonkeyImplementation\bin\Debug\SurveyMonkeyImplementation.pdb
+c:\users\jpejuan\documents\visual studio 2015\Projects\SurveyMonkeyImplementation\SurveyMonkeyImplementation\obj\Debug\SurveyMonkeyImplementation.csprojResolveAssemblyReference.cache
+c:\users\jpejuan\documents\visual studio 2015\Projects\SurveyMonkeyImplementation\SurveyMonkeyImplementation\obj\Debug\SurveyMonkeyImplementation.exe
+c:\users\jpejuan\documents\visual studio 2015\Projects\SurveyMonkeyImplementation\SurveyMonkeyImplementation\obj\Debug\SurveyMonkeyImplementation.pdb
