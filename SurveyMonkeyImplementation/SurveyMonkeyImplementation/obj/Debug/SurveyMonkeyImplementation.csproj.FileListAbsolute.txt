@@ -4,3 +4,6 @@ c:\users\jpejuan\documents\visual studio 2015\Projects\SurveyMonkeyImplementatio
 c:\users\jpejuan\documents\visual studio 2015\Projects\SurveyMonkeyImplementation\SurveyMonkeyImplementation\obj\Debug\SurveyMonkeyImplementation.csprojResolveAssemblyReference.cache
 c:\users\jpejuan\documents\visual studio 2015\Projects\SurveyMonkeyImplementation\SurveyMonkeyImplementation\obj\Debug\SurveyMonkeyImplementation.exe
 c:\users\jpejuan\documents\visual studio 2015\Projects\SurveyMonkeyImplementation\SurveyMonkeyImplementation\obj\Debug\SurveyMonkeyImplementation.pdb
+C:\Users\jpejuan\Documents\ImplementationSurveyMonkey\SurveyMonkey\SurveyMonkeyImplementation\SurveyMonkeyImplementation\bin\Debug\SurveyMonkeyImplementation.exe.config
+C:\Users\jpejuan\Documents\ImplementationSurveyMonkey\SurveyMonkey\SurveyMonkeyImplementation\SurveyMonkeyImplementation\obj\Debug\SurveyMonkeyImplementation.exe
+C:\Users\jpejuan\Documents\ImplementationSurveyMonkey\SurveyMonkey\SurveyMonkeyImplementation\SurveyMonkeyImplementation\obj\Debug\SurveyMonkeyImplementation.pdb

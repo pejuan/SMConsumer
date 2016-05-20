@@ -32,8 +32,6 @@ namespace SurveyMonkeyImplementation
         static WebRequest GetSurveys()
         {
 
-            var AuthHeader = "bearer z2FJSWRZHEvQ1tX4owdlxkwBFJyV7.Wi4ldMSC4wTMX2cGXVnZJ4qvpsvvgGrI2geMfvNwtbOrO6DrIfmjsDT5z.u1no-RE2uh57CqEHZgNdJvpl1ycuy5xen5bVOUcsPw0w6V8KRklcH9TgtB.KmXck-GU9e5TXNAx0oWcjNSV1yRUqnAGA5NjgGc0nr5TsxzViO2jUIU01K5dzo4IK8SewJFBmdPMSW-b9YZ6JnkU=";
-
             var request = WebRequest.Create("https://api.surveymonkey.net/v3/surveys?api_key=vw39bqgh87p9cws4w2pjba3g");
             request.Headers["Authorization"] = getHeader();
             var response = request.GetResponse();
