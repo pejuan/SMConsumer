@@ -17,7 +17,7 @@ namespace SurveyMonkeyImplementation
         static void Main(string[] args)
         {
 
-            GetSurveys();
+            GetSurveyDetails("74972790");
 
 
         }
@@ -29,10 +29,15 @@ namespace SurveyMonkeyImplementation
 
             return AuthHeader;
         }
+        static string getApiKey()
+        {
+
+            return "vw39bqgh87p9cws4w2pjba3g";
+        }
         static WebRequest GetSurveys()
         {
 
-            var request = WebRequest.Create("https://api.surveymonkey.net/v3/surveys?api_key=vw39bqgh87p9cws4w2pjba3g");
+            var request = WebRequest.Create("https://api.surveymonkey.net/v3/surveys?api_key="+getApiKey());
             request.Headers["Authorization"] = getHeader();
             var response = request.GetResponse();
             Stream dataStream = response.GetResponseStream();
@@ -40,7 +45,23 @@ namespace SurveyMonkeyImplementation
 
             string responseFromServer = reader.ReadToEnd();
 
-            Console.WriteLine(responseFromServer);
+            Console.WriteLine(responseFromServer);//Debo meter los IDs a un arreglo
+            reader.Close();
+            response.Close();
+
+            return request;
+        }
+        static WebRequest GetSurveyDetails(string survey_id)
+        {
+            var request = WebRequest.Create("https://api.surveymonkey.net/v3/surveys/"+survey_id+"/details?api_key=" + getApiKey());
+            request.Headers["Authorization"] = getHeader();
+            var response = request.GetResponse();
+            Stream dataStream = response.GetResponseStream();
+            StreamReader reader = new StreamReader(dataStream);
+
+            string responseFromServer = reader.ReadToEnd();
+
+            Console.WriteLine(responseFromServer);//Parsear a la clase
             reader.Close();
             response.Close();
 
