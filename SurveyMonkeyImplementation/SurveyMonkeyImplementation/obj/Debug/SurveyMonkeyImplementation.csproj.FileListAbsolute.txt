@@ -10,3 +10,5 @@ C:\Users\jpejuan\Documents\ImplementationSurveyMonkey\SurveyMonkey\SurveyMonkeyI
 C:\Users\jpejuan\Documents\ImplementationSurveyMonkey\SurveyMonkey\SurveyMonkeyImplementation\SurveyMonkeyImplementation\bin\Debug\SurveyMonkeyImplementation.exe
 C:\Users\jpejuan\Documents\ImplementationSurveyMonkey\SurveyMonkey\SurveyMonkeyImplementation\SurveyMonkeyImplementation\bin\Debug\SurveyMonkeyImplementation.pdb
 C:\Users\jpejuan\Documents\ImplementationSurveyMonkey\SurveyMonkey\SurveyMonkeyImplementation\SurveyMonkeyImplementation\obj\Debug\SurveyMonkeyImplementation.csprojResolveAssemblyReference.cache
+C:\Users\jpejuan\Documents\ImplementationSurveyMonkey\SurveyMonkey\SurveyMonkeyImplementation\SurveyMonkeyImplementation\bin\Debug\Newtonsoft.Json.dll
+C:\Users\jpejuan\Documents\ImplementationSurveyMonkey\SurveyMonkey\SurveyMonkeyImplementation\SurveyMonkeyImplementation\bin\Debug\Newtonsoft.Json.xml

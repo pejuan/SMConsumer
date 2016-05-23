@@ -9,13 +9,14 @@ namespace SurveyMonkeyImplementation
     class SurveyForm
     {
 
-        private string SurveyFormId;
-        private string SurveyFormName;
-        private string SurveyLink;
-        private string SurveyLanguage;
-        private string SurveyQuestionCount;
-        private string SurveyPageCount;
-        private string SurveyDateCreated;
-        private string SurveyDateModified;
+        public string id { get; set; }
+        public string title { get; set; }
+        public string preview { get; set; }
+        public string language { get; set; }
+        public string question_count { get; set; }
+        public string page_count { get; set; }
+        public string date_created { get; set; }
+        public string date_modified { get; set; }
+        public SurveyForm() { }
     }
 }
