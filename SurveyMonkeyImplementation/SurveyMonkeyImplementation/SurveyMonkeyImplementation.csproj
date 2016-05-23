@@ -53,8 +53,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Page.cs" />
+    <Compile Include="PageList.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Response.cs" />
+    <Compile Include="ResponseList.cs" />
     <Compile Include="Survey.cs" />
     <Compile Include="SurveyForm.cs" />
     <Compile Include="SurveyList.cs" />

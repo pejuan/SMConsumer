@@ -17,6 +17,8 @@ namespace SurveyMonkeyImplementation
         public string page_count { get; set; }
         public string date_created { get; set; }
         public string date_modified { get; set; }
+
+        public List<string> pagesIDs { get; set; }
         public SurveyForm() { }
     }
 }
