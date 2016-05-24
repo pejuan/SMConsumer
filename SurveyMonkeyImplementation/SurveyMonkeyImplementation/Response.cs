@@ -8,6 +8,7 @@ namespace SurveyMonkeyImplementation
 {
     class Response
     {
-
+        public string id { get; set; }
+        public string href { get; set; }
     }
 }

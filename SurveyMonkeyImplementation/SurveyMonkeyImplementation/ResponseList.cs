@@ -10,5 +10,6 @@ namespace SurveyMonkeyImplementation
     {
         public ResponseList() { }
         public List<Response> data { get; set; }
+        public string total { get; set; }
     }
 }

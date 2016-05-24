@@ -19,6 +19,7 @@ namespace SurveyMonkeyImplementation
         static SurveyList survlist;
         static PageList pagelist;
         static QuestionList questlist;
+        static ResponseList resplist;
         static SurveyForm surv;
         static QuestionDetail questiondetail;
         static List<string> SurveyIDs;
@@ -54,13 +55,14 @@ namespace SurveyMonkeyImplementation
                 {
                     QuestionDetail objtmp = new QuestionDetail();
                     objtmp = GetQuestionDetails(SurveyFormDetailsList[0].id, SurveyFormDetailsList[0].pagesIDs[i],questlist.data[k].id);
-                    if (objtmp.family == "single_choice") //Como solamente la family de single_choice es la que tiene choices
+                    if (objtmp.family == "multiple_choice" || objtmp.family == "single_choice") //Como solamente la family de single_choice es la que tiene choices
                     {
                         for (int j = 0; j < objtmp.answers.choices.Count; j++)
                         {
                             Console.WriteLine(objtmp.answers.choices[j].text);//Tengo que verificar entre answer.choice y answer.text porque hay preguntas que su respuesta es de otro tipo a choice
-
+                            
                         }
+                        Console.WriteLine("------------------------------------------------");
                     }
                 }
             }
@@ -217,7 +219,26 @@ namespace SurveyMonkeyImplementation
 
             return request;
         }
+        static WebRequest GetResponseList(string surveyID)
+        {
+            var request = WebRequest.Create("https://api.surveymonkey.net/v3/surveys/"+surveyID+"/responses?api_key=" + getApiKey());
+            request.Headers["Authorization"] = getHeader();
+            var response = request.GetResponse();
+            Stream dataStream = response.GetResponseStream();
+            StreamReader reader = new StreamReader(dataStream);
 
+            string responseFromServer = reader.ReadToEnd();
+
+            //Console.WriteLine(responseFromServer);//Debo meter los IDs a un arreglo
+            resplist = new ResponseList();
+
+            var serializer = new System.Web.Script.Serialization.JavaScriptSerializer();
+            resplist = serializer.Deserialize<ResponseList>(responseFromServer);
+            reader.Close();
+            response.Close();
+
+            return request;
+        }
 
     }
 }
