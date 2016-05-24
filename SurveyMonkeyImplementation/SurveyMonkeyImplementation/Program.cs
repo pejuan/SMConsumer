@@ -18,9 +18,11 @@ namespace SurveyMonkeyImplementation
     {
         static SurveyList survlist;
         static PageList pagelist;
-        static SurveyList hola;
+        static QuestionList questlist;
         static SurveyForm surv;
+        static QuestionDetail questiondetail;
         static List<string> SurveyIDs;
+        static List<string> PagesIDs;
         static void Main(string[] args)
         {
             fillSurveyIDs();
@@ -41,7 +43,27 @@ namespace SurveyMonkeyImplementation
             //    Console.WriteLine(SurveyFormDetailsList[i].id);
             //    Console.WriteLine("---------------------------------------------------------------------");
             //}
-            fillPagesIDs(SurveyFormDetailsList[0]);
+
+           
+            SurveyFormDetailsList[0].pagesIDs = BringPagesIDs(SurveyFormDetailsList[0]);
+            for (int i = 0; i < SurveyFormDetailsList[0].pagesIDs.Count; i++)
+            {
+                //Console.WriteLine(SurveyFormDetailsList[0].pagesIDs[i]);
+                GetQuestionList(SurveyFormDetailsList[0].id, SurveyFormDetailsList[0].pagesIDs[i]);
+                for (int k = 0; k < questlist.data.Count; k++)
+                {
+                    QuestionDetail objtmp = new QuestionDetail();
+                    objtmp = GetQuestionDetails(SurveyFormDetailsList[0].id, SurveyFormDetailsList[0].pagesIDs[i],questlist.data[k].id);
+                    if (objtmp.family == "single_choice") //Como solamente la family de single_choice es la que tiene choices
+                    {
+                        for (int j = 0; j < objtmp.answers.choices.Count; j++)
+                        {
+                            Console.WriteLine(objtmp.answers.choices[j].text);//Tengo que verificar entre awnser.choice y awnser.text porque hay preguntas que su respuesta es de otro tipo a choice
+
+                        }
+                    }
+                }
+            }
         }
         static bool fillSurveyIDs()
         {
@@ -54,15 +76,36 @@ namespace SurveyMonkeyImplementation
 
             return true;
         }
+        static List<String> BringSurveyIDs()
+        {
+            GetSurveys();
+            List<String> IDsSurveys = new List<string>();
+            for (int i = 0; i < survlist.data.Count; i++)
+            {
+                IDsSurveys.Add(survlist.data[i].id);
+            }
+
+            return IDsSurveys;
+        }
         static bool fillPagesIDs(SurveyForm objsf)
         {
             GetPageList(objsf.id);
-           
+            PagesIDs = new List<string>();
             for (int i = 0; i < pagelist.data.Count; i++)
             {
-                objsf.pagesIDs.Add(pagelist.data[i].id);
+                PagesIDs.Add(pagelist.data[i].id);
             }
             return true;
+        }
+        static List<String> BringPagesIDs(SurveyForm objsf)
+        {
+            GetPageList(objsf.id);
+            List<string> IdPages = new List<string>();
+            for (int i = 0; i < pagelist.data.Count; i++)
+            {
+                IdPages.Add(pagelist.data[i].id);
+            }
+            return IdPages;
         }
         static string getHeader()
         {
@@ -72,8 +115,8 @@ namespace SurveyMonkeyImplementation
         }
         static string getApiKey()
         {
-
-            return "qkzc3tjbennyw82xwndxepnf";
+            var apikey = "qkzc3tjbennyw82xwndxepnf";
+            return apikey;
         }
         static WebRequest GetSurveys()
         {
@@ -115,6 +158,25 @@ namespace SurveyMonkeyImplementation
 
             return surv;
         }
+        static QuestionDetail GetQuestionDetails(string survey_id,string page_id, string question_id)
+        {
+            var request = WebRequest.Create("https://api.surveymonkey.net/v3/surveys/"+survey_id+"/pages/"+page_id+"/questions/"+question_id+"?api_key=" + getApiKey());
+            request.Headers["Authorization"] = getHeader();
+            var response = request.GetResponse();
+            Stream dataStream = response.GetResponseStream();
+            StreamReader reader = new StreamReader(dataStream);
+
+            string responseFromServer = reader.ReadToEnd();
+
+            //Console.WriteLine(responseFromServer);//Parsear a la clase
+            questiondetail = new QuestionDetail();
+            var serializer = new System.Web.Script.Serialization.JavaScriptSerializer();
+            questiondetail = serializer.Deserialize<QuestionDetail>(responseFromServer);
+            reader.Close();
+            response.Close();
+
+            return questiondetail;
+        }
         static WebRequest GetPageList(string surveyID)
         {
             var request = WebRequest.Create("https://api.surveymonkey.net/v3/surveys/"+surveyID+ "/pages?api_key=" + getApiKey());
@@ -135,6 +197,27 @@ namespace SurveyMonkeyImplementation
 
             return request;
         }
+        static WebRequest GetQuestionList(string surveyID, string pageID)
+        {
+            var request = WebRequest.Create("https://api.surveymonkey.net/v3/surveys/"+surveyID+"/pages/"+pageID+"/questions?api_key=" + getApiKey());
+            request.Headers["Authorization"] = getHeader();
+            var response = request.GetResponse();
+            Stream dataStream = response.GetResponseStream();
+            StreamReader reader = new StreamReader(dataStream);
+
+            string responseFromServer = reader.ReadToEnd();
+
+            //Console.WriteLine(responseFromServer);//Debo meter los IDs a un arreglo
+            questlist = new QuestionList();
+
+            var serializer = new System.Web.Script.Serialization.JavaScriptSerializer();
+            questlist = serializer.Deserialize<QuestionList>(responseFromServer);
+            reader.Close();
+            response.Close();
+
+            return request;
+        }
+
 
     }
 }
