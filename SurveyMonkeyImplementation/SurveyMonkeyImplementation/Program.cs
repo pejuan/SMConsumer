@@ -58,7 +58,7 @@ namespace SurveyMonkeyImplementation
                     {
                         for (int j = 0; j < objtmp.answers.choices.Count; j++)
                         {
-                            Console.WriteLine(objtmp.answers.choices[j].text);//Tengo que verificar entre awnser.choice y awnser.text porque hay preguntas que su respuesta es de otro tipo a choice
+                            Console.WriteLine(objtmp.answers.choices[j].text);//Tengo que verificar entre answer.choice y answer.text porque hay preguntas que su respuesta es de otro tipo a choice
 
                         }
                     }
