@@ -8,8 +8,9 @@ namespace SurveyMonkeyImplementation
 {
     class QuestionDetail
     {
-        public string family;
-        public string subtype;
-        public Answer answers;
+        public string family { get; set; }
+        public string subtype { get; set; }
+        public Answer answers { get; set; }
+        public QuestionDetail() { }
     }
 }

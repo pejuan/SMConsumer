@@ -28,6 +28,7 @@ namespace SurveyMonkeyImplementation
         static ResponseList resplist;
         static SurveyForm surv;
         static QuestionDetail questiondetail;
+        static ResponseDetail responsedetail;
         static List<string> SurveyIDs;
         static List<string> PagesIDs;
         static List<ResponseList> listaResponseList;
@@ -74,11 +75,12 @@ namespace SurveyMonkeyImplementation
             //        }
             //    }
             //}
-            Console.WriteLine(SurveyFormDetailsList[0].id);
-            List<string> listaprueba = new List<string>();
-            listaprueba = BringResponsesIDs(SurveyFormDetailsList[0].id);
 
-            Console.WriteLine(listaprueba.Count);
+            //Console.WriteLine(SurveyFormDetailsList[0].id);
+            //List<string> listaprueba = new List<string>();
+            //listaprueba = BringResponsesIDs(SurveyFormDetailsList[0].id);
+            //Console.WriteLine("Total con el que termina");
+            //Console.WriteLine(listaprueba.Count);
             //for (int i = 0; i < listaprueba.Count; i++)
             //{
             //    Console.WriteLine(i+")  "+listaprueba[i]);
@@ -130,12 +132,11 @@ namespace SurveyMonkeyImplementation
         {
             List<string> IDsResponses = new List<string>();
             GetResponseList(surveyID);
-            Console.WriteLine(resplist.data.Count);
             for (int j = 0; j < listaResponseList.Count; j++)
             {
-                for (int i = 0; i < resplist.data.Count; i++)
+                for (int i = 0; i < listaResponseList[j].data.Count; i++)
                 {
-                    IDsResponses.Add(resplist.data[i].id);
+                    IDsResponses.Add(listaResponseList[j].data[i].id);
                 }
             }
             
@@ -297,7 +298,7 @@ namespace SurveyMonkeyImplementation
             int x = Int32.Parse(total);
             x = x / 1000;
             x++;
-            Console.WriteLine(x);
+            Console.WriteLine("Total encontrado:");
             Console.WriteLine(total);
             responsePageAct = 1;
             string respPageStr = responsePageAct.ToString();
@@ -321,7 +322,7 @@ namespace SurveyMonkeyImplementation
             var serializer = new System.Web.Script.Serialization.JavaScriptSerializer();
             resplist = serializer.Deserialize<ResponseList>(responseFromServer);
             listaResponseList.Add(resplist);
-            Console.WriteLine(request.ToString());
+            Console.WriteLine("Iteración numero: "+page);
             Console.WriteLine(resplist.data.Count);
             reader.Close();
             response.Close();
@@ -331,5 +332,28 @@ namespace SurveyMonkeyImplementation
             }
             return request;
         }
+
+        static ResponseDetail GetResponseDetails(string response_id)
+        {
+            var request = WebRequest.Create("https://api.surveymonkey.net/v3/responses/"+response_id+"/details?api_key=" + getApiKey());
+            request.Headers["Authorization"] = getHeader();
+            var response = request.GetResponse();
+            Stream dataStream = response.GetResponseStream();
+            StreamReader reader = new StreamReader(dataStream);
+
+            string responseFromServer = reader.ReadToEnd();
+
+            //Console.WriteLine(responseFromServer);//Parsear a la clase
+            responsedetail = new ResponseDetail();
+            var serializer = new System.Web.Script.Serialization.JavaScriptSerializer();
+            responsedetail = serializer.Deserialize<ResponseDetail>(responseFromServer);
+            reader.Close();
+            response.Close();
+
+            return responsedetail;
+        }
+
+
+
     }
 }
