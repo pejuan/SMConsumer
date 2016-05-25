@@ -298,8 +298,8 @@ namespace SurveyMonkeyImplementation
             int x = Int32.Parse(total);
             x = x / 1000;
             x++;
-            Console.WriteLine("Total encontrado:");
-            Console.WriteLine(total);
+            //Console.WriteLine("Total encontrado:");
+            //Console.WriteLine(total);
             responsePageAct = 1;
             string respPageStr = responsePageAct.ToString();
             GetResponseListTotal(surveyID,1,total,x);
@@ -322,8 +322,8 @@ namespace SurveyMonkeyImplementation
             var serializer = new System.Web.Script.Serialization.JavaScriptSerializer();
             resplist = serializer.Deserialize<ResponseList>(responseFromServer);
             listaResponseList.Add(resplist);
-            Console.WriteLine("Iteración numero: "+page);
-            Console.WriteLine(resplist.data.Count);
+            //Console.WriteLine("Iteración numero: "+page);
+            //Console.WriteLine(resplist.data.Count);
             reader.Close();
             response.Close();
             if (page != RespPages)
