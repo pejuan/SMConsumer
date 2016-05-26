@@ -14,6 +14,7 @@ namespace SurveyMonkeyImplementation
         public string response_status { get; set; }
         public string custom_value { get; set; }
 
+        public List<ResponsePage> pages { get; set; }
         public ResponseDetail() { }
     }
 }

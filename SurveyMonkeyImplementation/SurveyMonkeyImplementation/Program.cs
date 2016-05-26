@@ -34,12 +34,16 @@ namespace SurveyMonkeyImplementation
         static List<ResponseList> listaResponseList;
         static void Main(string[] args)
         {
-            fillSurveyIDs();
-            List<SurveyForm> SurveyFormDetailsList = new List<SurveyForm>();
-            for (int i = 0; i < SurveyIDs.Count; i++)
-            {
-                SurveyFormDetailsList.Add(GetSurveyDetails(SurveyIDs[i]));
-            }
+            //fillSurveyIDs();
+            //List<SurveyForm> SurveyFormDetailsList = new List<SurveyForm>();
+            //for (int i = 0; i < SurveyIDs.Count; i++)
+            //{
+            //    SurveyFormDetailsList.Add(GetSurveyDetails(SurveyIDs[i]));
+            //}
+            //Necesario
+            SurveysToCSV();
+
+
 
             //for (int i = 0; i < SurveyFormDetailsList.Count; i++)
             //{
@@ -58,12 +62,14 @@ namespace SurveyMonkeyImplementation
             //SurveyFormDetailsList[0].pagesIDs = BringPagesIDs(SurveyFormDetailsList[0]);
             //for (int i = 0; i < SurveyFormDetailsList[0].pagesIDs.Count; i++)
             //{
-            //    //Console.WriteLine(SurveyFormDetailsList[0].pagesIDs[i]);
+            //    Console.WriteLine(SurveyFormDetailsList[0].pagesIDs[i]);
             //    GetQuestionList(SurveyFormDetailsList[0].id, SurveyFormDetailsList[0].pagesIDs[i]);
             //    for (int k = 0; k < questlist.data.Count; k++)
             //    {
+            //        Console.WriteLine(questlist.data[k].heading);
             //        QuestionDetail objtmp = new QuestionDetail();
             //        objtmp = GetQuestionDetails(SurveyFormDetailsList[0].id, SurveyFormDetailsList[0].pagesIDs[i], questlist.data[k].id);
+
             //        if (objtmp.family == "multiple_choice" || objtmp.family == "single_choice") //Como solamente la family de single_choice es la que tiene choices
             //        {
             //            for (int j = 0; j < objtmp.answers.choices.Count; j++)
@@ -76,6 +82,10 @@ namespace SurveyMonkeyImplementation
             //    }
             //}
 
+            //SurveyFormDetailsList[0].pagesIDs = BringPagesIDs(SurveyFormDetailsList[0]);
+            //GetQuestionList(SurveyFormDetailsList[0].id, SurveyFormDetailsList[0].pagesIDs[0]);
+            //Console.WriteLine(questlist.data[0].heading);
+
             //Console.WriteLine(SurveyFormDetailsList[0].id);
             //List<string> listaprueba = new List<string>();
             //listaprueba = BringResponsesIDs(SurveyFormDetailsList[0].id);
@@ -83,7 +93,27 @@ namespace SurveyMonkeyImplementation
             //Console.WriteLine(listaprueba.Count);
             //for (int i = 0; i < listaprueba.Count; i++)
             //{
-            //    Console.WriteLine(i+")  "+listaprueba[i]);
+            //    ResponseDetail objRD = GetResponseDetails(listaprueba[i]);
+            //    Console.WriteLine(objRD.response_status);
+            //    for (int j = 0; j < objRD.pages.Count; j++)
+            //    {
+
+            //        for (int k = 0; k < objRD.pages[j].questions.Count; k++)
+            //        {
+            //            //Console.WriteLine(objRD.pages[j].questions[k].id);
+            //            for (int l = 0; l < objRD.pages[j].questions[k].answers.Count; l++)
+            //            {
+            //                if (objRD.pages[j].questions[k].answers[l].choice_id != null)
+            //                {
+            //                    //Console.WriteLine(objRD.pages[j].questions[k].answers[l].choice_id);
+            //                }
+            //                if (objRD.pages[j].questions[k].answers[l].text != null)
+            //                {
+            //                    Console.WriteLine(objRD.pages[j].questions[k].answers[l].text);
+            //                }
+            //            }
+            //        }
+            //    }
             //}
         }
         static bool fillSurveyIDs()
@@ -107,6 +137,17 @@ namespace SurveyMonkeyImplementation
             }
 
             return IDsSurveys;
+        }
+        static List<SurveyForm> BringSurveys(List<string> SurveyIDs)
+        {
+
+            List<SurveyForm> SurveyFormDetailsList = new List<SurveyForm>();
+            for (int i = 0; i < SurveyIDs.Count; i++)
+            {
+                SurveyFormDetailsList.Add(GetSurveyDetails(SurveyIDs[i]));
+            }
+
+            return SurveyFormDetailsList;
         }
         static bool fillPagesIDs(SurveyForm objsf)
         {
@@ -285,7 +326,6 @@ namespace SurveyMonkeyImplementation
 
             string responseFromServer = reader.ReadToEnd();
 
-            //Console.WriteLine(responseFromServer);//Debo meter los IDs a un arreglo
             resplist = new ResponseList();
 
             var serializer = new System.Web.Script.Serialization.JavaScriptSerializer();
@@ -298,8 +338,6 @@ namespace SurveyMonkeyImplementation
             int x = Int32.Parse(total);
             x = x / 1000;
             x++;
-            //Console.WriteLine("Total encontrado:");
-            //Console.WriteLine(total);
             responsePageAct = 1;
             string respPageStr = responsePageAct.ToString();
             GetResponseListTotal(surveyID,1,total,x);
@@ -315,15 +353,11 @@ namespace SurveyMonkeyImplementation
             StreamReader reader = new StreamReader(dataStream);
 
             string responseFromServer = reader.ReadToEnd();
-
-            //Console.WriteLine(responseFromServer);//Debo meter los IDs a un arreglo
             resplist = new ResponseList();
 
             var serializer = new System.Web.Script.Serialization.JavaScriptSerializer();
             resplist = serializer.Deserialize<ResponseList>(responseFromServer);
             listaResponseList.Add(resplist);
-            //Console.WriteLine("Iteración numero: "+page);
-            //Console.WriteLine(resplist.data.Count);
             reader.Close();
             response.Close();
             if (page != RespPages)
@@ -343,7 +377,6 @@ namespace SurveyMonkeyImplementation
 
             string responseFromServer = reader.ReadToEnd();
 
-            //Console.WriteLine(responseFromServer);//Parsear a la clase
             responsedetail = new ResponseDetail();
             var serializer = new System.Web.Script.Serialization.JavaScriptSerializer();
             responsedetail = serializer.Deserialize<ResponseDetail>(responseFromServer);
@@ -353,7 +386,25 @@ namespace SurveyMonkeyImplementation
             return responsedetail;
         }
 
-
+        static bool SurveysToCSV()
+        {
+            List<SurveyForm> lista = BringSurveys(BringSurveyIDs());
+            String csvtext = "SurveyFormId| SurveyFormName| SurveyLink| SurveyLanguage| SurveyQuestionCount| SurveyPageCount| SurveyDateCreated| SurveyDateModified| ProjectId\n";
+            for (int i = 0; i < lista.Count; i++)
+            {
+                csvtext += lista[i].id + "| ";
+                csvtext += lista[i].title + "| ";
+                csvtext += lista[i].preview + "| ";
+                csvtext += lista[i].language + "| ";
+                csvtext += lista[i].question_count + "| ";
+                csvtext += lista[i].page_count + "| ";
+                csvtext += lista[i].date_created + "| ";
+                csvtext += lista[i].date_modified + "| ";
+                csvtext += 1 + "\n";
+            }
+            Console.WriteLine(csvtext);
+            return true;
+        }
 
     }
 }

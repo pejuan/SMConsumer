@@ -6,9 +6,12 @@ using System.Threading.Tasks;
 
 namespace SurveyMonkeyImplementation
 {
-    class Answer
+    class ResponseAnswer
     {
-        public List<Choice> choices { get; set; }
-        public Answer() { }
+        public string choice_id { get; set; }
+        public string text { get; set; }
+
+        public ResponseAnswer() { }
+
     }
 }

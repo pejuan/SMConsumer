@@ -64,8 +64,11 @@
     <Compile Include="QuestionDetail.cs" />
     <Compile Include="QuestionList.cs" />
     <Compile Include="Response.cs" />
+    <Compile Include="ResponseAnswer.cs" />
     <Compile Include="ResponseDetail.cs" />
     <Compile Include="ResponseList.cs" />
+    <Compile Include="ResponsePage.cs" />
+    <Compile Include="ResponseQuestion.cs" />
     <Compile Include="Survey.cs" />
     <Compile Include="SurveyForm.cs" />
     <Compile Include="SurveyList.cs" />
