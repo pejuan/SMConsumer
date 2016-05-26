@@ -391,17 +391,17 @@ namespace SurveyMonkeyImplementation
         static bool SurveysToCSV()
         {
             List<SurveyForm> lista = BringSurveys(BringSurveyIDs());
-            String csvtext = "SurveyFormId| SurveyFormName| SurveyLink| SurveyLanguage| SurveyQuestionCount| SurveyPageCount| SurveyDateCreated| SurveyDateModified| ProjectId\n";
+            String csvtext = "SurveyFormId, SurveyFormName, SurveyLink, SurveyLanguage, SurveyQuestionCount, SurveyPageCount, SurveyDateCreated, SurveyDateModified, ProjectId\n";
             for (int i = 0; i < lista.Count; i++)
             {
-                csvtext += lista[i].id + "| ";
-                csvtext += lista[i].title + "| ";
-                csvtext += lista[i].preview + "| ";
-                csvtext += lista[i].language + "| ";
-                csvtext += lista[i].question_count + "| ";
-                csvtext += lista[i].page_count + "| ";
-                csvtext += lista[i].date_created + "| ";
-                csvtext += lista[i].date_modified + "| ";
+                csvtext += lista[i].id + ", ";
+                csvtext += lista[i].title + ", ";
+                csvtext += lista[i].preview + ", ";
+                csvtext += lista[i].language + ", ";
+                csvtext += lista[i].question_count + ", ";
+                csvtext += lista[i].page_count + ", ";
+                csvtext += lista[i].date_created + ", ";
+                csvtext += lista[i].date_modified + ", ";
                 csvtext += 1 + "\n";
             }
             Console.WriteLine(csvtext);
