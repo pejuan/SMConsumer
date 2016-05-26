@@ -106,6 +106,8 @@ namespace SurveyMonkeyImplementation
             //                if (objRD.pages[j].questions[k].answers[l].choice_id != null)
             //                {
             //                    //Console.WriteLine(objRD.pages[j].questions[k].answers[l].choice_id);
+            //                    //Encontrar el texto de la choice id
+            //
             //                }
             //                if (objRD.pages[j].questions[k].answers[l].text != null)
             //                {
@@ -403,6 +405,41 @@ namespace SurveyMonkeyImplementation
                 csvtext += 1 + "\n";
             }
             Console.WriteLine(csvtext);
+            return true;
+        }
+        static bool ResponsesToCSV()
+        {
+
+            //List<string> listaprueba = new List<string>();
+            //listaprueba = BringResponsesIDs(SurveyFormDetailsList[0].id);
+            //Console.WriteLine("Total con el que termina");
+            //Console.WriteLine(listaprueba.Count);
+            //for (int i = 0; i < listaprueba.Count; i++)
+            //{
+            //    ResponseDetail objRD = GetResponseDetails(listaprueba[i]);
+            //    Console.WriteLine(objRD.response_status);
+            //    for (int j = 0; j < objRD.pages.Count; j++)
+            //    {
+
+            //        for (int k = 0; k < objRD.pages[j].questions.Count; k++)
+            //        {
+            //            //Console.WriteLine(objRD.pages[j].questions[k].id);
+            //            for (int l = 0; l < objRD.pages[j].questions[k].answers.Count; l++)
+            //            {
+            //                if (objRD.pages[j].questions[k].answers[l].choice_id != null)
+            //                {
+            //                    //Console.WriteLine(objRD.pages[j].questions[k].answers[l].choice_id);
+            //                    //Encontrar el texto de la choice id
+            //
+            //                }
+            //                if (objRD.pages[j].questions[k].answers[l].text != null)
+            //                {
+            //                    Console.WriteLine(objRD.pages[j].questions[k].answers[l].text);
+            //                }
+            //            }
+            //        }
+            //    }
+            //}
             return true;
         }
 
