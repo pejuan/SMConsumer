@@ -19,7 +19,11 @@ namespace SurveyMonkeyImplementation
     class Program
     {
         static string apikey = "nada";
+        static bool settingsLoaded = false;
         static string token = "nada";
+        static DateTime datesPrior;
+        static DateTime datesAfter;
+        static string titlesContaining = "";
         static string baseURL = "https://api.surveymonkey.net/v3/";
         static int responsePageAct = 1;
         static int ResponsePages = 1;
@@ -35,6 +39,18 @@ namespace SurveyMonkeyImplementation
         static List<ResponseList> listaResponseList;
         static void Main(string[] args)
         {
+            //loadSettings();
+            //DateTime datet = DateTime.Parse(date);
+            //string date2 = "2014-02-09T19:39:00";
+            //DateTime datet2 = DateTime.Parse(date2);
+            //if (datet<datet2)
+            //{
+            //    Console.WriteLine(datet.ToString());
+            //}else
+            //{
+            //    Console.WriteLine(datet2.ToString());
+            //}
+            
             //fillSurveyIDs();
             //List<SurveyForm> SurveyFormDetailsList = new List<SurveyForm>();
             //for (int i = 0; i < SurveyIDs.Count; i++)
@@ -45,7 +61,7 @@ namespace SurveyMonkeyImplementation
 
 
             //ResponsesToCSVFromSurvey(GetSurveyDetails("76207795"));
-            SurveysToCSV();
+            //SurveysToCSV();
 
 
 
@@ -235,9 +251,23 @@ namespace SurveyMonkeyImplementation
             {
                 return apikey;
             }
+        }
+        static void loadSettings()
+        {
+            if (!settingsLoaded)
+            {
+                XmlDocument doc = new XmlDocument();
+                doc.Load(Application.StartupPath + "\\monkey.xml");
+                XmlNode datesPriornode = doc.DocumentElement.SelectSingleNode("/monkey/settings/datesPrior");
+                datesPrior = DateTime.Parse(datesPriornode.InnerText);
+                XmlNode datesAfternode = doc.DocumentElement.SelectSingleNode("/monkey/settings/datesAfter");
+                datesAfter = DateTime.Parse(datesAfternode.InnerText);
+                XmlNode titlesContainingNode = doc.DocumentElement.SelectSingleNode("/monkey/settings/titlesContaining");
+                titlesContaining = titlesContainingNode.InnerText;
 
 
-
+                settingsLoaded = true;
+            }
         }
         static WebRequest GetSurveys()
         {
@@ -368,7 +398,6 @@ namespace SurveyMonkeyImplementation
             GetResponseList(surveyID,1,total,x);
             return request;
         }
-
         static WebRequest GetResponseList(string surveyID,int page,string total, int RespPages)
         {
             var request = WebRequest.Create(baseURL+"surveys/" + surveyID + "/responses?page="+page+"&per_page=" + total + "&api_key=" + getApiKey());
@@ -391,7 +420,6 @@ namespace SurveyMonkeyImplementation
             }
             return request;
         }
-
         static ResponseDetail GetResponseDetails(string response_id)
         {
             var request = WebRequest.Create(baseURL+"responses/"+response_id+"/details?api_key=" + getApiKey());
@@ -410,7 +438,6 @@ namespace SurveyMonkeyImplementation
 
             return responsedetail;
         }
-
         static string MakeARequest(string Request)
         {
             var request = WebRequest.Create(Request);
@@ -440,6 +467,86 @@ namespace SurveyMonkeyImplementation
                 csvtext += "\"" + lista[i].date_created + "\", ";
                 csvtext += "\"" + lista[i].date_modified + "\", ";
                 csvtext += 1 + "\n";
+            }
+            File.WriteAllText(filePath, csvtext);
+            return true;
+        }
+        static bool SurveysTitleContainingToCSV()
+        {
+            loadSettings();
+            string filePath = Application.StartupPath + "\\SurveyFormStartingWith"+ titlesContaining + ".csv";
+            List<SurveyForm> lista = BringSurveys(BringSurveyIDs());
+            String csvtext = "SurveyFormId, SurveyFormName, SurveyLink, SurveyLanguage, SurveyQuestionCount, SurveyPageCount, SurveyDateCreated, SurveyDateModified, ProjectId\n";
+            for (int i = 0; i < lista.Count; i++)
+            {
+                if (lista[i].title.Contains(titlesContaining))
+                {
+                    csvtext += "\"" + lista[i].id + "\", ";
+                    csvtext += "\"" + lista[i].title + "\", ";
+                    csvtext += "\"" + lista[i].preview + "\", ";
+                    csvtext += "\"" + lista[i].language + "\", ";
+                    csvtext += "\"" + lista[i].question_count + "\", ";
+                    csvtext += "\"" + lista[i].page_count + "\", ";
+                    csvtext += "\"" + lista[i].date_created + "\", ";
+                    csvtext += "\"" + lista[i].date_modified + "\", ";
+                    csvtext += 1 + "\n";
+
+                }
+                
+            }
+            File.WriteAllText(filePath, csvtext);
+            return true;
+        }
+        static bool SurveysCreatedPriorToCSV()
+        {
+            loadSettings();
+            string filePath = Application.StartupPath + "\\SurveyFormPriorTo" + datesPrior.ToString().Trim() + ".csv";
+            List<SurveyForm> lista = BringSurveys(BringSurveyIDs());
+            String csvtext = "SurveyFormId, SurveyFormName, SurveyLink, SurveyLanguage, SurveyQuestionCount, SurveyPageCount, SurveyDateCreated, SurveyDateModified, ProjectId\n";
+            for (int i = 0; i < lista.Count; i++)
+            {
+                DateTime datetmp = DateTime.Parse(lista[i].date_created);
+                if (datetmp<=datesPrior)
+                {
+                    csvtext += "\"" + lista[i].id + "\", ";
+                    csvtext += "\"" + lista[i].title + "\", ";
+                    csvtext += "\"" + lista[i].preview + "\", ";
+                    csvtext += "\"" + lista[i].language + "\", ";
+                    csvtext += "\"" + lista[i].question_count + "\", ";
+                    csvtext += "\"" + lista[i].page_count + "\", ";
+                    csvtext += "\"" + lista[i].date_created + "\", ";
+                    csvtext += "\"" + lista[i].date_modified + "\", ";
+                    csvtext += 1 + "\n";
+
+                }
+
+            }
+            File.WriteAllText(filePath, csvtext);
+            return true;
+        }
+        static bool SurveysCreatedAfterToCSV()
+        {
+            loadSettings();
+            string filePath = Application.StartupPath + "\\SurveyFormAfterTo" + datesAfter.ToString().Trim() + ".csv";
+            List<SurveyForm> lista = BringSurveys(BringSurveyIDs());
+            String csvtext = "SurveyFormId, SurveyFormName, SurveyLink, SurveyLanguage, SurveyQuestionCount, SurveyPageCount, SurveyDateCreated, SurveyDateModified, ProjectId\n";
+            for (int i = 0; i < lista.Count; i++)
+            {
+                DateTime datetmp = DateTime.Parse(lista[i].date_created);
+                if (datetmp >= datesAfter)
+                {
+                    csvtext += "\"" + lista[i].id + "\", ";
+                    csvtext += "\"" + lista[i].title + "\", ";
+                    csvtext += "\"" + lista[i].preview + "\", ";
+                    csvtext += "\"" + lista[i].language + "\", ";
+                    csvtext += "\"" + lista[i].question_count + "\", ";
+                    csvtext += "\"" + lista[i].page_count + "\", ";
+                    csvtext += "\"" + lista[i].date_created + "\", ";
+                    csvtext += "\"" + lista[i].date_modified + "\", ";
+                    csvtext += 1 + "\n";
+
+                }
+
             }
             File.WriteAllText(filePath, csvtext);
             return true;
@@ -598,7 +705,6 @@ namespace SurveyMonkeyImplementation
             File.WriteAllText(filePath, csvtext);
             return true;
         }
-
         static bool ResponsesToCSV(SurveyForm survey,int num_registros)
         {
             string filePath = Application.StartupPath + "\\SurveyResponses" + survey.title.Trim() + ".csv";

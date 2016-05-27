@@ -1,5 +1,9 @@
 <monkey>
 	<key>qkzc3tjbennyw82xwndxepnf</key>
 	<token>yd9L90lFyr2f3FxQ273ZdyXBh6V3Yj02VXd6H0jQd2MkLEYDoaGvDzPDDNrLiKDyQ5LUSeEkgPedKDRkcxfAfuHOrs9ax7gu48NRXgHyP2iTavhcDadqLtOLPbT20deVykxxDLAX2xtpDdI8CvCC4dWnc.bzX4U2rsseKlhIEYUiKe76GwOI72Q9CMlX4wjFDw6NRYp-3xVRFcy-0P-oHaUX8kY5UKm94nnk00xwZOA=</token>
-
+	<settings>
+		<datesPrior>2/11/2015</datesPrior>
+		<datesAfter>2/11/2016</datesAfter>
+		<titlesContaining>NPS</titlesContaining>
+	</settings>
 </monkey>
