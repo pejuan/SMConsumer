@@ -41,6 +41,9 @@ namespace SurveyMonkeyImplementation
             //    SurveyFormDetailsList.Add(GetSurveyDetails(SurveyIDs[i]));
             //}
             //Necesario
+
+
+            //ResponsesToCSVFromSurvey(GetSurveyDetails("76207795"));
             SurveysToCSV();
 
 
@@ -434,13 +437,13 @@ namespace SurveyMonkeyImplementation
                 for (int i = 0; i < listaprueba.Count; i++)
                 {
                     ResponseDetail objRD = GetResponseDetails(listaprueba[i]);
-                    csvtext += objRD.id+", ";
-                    csvtext += SurveyFormDetailsList[m].id + ", ";
-                    csvtext += objRD.date_modified + ", " + objRD.date_created + ", ";
-                    csvtext += objRD.ip_address + ", ";
-                    csvtext += objRD.response_status + ", " + "NULL" + ", ";
-                    csvtext += objRD.recipient_id + ", ";
-                    csvtext += objRD.total_time + ", ";
+                    csvtext += "\"" + objRD.id+"\", ";
+                    csvtext += "\"" + SurveyFormDetailsList[m].id + "\", ";
+                    csvtext += "\"" + objRD.date_modified + "\", " + objRD.date_created + "\", ";
+                    csvtext += "\"" + objRD.ip_address + "\", ";
+                    csvtext += "\"" + objRD.response_status + "\", " + "\"NULL" + "\", ";
+                    csvtext += "\"" + objRD.recipient_id + "\", ";
+                    csvtext += "\"" + objRD.total_time + "\", ";
                     Console.WriteLine(objRD.response_status);
                     for (int j = 0; j < objRD.pages.Count; j++)
                     {
@@ -456,34 +459,127 @@ namespace SurveyMonkeyImplementation
                                     //Console.WriteLine(objRD.pages[j].questions[k].answers[l].choice_id);
                                     //Encontrar el texto de la choice id
                                     QuestionDetail objQD = GetQuestionDetails(SurveyFormDetailsList[m].id, objRD.pages[j].id, objRD.pages[j].questions[k].id);
-                                    
+                                    for (int q = 0; q < objQD.answers.choices.Count; q++)
+                                    {
+                                        if (objQD.answers.choices[q].id== objRD.pages[j].questions[k].answers[l].choice_id)
+                                        {
+                                            csvtext += "\""+objQD.answers.choices[q].text+ "\", ";
+                                            break;
+                                        }
+                                    }
 
                                 }else if (objRD.pages[j].questions[k].answers[l].text != null)
                                 {
                                     //Console.WriteLine(objRD.pages[j].questions[k].answers[l].text);
-                                    csvtext += objRD.pages[j].questions[k].answers[l].text + ", ";
+                                    csvtext += "\"" + objRD.pages[j].questions[k].answers[l].text + "\", ";
                                 }
                                 else
                                 {
-                                    csvtext += "NULL, ";
+                                    csvtext += "\"NULL\", ";
                                 }
                             }
                         }
-                        for (int p = 0; p < fillQuestions; p++)
-                        {
-                            if (p==0)
-                            {
-                                csvtext += "NULL";
-                            }else
-                            {
-                                csvtext += ", NULL";
-                            }
+                        //for (int p = 0; p < fillQuestions; p++)
+                        //{
+                        //    if (p==0)
+                        //    {
+                        //        csvtext += "\"NULL\"";
+                        //    }else
+                        //    {
+                        //        csvtext += ", \"NULL\"";
+                        //    }
                             
+                        //}
+                    }
+                    csvtext += "\n";
+                }
+
+            }
+            File.WriteAllText(filePath, csvtext);
+            return true;
+        }
+
+
+        static bool ResponsesToCSVFromSurvey(SurveyForm survey)
+        {
+            string filePath = Application.StartupPath + "\\SurveyResponses"+survey.title.Trim()+".csv";
+            String csvtext = "SurveyResponseId, SurveyFormID, SurveyResponseDateModified, SurveyResponseDateCreated, SurveyResponseIp, SurveyResponseCompleted, EmailAddress, RecipientId, TotalTime, ";
+            for (int i = 1; i < 101; i++)
+            {
+                csvtext += "QUESTION" + i + ", ";
+            }
+            csvtext += "\n";
+            //List<SurveyForm> SurveyFormDetailsList = BringSurveys(BringSurveyIDs());
+            List<string> listaprueba = new List<string>();
+
+            listaprueba = BringResponsesIDs(survey.id);
+            int fillQuestions = 100 - int.Parse(survey.question_count);
+            //Console.WriteLine("Total con el que termina");
+            Console.WriteLine(listaprueba.Count);
+            for (int i = 0; i < listaprueba.Count; i++)
+            {
+                ResponseDetail objRD = GetResponseDetails(listaprueba[i]);
+                csvtext += "\""+objRD.id + "\", ";
+                csvtext += "\"" + survey.id + "\", ";
+                csvtext += "\"" + objRD.date_modified + "\", " + "\"" + objRD.date_created + "\", ";
+                csvtext += "\"" + objRD.ip_address + "\", ";
+                csvtext += "\"" + objRD.response_status + "\", " + "NULL" + "\", ";
+                csvtext += "\"" + objRD.recipient_id + "\", ";
+                csvtext += "\"" + objRD.total_time + "\", ";
+                Console.WriteLine(objRD.response_status);
+                for (int j = 0; j < objRD.pages.Count; j++)
+                {
+
+                    for (int k = 0; k < objRD.pages[j].questions.Count; k++)
+                    {
+                        //Console.WriteLine(objRD.pages[j].questions[k].id);
+                        for (int l = 0; l < objRD.pages[j].questions[k].answers.Count; l++)
+                        {
+
+                            if (objRD.pages[j].questions[k].answers[l].choice_id != null)
+                            {
+                                //Console.WriteLine(objRD.pages[j].questions[k].answers[l].choice_id);
+                                //Encontrar el texto de la choice id
+                                QuestionDetail objQD = GetQuestionDetails(survey.id, objRD.pages[j].id, objRD.pages[j].questions[k].id);
+                                for (int q = 0; q < objQD.answers.choices.Count; q++)
+                                {
+                                    if (objQD.answers.choices[q].id == objRD.pages[j].questions[k].answers[l].choice_id)
+                                    {
+                                        csvtext += "\""+objQD.answers.choices[q].text + "\", ";
+                                        break;
+                                    }
+                                }
+
+                            }
+                            else if (objRD.pages[j].questions[k].answers[l].text != null)
+                            {
+                                //Console.WriteLine(objRD.pages[j].questions[k].answers[l].text);
+                                csvtext += objRD.pages[j].questions[k].answers[l].text + ", ";
+                            }
+                            else
+                            {
+                                csvtext += "\"NULL\", ";
+                            }
                         }
                     }
-                }
-            }
+                    //for (int p = 0; p < fillQuestions; p++)
+                    //{
+                    //    if (p == 0)
+                    //    {
+                    //        csvtext += "\"NULL\"";
+                    //    }
+                    //    else
+                    //    {
+                    //        csvtext += ", \"NULL\"";
+                    //    }
 
+                    //}
+                    
+                }
+                csvtext += "\n";
+            }
+   
+            File.WriteAllText(filePath, csvtext);
             return true;
         }
 
