@@ -194,7 +194,6 @@ namespace SurveyMonkeyImplementation
             var AuthHeader = "bearer ";
             if (token == "nada")
             {
-                //Console.WriteLine("No se habia leido");
                 XmlDocument doc = new XmlDocument();
                 doc.Load(Application.StartupPath + "\\monkey.xml");
                 XmlNode node = doc.DocumentElement.SelectSingleNode("/monkey/token");
@@ -216,7 +215,6 @@ namespace SurveyMonkeyImplementation
             }
             else
             {
-                //Console.WriteLine("Ya se habia leido");
                 return apikey;
             }
 
@@ -231,12 +229,8 @@ namespace SurveyMonkeyImplementation
             var response = request.GetResponse();
             Stream dataStream = response.GetResponseStream();
             StreamReader reader = new StreamReader(dataStream);
-
             string responseFromServer = reader.ReadToEnd();
-
-            //Console.WriteLine(responseFromServer);//Debo meter los IDs a un arreglo
             survlist = new SurveyList();
-
             var serializer = new System.Web.Script.Serialization.JavaScriptSerializer();
             survlist = serializer.Deserialize<SurveyList>(responseFromServer);
             reader.Close();
@@ -251,10 +245,7 @@ namespace SurveyMonkeyImplementation
             var response = request.GetResponse();
             Stream dataStream = response.GetResponseStream();
             StreamReader reader = new StreamReader(dataStream);
-
             string responseFromServer = reader.ReadToEnd();
-
-            //Console.WriteLine(responseFromServer);//Parsear a la clase
             surv = new SurveyForm();
             var serializer = new System.Web.Script.Serialization.JavaScriptSerializer();
             surv = serializer.Deserialize<SurveyForm>(responseFromServer);
@@ -272,8 +263,6 @@ namespace SurveyMonkeyImplementation
             StreamReader reader = new StreamReader(dataStream);
 
             string responseFromServer = reader.ReadToEnd();
-
-            //Console.WriteLine(responseFromServer);//Parsear a la clase
             questiondetail = new QuestionDetail();
             var serializer = new System.Web.Script.Serialization.JavaScriptSerializer();
             questiondetail = serializer.Deserialize<QuestionDetail>(responseFromServer);
@@ -293,7 +282,6 @@ namespace SurveyMonkeyImplementation
 
             string responseFromServer = reader.ReadToEnd();
 
-            //Console.WriteLine(responseFromServer);//Debo meter los IDs a un arreglo
             pagelist = new PageList();
 
             var serializer = new System.Web.Script.Serialization.JavaScriptSerializer();
@@ -310,12 +298,8 @@ namespace SurveyMonkeyImplementation
             var response = request.GetResponse();
             Stream dataStream = response.GetResponseStream();
             StreamReader reader = new StreamReader(dataStream);
-
             string responseFromServer = reader.ReadToEnd();
-
-            //Console.WriteLine(responseFromServer);//Debo meter los IDs a un arreglo
             questlist = new QuestionList();
-
             var serializer = new System.Web.Script.Serialization.JavaScriptSerializer();
             questlist = serializer.Deserialize<QuestionList>(responseFromServer);
             reader.Close();
@@ -423,7 +407,6 @@ namespace SurveyMonkeyImplementation
                 csvtext += "\"" + lista[i].date_modified + "\", ";
                 csvtext += 1 + "\n";
             }
-            //Console.WriteLine(csvtext);
             File.WriteAllText(filePath, csvtext);
             return true;
         }
@@ -442,7 +425,6 @@ namespace SurveyMonkeyImplementation
             {
                 listaprueba = BringResponsesIDs(SurveyFormDetailsList[m].id);
                 int fillQuestions = 100-int.Parse(SurveyFormDetailsList[m].question_count);
-                //Console.WriteLine("Total con el que termina");
                 Console.WriteLine(listaprueba.Count);
                 for (int i = 0; i < listaprueba.Count; i++)
                 {
@@ -460,13 +442,11 @@ namespace SurveyMonkeyImplementation
 
                         for (int k = 0; k < objRD.pages[j].questions.Count; k++)
                         {
-                            //Console.WriteLine(objRD.pages[j].questions[k].id);
                             for (int l = 0; l < objRD.pages[j].questions[k].answers.Count; l++)
                             {
                                 
                                 if (objRD.pages[j].questions[k].answers[l].choice_id != null)
                                 {
-                                    //Console.WriteLine(objRD.pages[j].questions[k].answers[l].choice_id);
                                     //Encontrar el texto de la choice id
                                     QuestionDetail objQD = GetQuestionDetails(SurveyFormDetailsList[m].id, objRD.pages[j].id, objRD.pages[j].questions[k].id);
                                     for (int q = 0; q < objQD.answers.choices.Count; q++)
@@ -480,7 +460,6 @@ namespace SurveyMonkeyImplementation
 
                                 }else if (objRD.pages[j].questions[k].answers[l].text != null)
                                 {
-                                    //Console.WriteLine(objRD.pages[j].questions[k].answers[l].text);
                                     csvtext += "\"" + objRD.pages[j].questions[k].answers[l].text + "\", ";
                                 }
                                 else
@@ -517,12 +496,10 @@ namespace SurveyMonkeyImplementation
                 csvtext += "QUESTION" + i + ", ";
             }
             csvtext += "\n";
-            //List<SurveyForm> SurveyFormDetailsList = BringSurveys(BringSurveyIDs());
             List<string> listaprueba = new List<string>();
 
             listaprueba = BringResponsesIDs(survey.id);
             int fillQuestions = 100 - int.Parse(survey.question_count);
-            //Console.WriteLine("Total con el que termina");
             Console.WriteLine(listaprueba.Count);
             for (int i = 0; i < listaprueba.Count; i++)
             {
@@ -540,13 +517,11 @@ namespace SurveyMonkeyImplementation
 
                     for (int k = 0; k < objRD.pages[j].questions.Count; k++)
                     {
-                        //Console.WriteLine(objRD.pages[j].questions[k].id);
                         for (int l = 0; l < objRD.pages[j].questions[k].answers.Count; l++)
                         {
 
                             if (objRD.pages[j].questions[k].answers[l].choice_id != null)
                             {
-                                //Console.WriteLine(objRD.pages[j].questions[k].answers[l].choice_id);
                                 //Encontrar el texto de la choice id
                                 QuestionDetail objQD = GetQuestionDetails(survey.id, objRD.pages[j].id, objRD.pages[j].questions[k].id);
                                 for (int q = 0; q < objQD.answers.choices.Count; q++)
@@ -561,7 +536,6 @@ namespace SurveyMonkeyImplementation
                             }
                             else if (objRD.pages[j].questions[k].answers[l].text != null)
                             {
-                                //Console.WriteLine(objRD.pages[j].questions[k].answers[l].text);
                                 csvtext += objRD.pages[j].questions[k].answers[l].text + ", ";
                             }
                             else
