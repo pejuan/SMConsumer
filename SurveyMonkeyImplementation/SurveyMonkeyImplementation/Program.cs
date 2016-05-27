@@ -189,6 +189,24 @@ namespace SurveyMonkeyImplementation
             
             return IDsResponses;
         }
+        static List<String> BringResponsesIDs(string surveyID, int num_registros)
+        {
+            List<string> IDsResponses = new List<string>();
+            int rp = num_registros / 1000;
+            rp++;
+            string x = num_registros.ToString();
+            listaResponseList = new List<ResponseList>();
+            GetResponseList(surveyID,1,x,rp);
+            for (int j = 0; j < listaResponseList.Count; j++)
+            {
+                for (int i = 0; i < listaResponseList[j].data.Count; i++)
+                {
+                    IDsResponses.Add(listaResponseList[j].data[i].id);
+                }
+            }
+
+            return IDsResponses;
+        }
         static string getHeader()
         {
             var AuthHeader = "bearer ";
@@ -307,6 +325,22 @@ namespace SurveyMonkeyImplementation
 
             return request;
         }
+        static QuestionList BringQuestionList(string surveyID, string pageID)
+        {
+            var request = WebRequest.Create(baseURL + "surveys/" + surveyID + "/pages/" + pageID + "/questions?api_key=" + getApiKey());
+            request.Headers["Authorization"] = getHeader();
+            var response = request.GetResponse();
+            Stream dataStream = response.GetResponseStream();
+            StreamReader reader = new StreamReader(dataStream);
+            string responseFromServer = reader.ReadToEnd();
+            QuestionList qlist = new QuestionList();
+            var serializer = new System.Web.Script.Serialization.JavaScriptSerializer();
+            qlist = serializer.Deserialize<QuestionList>(responseFromServer);
+            reader.Close();
+            response.Close();
+
+            return qlist;
+        }
         static WebRequest GetResponseList(string surveyID)
         {
             var request = WebRequest.Create(baseURL+"surveys/" + surveyID + "/responses?api_key=" + getApiKey());
@@ -331,11 +365,11 @@ namespace SurveyMonkeyImplementation
             x++;
             responsePageAct = 1;
             string respPageStr = responsePageAct.ToString();
-            GetResponseListTotal(surveyID,1,total,x);
+            GetResponseList(surveyID,1,total,x);
             return request;
         }
 
-        static WebRequest GetResponseListTotal(string surveyID,int page,string total, int RespPages)
+        static WebRequest GetResponseList(string surveyID,int page,string total, int RespPages)
         {
             var request = WebRequest.Create(baseURL+"surveys/" + surveyID + "/responses?page="+page+"&per_page=" + total + "&api_key=" + getApiKey());
             request.Headers["Authorization"] = getHeader();
@@ -353,7 +387,7 @@ namespace SurveyMonkeyImplementation
             response.Close();
             if (page != RespPages)
             {
-                GetResponseListTotal(surveyID, page+1, total, RespPages); //Llamado recursivo para que vaya a todas las paginas de responses
+                GetResponseList(surveyID, page+1, total, RespPages); //Llamado recursivo para que vaya a todas las paginas de responses
             }
             return request;
         }
@@ -413,10 +447,10 @@ namespace SurveyMonkeyImplementation
         static bool ResponsesToCSV()
         {
             string filePath = Application.StartupPath + "\\SurveyResponses.csv";
-            String csvtext = "SurveyResponseId, SurveyFormID, SurveyResponseDateModified, SurveyResponseDateCreated, SurveyResponseIp, SurveyResponseCompleted, EmailAddress, RecipientId, TotalTime, ";
+            String csvtext = "SurveyResponseId, SurveyFormID, SurveyResponseDateModified, SurveyResponseDateCreated, SurveyResponseIp, SurveyResponseCompleted, EmailAddress, RecipientId, TotalTime";
             for (int i = 1; i < 101; i++)
             {
-                csvtext += "QUESTION" + i + ", ";
+                csvtext += ", QUESTION" + i;
             }
             csvtext += "\n";
             List<SurveyForm> SurveyFormDetailsList = BringSurveys(BringSurveyIDs());
@@ -487,13 +521,13 @@ namespace SurveyMonkeyImplementation
             File.WriteAllText(filePath, csvtext);
             return true;
         }        
-        static bool ResponsesToCSVFromSurvey(SurveyForm survey)
+        static bool ResponsesToCSV(SurveyForm survey)
         {
             string filePath = Application.StartupPath + "\\SurveyResponses"+survey.title.Trim()+".csv";
-            String csvtext = "SurveyResponseId, SurveyFormID, SurveyResponseDateModified, SurveyResponseDateCreated, SurveyResponseIp, SurveyResponseCompleted, EmailAddress, RecipientId, TotalTime, ";
+            String csvtext = "SurveyResponseId, SurveyFormID, SurveyResponseDateModified, SurveyResponseDateCreated, SurveyResponseIp, SurveyResponseCompleted, EmailAddress, RecipientId, TotalTime";
             for (int i = 1; i < 101; i++)
             {
-                csvtext += "QUESTION" + i + ", ";
+                csvtext += ", QUESTION" + i;
             }
             csvtext += "\n";
             List<string> listaprueba = new List<string>();
@@ -565,5 +599,87 @@ namespace SurveyMonkeyImplementation
             return true;
         }
 
+        static bool ResponsesToCSV(SurveyForm survey,int num_registros)
+        {
+            string filePath = Application.StartupPath + "\\SurveyResponses" + survey.title.Trim() + ".csv";
+            String csvtext = "SurveyResponseId, SurveyFormID, SurveyResponseDateModified, SurveyResponseDateCreated, SurveyResponseIp, SurveyResponseCompleted, EmailAddress, RecipientId, TotalTime";
+            for (int i = 1; i < 101; i++)
+            {
+                csvtext += ", QUESTION" + i;
+            }
+            csvtext += "\n";
+            List<string> listaprueba = new List<string>();
+
+            listaprueba = BringResponsesIDs(survey.id,num_registros);
+            int fillQuestions = 100 - int.Parse(survey.question_count);
+            //Console.WriteLine(listaprueba.Count);
+            int final = num_registros;
+            if (listaprueba.Count<=num_registros)
+            {
+                final = listaprueba.Count;
+            }
+            for (int i = 0; i < final; i++)
+            {
+                ResponseDetail objRD = GetResponseDetails(listaprueba[i]);
+                csvtext += "\"" + objRD.id + "\", ";
+                csvtext += "\"" + survey.id + "\", ";
+                csvtext += "\"" + objRD.date_modified + "\", " + "\"" + objRD.date_created + "\", ";
+                csvtext += "\"" + objRD.ip_address + "\", ";
+                csvtext += "\"" + objRD.response_status + "\", " + "NULL" + "\", ";
+                csvtext += "\"" + objRD.recipient_id + "\", ";
+                csvtext += "\"" + objRD.total_time + "\", ";
+                Console.WriteLine(objRD.response_status);
+                for (int j = 0; j < objRD.pages.Count; j++)
+                {
+
+                    for (int k = 0; k < objRD.pages[j].questions.Count; k++)
+                    {
+                        for (int l = 0; l < objRD.pages[j].questions[k].answers.Count; l++)
+                        {
+
+                            if (objRD.pages[j].questions[k].answers[l].choice_id != null)
+                            {
+                                //Encontrar el texto de la choice id
+                                QuestionDetail objQD = GetQuestionDetails(survey.id, objRD.pages[j].id, objRD.pages[j].questions[k].id);
+                                for (int q = 0; q < objQD.answers.choices.Count; q++)
+                                {
+                                    if (objQD.answers.choices[q].id == objRD.pages[j].questions[k].answers[l].choice_id)
+                                    {
+                                        csvtext += "\"" + objQD.answers.choices[q].text + "\", ";
+                                        break;
+                                    }
+                                }
+
+                            }
+                            else if (objRD.pages[j].questions[k].answers[l].text != null)
+                            {
+                                csvtext += objRD.pages[j].questions[k].answers[l].text + ", ";
+                            }
+                            else
+                            {
+                                csvtext += "\"NULL\", ";
+                            }
+                        }
+                    }
+                    //for (int p = 0; p < fillQuestions; p++)
+                    //{
+                    //    if (p == 0)
+                    //    {
+                    //        csvtext += "\"NULL\"";
+                    //    }
+                    //    else
+                    //    {
+                    //        csvtext += ", \"NULL\"";
+                    //    }
+
+                    //}
+
+                }
+                csvtext += "\n";
+            }
+
+            File.WriteAllText(filePath, csvtext);
+            return true;
+        }
     }
 }
