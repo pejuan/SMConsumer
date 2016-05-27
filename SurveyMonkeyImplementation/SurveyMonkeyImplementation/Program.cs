@@ -20,6 +20,7 @@ namespace SurveyMonkeyImplementation
     {
         static string apikey = "nada";
         static string token = "nada";
+        static string baseURL = "https://api.surveymonkey.net/v3/";
         static int responsePageAct = 1;
         static int ResponsePages = 1;
         static SurveyList survlist;
@@ -225,7 +226,7 @@ namespace SurveyMonkeyImplementation
         static WebRequest GetSurveys()
         {
 
-            var request = WebRequest.Create("https://api.surveymonkey.net/v3/surveys?api_key=" + getApiKey());
+            var request = WebRequest.Create(baseURL+"surveys?api_key=" + getApiKey());
             request.Headers["Authorization"] = getHeader();
             var response = request.GetResponse();
             Stream dataStream = response.GetResponseStream();
@@ -245,7 +246,7 @@ namespace SurveyMonkeyImplementation
         }
         static SurveyForm GetSurveyDetails(string survey_id)
         {
-            var request = WebRequest.Create("https://api.surveymonkey.net/v3/surveys/" + survey_id + "/details?api_key=" + getApiKey());
+            var request = WebRequest.Create(baseURL + "surveys/" + survey_id + "/details?api_key=" + getApiKey());
             request.Headers["Authorization"] = getHeader();
             var response = request.GetResponse();
             Stream dataStream = response.GetResponseStream();
@@ -264,7 +265,7 @@ namespace SurveyMonkeyImplementation
         }
         static QuestionDetail GetQuestionDetails(string survey_id, string page_id, string question_id)
         {
-            var request = WebRequest.Create("https://api.surveymonkey.net/v3/surveys/" + survey_id + "/pages/" + page_id + "/questions/" + question_id + "?api_key=" + getApiKey());
+            var request = WebRequest.Create(baseURL+"surveys/" + survey_id + "/pages/" + page_id + "/questions/" + question_id + "?api_key=" + getApiKey());
             request.Headers["Authorization"] = getHeader();
             var response = request.GetResponse();
             Stream dataStream = response.GetResponseStream();
@@ -284,7 +285,7 @@ namespace SurveyMonkeyImplementation
         }
         static WebRequest GetPageList(string surveyID)
         {
-            var request = WebRequest.Create("https://api.surveymonkey.net/v3/surveys/" + surveyID + "/pages?api_key=" + getApiKey());
+            var request = WebRequest.Create(baseURL+"surveys/" + surveyID + "/pages?api_key=" + getApiKey());
             request.Headers["Authorization"] = getHeader();
             var response = request.GetResponse();
             Stream dataStream = response.GetResponseStream();
@@ -304,7 +305,7 @@ namespace SurveyMonkeyImplementation
         }
         static WebRequest GetQuestionList(string surveyID, string pageID)
         {
-            var request = WebRequest.Create("https://api.surveymonkey.net/v3/surveys/" + surveyID + "/pages/" + pageID + "/questions?api_key=" + getApiKey());
+            var request = WebRequest.Create(baseURL+"surveys/" + surveyID + "/pages/" + pageID + "/questions?api_key=" + getApiKey());
             request.Headers["Authorization"] = getHeader();
             var response = request.GetResponse();
             Stream dataStream = response.GetResponseStream();
@@ -324,7 +325,7 @@ namespace SurveyMonkeyImplementation
         }
         static WebRequest GetResponseList(string surveyID)
         {
-            var request = WebRequest.Create("https://api.surveymonkey.net/v3/surveys/" + surveyID + "/responses?api_key=" + getApiKey());
+            var request = WebRequest.Create(baseURL+"surveys/" + surveyID + "/responses?api_key=" + getApiKey());
             request.Headers["Authorization"] = getHeader();
             var response = request.GetResponse();
             Stream dataStream = response.GetResponseStream();
@@ -352,7 +353,7 @@ namespace SurveyMonkeyImplementation
 
         static WebRequest GetResponseListTotal(string surveyID,int page,string total, int RespPages)
         {
-            var request = WebRequest.Create("https://api.surveymonkey.net/v3/surveys/" + surveyID + "/responses?page="+page+"&per_page=" + total + "&api_key=" + getApiKey());
+            var request = WebRequest.Create(baseURL+"surveys/" + surveyID + "/responses?page="+page+"&per_page=" + total + "&api_key=" + getApiKey());
             request.Headers["Authorization"] = getHeader();
             var response = request.GetResponse();
             Stream dataStream = response.GetResponseStream();
@@ -375,7 +376,7 @@ namespace SurveyMonkeyImplementation
 
         static ResponseDetail GetResponseDetails(string response_id)
         {
-            var request = WebRequest.Create("https://api.surveymonkey.net/v3/responses/"+response_id+"/details?api_key=" + getApiKey());
+            var request = WebRequest.Create(baseURL+"responses/"+response_id+"/details?api_key=" + getApiKey());
             request.Headers["Authorization"] = getHeader();
             var response = request.GetResponse();
             Stream dataStream = response.GetResponseStream();
