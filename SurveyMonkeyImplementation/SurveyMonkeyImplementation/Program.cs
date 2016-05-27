@@ -392,6 +392,19 @@ namespace SurveyMonkeyImplementation
             return responsedetail;
         }
 
+        static string MakeARequest(string Request)
+        {
+            var request = WebRequest.Create(Request);
+            request.Headers["Authorization"] = getHeader();
+            var response = request.GetResponse();
+            Stream dataStream = response.GetResponseStream();
+            StreamReader reader = new StreamReader(dataStream);
+            string responseFromServer = reader.ReadToEnd();
+            reader.Close();
+            response.Close();
+
+            return responseFromServer;
+        }
         static bool SurveysToCSV()
         {
             string filePath = Application.StartupPath + "\\SurveyForm.csv";
@@ -412,10 +425,6 @@ namespace SurveyMonkeyImplementation
             //Console.WriteLine(csvtext);
             File.WriteAllText(filePath, csvtext);
             return true;
-        }
-        static string GetPageID()
-        {
-            return "";
         }
         static bool ResponsesToCSV()
         {
@@ -497,9 +506,7 @@ namespace SurveyMonkeyImplementation
             }
             File.WriteAllText(filePath, csvtext);
             return true;
-        }
-
-
+        }        
         static bool ResponsesToCSVFromSurvey(SurveyForm survey)
         {
             string filePath = Application.StartupPath + "\\SurveyResponses"+survey.title.Trim()+".csv";
