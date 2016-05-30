@@ -4,6 +4,8 @@
 	<settings>
 		<datesPrior>2/11/2015</datesPrior>
 		<datesAfter>2/11/2016</datesAfter>
+		<surveyName>NPS - Administrative and Support Services Satisfaction Survey</surveyName>
 		<titlesContaining>NPS</titlesContaining>
+		<RegistryNumber>3</RegistryNumber>
 	</settings>
 </monkey>
