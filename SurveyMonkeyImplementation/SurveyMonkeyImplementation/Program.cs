@@ -23,6 +23,7 @@ namespace SurveyMonkeyImplementation
         static string token = "nada";
         static DateTime datesPrior;
         static DateTime datesAfter;
+        static string defaultSurveyName="";
         static string numRegistry;
         static string titlesContaining = "";
         static string baseURL = "https://api.surveymonkey.net/v3/";
@@ -59,12 +60,17 @@ namespace SurveyMonkeyImplementation
             //    SurveyFormDetailsList.Add(GetSurveyDetails(SurveyIDs[i]));
             //}
             //Necesario
+            //loadSettings();
+            //Console.WriteLine(defaultSurveyName);
 
 
-            //ResponsesToCSV(GetSurveyDetails("76207795"),numRegistry);
+            //Console.WriteLine(GetAPageQuestionCount("74972790", "240792622"));
+
+            ResponsesToCSV(GetSurveyDetailsBySurveyName(),numRegistry);
+            
             //SurveysToCSV();
-            loadSettings();
-            SurveysCreatedAfterToCSV();
+            //loadSettings();
+            //SurveysCreatedAfterToCSV();
             //BringSurveys(BringSurveyIDs());
 
 
@@ -269,6 +275,8 @@ namespace SurveyMonkeyImplementation
                 titlesContaining = titlesContainingNode.InnerText;
                 XmlNode RegistryNumberNode = doc.DocumentElement.SelectSingleNode("/monkey/settings/RegistryNumber");
                 numRegistry = RegistryNumberNode.InnerText;
+                XmlNode surveyNameNode = doc.DocumentElement.SelectSingleNode("/monkey/settings/surveyName");
+                defaultSurveyName = surveyNameNode.InnerText;
                 settingsLoaded = true;
             }
         }
@@ -304,6 +312,80 @@ namespace SurveyMonkeyImplementation
             response.Close();
 
             return surv;
+        }
+
+        static SurveyForm GetSurveyDetailsBySurveyName()
+        {
+            loadSettings();
+            var request = WebRequest.Create(baseURL + "surveys?api_key=" + getApiKey());
+            request.Headers["Authorization"] = getHeader();
+            var response = request.GetResponse();
+            Stream dataStream = response.GetResponseStream();
+            StreamReader reader = new StreamReader(dataStream);
+            string responseFromServer = reader.ReadToEnd();
+            SurveyList survlist2 = new SurveyList();
+            var serializer = new System.Web.Script.Serialization.JavaScriptSerializer();
+            survlist2 = serializer.Deserialize<SurveyList>(responseFromServer);
+            reader.Close();
+            response.Close();
+            SurveyForm retornable = new SurveyForm();
+            for (int i = 0; i < survlist2.data.Count; i++)
+            {
+                if (survlist2.data[i].title==defaultSurveyName)
+                {
+                    retornable = GetSurveyDetails(survlist2.data[i].id);
+                    break;
+                }
+            }
+            return retornable;
+
+        }
+        static int GetAPageQuestionCount(string surveyID, string page_id)
+        {
+            var request = WebRequest.Create(baseURL + "surveys/" + surveyID + "/pages/"+page_id+"?api_key=" + getApiKey());
+            request.Headers["Authorization"] = getHeader();
+            var response = request.GetResponse();
+            Stream dataStream = response.GetResponseStream();
+            StreamReader reader = new StreamReader(dataStream);
+
+            string responseFromServer = reader.ReadToEnd();
+
+            Page page = new Page();
+
+            var serializer = new System.Web.Script.Serialization.JavaScriptSerializer();
+            page = serializer.Deserialize<Page>(responseFromServer);
+            reader.Close();
+            response.Close();
+            return page.question_count;
+        }
+        
+
+        
+        static SurveyForm GetSurveyDetailsBySurveyName(string surveyname)
+        {
+            loadSettings();
+            var request = WebRequest.Create(baseURL + "surveys?api_key=" + getApiKey());
+            request.Headers["Authorization"] = getHeader();
+            var response = request.GetResponse();
+            Stream dataStream = response.GetResponseStream();
+            StreamReader reader = new StreamReader(dataStream);
+            string responseFromServer = reader.ReadToEnd();
+            SurveyList survlist2 = new SurveyList();
+            var serializer = new System.Web.Script.Serialization.JavaScriptSerializer();
+            survlist2 = serializer.Deserialize<SurveyList>(responseFromServer);
+            reader.Close();
+            response.Close();
+            SurveyForm retornable = new SurveyForm();
+            for (int i = 0; i < survlist2.data.Count; i++)
+            {
+                if (survlist2.data[i].title == surveyname)
+                {
+                    retornable = GetSurveyDetails(survlist2.data[i].id);
+                    break;
+                }
+            }
+            return retornable;
+
         }
         static QuestionDetail GetQuestionDetails(string survey_id, string page_id, string question_id)
         {
@@ -683,7 +765,7 @@ namespace SurveyMonkeyImplementation
 
                     if (objRD.pages[j].questions.Count > 0)
                     {
-                        for (int k = 0; k < objRD.pages[j].questions.Count; k++)
+                        for (int k = 0; k < objRD.pages[j].questions.Count; k++) //objRD.pages[j].id debo buscar este id en otro lado
                         {
                             csvtext += "\"";
                             for (int l = 0; l < objRD.pages[j].questions[k].answers.Count; l++)
@@ -835,7 +917,7 @@ namespace SurveyMonkeyImplementation
             File.WriteAllText(filePath, csvtext);
             return true;
         }
-        static bool ResponsesToCSV(SurveyForm survey, string num_registros)
+        static bool ResponsesToCSV(SurveyForm survey, string num_registros)//Corregidoooooooooooooo
         {
             string filePath = Application.StartupPath + "\\SurveyResponses" + survey.title.Trim() + ".csv";
             String csvtext = "SurveyResponseId, SurveyFormID, SurveyResponseDateModified, SurveyResponseDateCreated, SurveyResponseIp, SurveyResponseCompleted, EmailAddress, RecipientId, TotalTime";
@@ -874,51 +956,60 @@ namespace SurveyMonkeyImplementation
                 Console.WriteLine(objRD.response_status);
                 for (int j = 0; j < objRD.pages.Count; j++)
                 {
-                    if (objRD.pages[j].questions.Count>0)
+                    int qcaux = GetAPageQuestionCount(survey.id,objRD.pages[j].id);
+                    if (/*objRD.pages[j].questions.Count*/qcaux>0)
                     {
-                        for(int k = 0; k < objRD.pages[j].questions.Count; k++)
+                        for(int k = 0; k < qcaux; k++) //Buscar questionCount en otro lado_____objRD.pages[j].questions.Count
                         {
                             csvtext += "\"";
-                            for (int l = 0; l < objRD.pages[j].questions[k].answers.Count; l++)
+                            if (objRD.pages[j].questions.Count > k)//objRD.pages[j].questions.Count >= k
                             {
 
-                                if (objRD.pages[j].questions[k].answers[l].choice_id != null)
-                                {
-                                    //Encontrar el texto de la choice id
 
-                                    string temporal = "";
-                                    QuestionDetail objQD = GetQuestionDetails(survey.id, objRD.pages[j].id, objRD.pages[j].questions[k].id);
-                                    for (int q = 0; q < objQD.answers.choices.Count; q++)//Como pueden ser multiple choice, debo concatenarlas
+                                for (int l = 0; l < objRD.pages[j].questions[k].answers.Count; l++)//probablemente ocupare un if
+                                {
+
+                                    if (objRD.pages[j].questions[k].answers[l].choice_id != null)
                                     {
-                                        if (objQD.answers.choices[q].id == objRD.pages[j].questions[k].answers[l].choice_id)
+                                        //Encontrar el texto de la choice id
+
+                                        string temporal = "";
+                                        QuestionDetail objQD = GetQuestionDetails(survey.id, objRD.pages[j].id, objRD.pages[j].questions[k].id);
+                                        for (int q = 0; q < objQD.answers.choices.Count; q++)//Como pueden ser multiple choice, debo concatenarlas
                                         {
-                                            //csvtext += "\"" + objQD.answers.choices[q].text + "\", ";
-                                            string Content = RemoveLineEndings(objQD.answers.choices[q].text);
-                                            string newCont = Regex.Replace(Content, @"\t|\n|\r|,", "");
-                                            temporal += newCont + "_";
+                                            if (objQD.answers.choices[q].id == objRD.pages[j].questions[k].answers[l].choice_id)
+                                            {
+                                                //csvtext += "\"" + objQD.answers.choices[q].text + "\", ";
+                                                string Content = RemoveLineEndings(objQD.answers.choices[q].text);
+                                                string newCont = Regex.Replace(Content, @"\t|\n|\r|,", "");
+                                                temporal += newCont + "_";
+
+                                            }
+                                        }
+                                        csvtext += temporal/*+ "\","*/;
+
+                                    }
+                                    else if (objRD.pages[j].questions[k].answers.Count > 0)
+                                    {
+                                        //csvtext += "\"";
+                                        string newContent = "";
+                                        for (int b = 0; b < objRD.pages[j].questions[k].answers.Count; b++)
+                                        {
+                                            string Content = RemoveLineEndings(objRD.pages[j].questions[k].answers[b].text);
+                                            newContent += Regex.Replace(Content, @"\t|\n|\r|,", "") + "_";
 
                                         }
-                                    }
-                                    csvtext += temporal/*+ "\","*/;
 
-                                }
-                                else if (objRD.pages[j].questions[k].answers.Count > 0)
-                                {
-                                    //csvtext += "\"";
-                                    string newContent = "";
-                                    for (int b = 0; b < objRD.pages[j].questions[k].answers.Count; b++)
+                                        csvtext += newContent;
+                                    }
+                                    else
                                     {
-                                        string Content = RemoveLineEndings(objRD.pages[j].questions[k].answers[b].text);
-                                        newContent += Regex.Replace(Content, @"\t|\n|\r|,", "") + "_";
-
+                                        csvtext += "NULL";
                                     }
-
-                                    csvtext += newContent;
                                 }
-                                else
-                                {
-                                    csvtext += "NULL";
-                                }
+                            }else
+                            {
+                                csvtext += "NULL";
                             }
                             csvtext += "\",";
                         }

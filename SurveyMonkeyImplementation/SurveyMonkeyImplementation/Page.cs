@@ -13,6 +13,8 @@ namespace SurveyMonkeyImplementation
         public string description { get; set; }
         public string title { get; set; }
 
+        public int question_count { get; set; }//Este atributo es traido solo en el metodo GetPageQuestionCount
+
         public Page() {}
     }
 }
