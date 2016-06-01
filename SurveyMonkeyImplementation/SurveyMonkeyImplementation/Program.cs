@@ -1959,7 +1959,7 @@ namespace SurveyMonkeyImplementation
                             for (int k = 0; k < qcaux; k++) //objRD.pages[j].id debo buscar este id en otro lado
                             {
                                 csvtext += "\"";
-                                if (objRD.pages[j].questions.Count > k)
+                                if (objRD.pages[j].questions.Count > k)//Poner objRD.pages[j].questions.Count en otra variable y comparar con esa ////////////////////////////
                                 {
                                     
                                     for (int l = 0; l < objRD.pages[j].questions[k].answers.Count; l++)
