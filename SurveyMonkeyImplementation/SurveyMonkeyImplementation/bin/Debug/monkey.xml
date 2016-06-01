@@ -7,5 +7,8 @@
 		<surveyName>NPS UE 2016.</surveyName>
 		<titlesContaining>NPS</titlesContaining>
 		<RegistryNumber>3</RegistryNumber>
+		<initialPage>5</initialPage>
+		<endingPage>6</endingPage>
+		<responsesPerPage>2</responsesPerPage>
 	</settings>
 </monkey>
