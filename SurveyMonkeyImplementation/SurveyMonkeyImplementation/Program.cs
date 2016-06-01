@@ -435,6 +435,25 @@ namespace SurveyMonkeyImplementation
 
             return questiondetail;
         }
+        static int GetAQuestionPosition(string survey_id, string page_id, string question_id)
+        {
+            var request = WebRequest.Create(baseURL + "surveys/" + survey_id + "/pages/" + page_id + "/questions/" + question_id + "?api_key=" + getApiKey());
+            request.Headers["Authorization"] = getHeader();
+            var response = request.GetResponse();
+            Stream dataStream = response.GetResponseStream();
+            StreamReader reader = new StreamReader(dataStream);
+
+            string responseFromServer = reader.ReadToEnd();
+            questiondetail = new QuestionDetail();
+            var serializer = new System.Web.Script.Serialization.JavaScriptSerializer();
+            questiondetail = serializer.Deserialize<QuestionDetail>(responseFromServer);
+            questiondetail.page_id = page_id;
+            reader.Close();
+            response.Close();
+
+            return questiondetail.position;
+
+        }
         static WebRequest GetPageList(string surveyID)
         {
             var request = WebRequest.Create(baseURL+"surveys/" + surveyID + "/pages?api_key=" + getApiKey());
@@ -697,7 +716,7 @@ namespace SurveyMonkeyImplementation
             File.WriteAllText(filePath, csvtext);
             return true;
         }
-        static bool ResponsesToCSV()//Corregido
+        static bool ResponsesToCSV()
         {
             string filePath = Application.StartupPath + "\\SurveyResponses.csv";
             String csvtext = "SurveyResponseId, SurveyFormID, SurveyResponseDateModified, SurveyResponseDateCreated, SurveyResponseIp, SurveyResponseCompleted, EmailAddress, RecipientId, TotalTime";
@@ -725,7 +744,8 @@ namespace SurveyMonkeyImplementation
                     for (int j = 0; j < objRD.pages.Count; j++)
                     {
                         int qcaux = GetAPageQuestionCount(SurveyFormDetailsList[m].id, objRD.pages[j].id);
-
+                        bool donethis = false;
+                        int contadorNulls = 0;
                         if (qcaux > 0)
                         {
                             for (int k = 0; k < qcaux; k++)
@@ -735,6 +755,21 @@ namespace SurveyMonkeyImplementation
                                 {
                                     for (int l = 0; l < objRD.pages[j].questions[k].answers.Count; l++)
                                     {
+                                        if (!donethis)
+                                        {
+                                            int posaux = GetAQuestionPosition(SurveyFormDetailsList[m].id, objRD.pages[j].id, objRD.pages[j].questions[k].id);
+                                            if (l < posaux)
+                                            {
+                                                for (int z = 0; z < posaux - l - 1; z++)
+                                                {
+                                                    csvtext += "NULL\",\"";
+
+                                                    contadorNulls++;
+                                                }
+                                                donethis = true;
+                                            }
+
+                                        }
 
                                         if (objRD.pages[j].questions[k].answers[l].choice_id != null)
                                         {
@@ -754,7 +789,7 @@ namespace SurveyMonkeyImplementation
                                                 }
                                             }
                                             csvtext += temporal/*+ "\","*/;
-
+                                            contadorNulls++;
                                         }
                                         else if (objRD.pages[j].questions[k].answers.Count > 0)
                                         {
@@ -768,22 +803,22 @@ namespace SurveyMonkeyImplementation
                                             }
 
                                             csvtext += newContent;
+                                            contadorNulls++;
                                         }
                                         else
                                         {
                                             csvtext += "NULL";
+                                            contadorNulls++;
                                         }
                                     }
-                                }else
+                                }else if (qcaux > contadorNulls)
                                 {
                                     csvtext += "NULL";
+                                    contadorNulls++;
                                 }
-                                csvtext += "\",";
+                                if (qcaux > contadorNulls)
+                                    csvtext += "\",";
                             }
-                        }
-                        else
-                        {
-                            csvtext += "\"NULL \", ";
                         }
                     }
                     csvtext += "\n";
@@ -793,7 +828,7 @@ namespace SurveyMonkeyImplementation
             File.WriteAllText(filePath, csvtext);
             return true;
         }        
-        static bool ResponsesToCSV(SurveyForm survey)//Corregido
+        static bool ResponsesToCSV(SurveyForm survey)
         {
             string filePath = Application.StartupPath + "\\SurveyResponses"+survey.title.Trim()+".csv";
             String csvtext = "SurveyResponseId, SurveyFormID, SurveyResponseDateModified, SurveyResponseDateCreated, SurveyResponseIp, SurveyResponseCompleted, EmailAddress, RecipientId, TotalTime";
@@ -819,7 +854,8 @@ namespace SurveyMonkeyImplementation
                 for (int j = 0; j < objRD.pages.Count; j++)
                 {
                     int qcaux = GetAPageQuestionCount(survey.id, objRD.pages[j].id);
-
+                    bool donethis = false;
+                    int contadorNulls = 0;
                     if (qcaux > 0)
                     {
                         for (int k = 0; k < qcaux; k++) //objRD.pages[j].id debo buscar este id en otro lado
@@ -829,6 +865,21 @@ namespace SurveyMonkeyImplementation
                             {
                                 for (int l = 0; l < objRD.pages[j].questions[k].answers.Count; l++)
                                 {
+                                    if (!donethis)
+                                    {
+                                        int posaux = GetAQuestionPosition(survey.id, objRD.pages[j].id, objRD.pages[j].questions[k].id);
+                                        if (l < posaux)
+                                        {
+                                            for (int z = 0; z < posaux - l - 1; z++)
+                                            {
+                                                csvtext += "NULL\",\"";
+
+                                                contadorNulls++;
+                                            }
+                                            donethis = true;
+                                        }
+
+                                    }
 
                                     if (objRD.pages[j].questions[k].answers[l].choice_id != null)
                                     {
@@ -848,7 +899,7 @@ namespace SurveyMonkeyImplementation
                                             }
                                         }
                                         csvtext += temporal/*+ "\","*/;
-
+                                        contadorNulls++;
                                     }
                                     else if (objRD.pages[j].questions[k].answers.Count > 0)
                                     {
@@ -862,22 +913,22 @@ namespace SurveyMonkeyImplementation
                                         }
 
                                         csvtext += newContent;
+                                        contadorNulls++;
                                     }
                                     else
                                     {
                                         csvtext += "NULL";
+                                        contadorNulls++;
                                     }
                                 }
-                            }else
+                            }else if (qcaux > contadorNulls)
                             {
                                 csvtext += "NULL";
+                                contadorNulls++;
                             }
-                            csvtext += "\",";
+                            if (qcaux > contadorNulls)
+                                csvtext += "\",";
                         }
-                    }
-                    else
-                    {
-                        csvtext += "\"NULL \", ";
                     }
 
                 }
@@ -887,7 +938,7 @@ namespace SurveyMonkeyImplementation
             File.WriteAllText(filePath, csvtext);
             return true;
         }
-        static bool ResponsesToCSV(SurveyForm survey,int num_registros)//Corregido
+        static bool ResponsesToCSV(SurveyForm survey,int num_registros)
         {
             string filePath = Application.StartupPath + "\\SurveyResponses" + survey.title.Trim() + ".csv";
             String csvtext = "SurveyResponseId, SurveyFormID, SurveyResponseDateModified, SurveyResponseDateCreated, SurveyResponseIp, SurveyResponseCompleted, EmailAddress, RecipientId, TotalTime";
@@ -918,7 +969,8 @@ namespace SurveyMonkeyImplementation
                 for (int j = 0; j < objRD.pages.Count; j++)
                 {
                     int qcaux = GetAPageQuestionCount(survey.id, objRD.pages[j].id);
-
+                    bool donethis = false;
+                    int contadorNulls = 0;
                     if (qcaux> 0)
                     {
                         for (int k = 0; k < qcaux; k++)
@@ -928,7 +980,21 @@ namespace SurveyMonkeyImplementation
                             {
                                 for (int l = 0; l < objRD.pages[j].questions[k].answers.Count; l++)
                                 {
+                                    if (!donethis)
+                                    {
+                                        int posaux = GetAQuestionPosition(survey.id, objRD.pages[j].id, objRD.pages[j].questions[k].id);
+                                        if (l < posaux)
+                                        {
+                                            for (int z = 0; z < posaux - l - 1; z++)
+                                            {
+                                                csvtext += "NULL\",\"";
 
+                                                contadorNulls++;
+                                            }
+                                            donethis = true;
+                                        }
+
+                                    }
                                     if (objRD.pages[j].questions[k].answers[l].choice_id != null)
                                     {
                                         //Encontrar el texto de la choice id
@@ -947,7 +1013,7 @@ namespace SurveyMonkeyImplementation
                                             }
                                         }
                                         csvtext += temporal/*+ "\","*/;
-
+                                        contadorNulls++;
                                     }
                                     else if (objRD.pages[j].questions[k].answers.Count > 0)
                                     {
@@ -961,23 +1027,24 @@ namespace SurveyMonkeyImplementation
                                         }
 
                                         csvtext += newContent;
+                                        contadorNulls++;
                                     }
                                     else
                                     {
                                         csvtext += "NULL";
+                                        contadorNulls++;
                                     }
                                 }
-                            }else
+                            }else if (qcaux > contadorNulls)
                             {
                                 csvtext += "NULL";
+                                contadorNulls++;
                             }
-                            csvtext += "\",";
+                            if (qcaux > contadorNulls)
+                                csvtext += "\",";
                         }
                     }
-                    else
-                    {
-                        csvtext += "\"NULL \", ";
-                    }
+                    
 
                 }
                 csvtext += "\n";
@@ -986,7 +1053,7 @@ namespace SurveyMonkeyImplementation
             File.WriteAllText(filePath, csvtext);
             return true;
         }
-        static bool ResponsesToCSV(SurveyForm survey, string num_registros)//Corregidoooooooooooooo
+        static bool ResponsesToCSV(SurveyForm survey, string num_registros)
         {
             string filePath = Application.StartupPath + "\\SurveyResponses" + survey.title.Trim() + ".csv";
             String csvtext = "SurveyResponseId, SurveyFormID, SurveyResponseDateModified, SurveyResponseDateCreated, SurveyResponseIp, SurveyResponseCompleted, EmailAddress, RecipientId, TotalTime";
@@ -1023,6 +1090,8 @@ namespace SurveyMonkeyImplementation
                 for (int j = 0; j < objRD.pages.Count; j++)
                 {
                     int qcaux = GetAPageQuestionCount(survey.id,objRD.pages[j].id);
+                    bool donethis = false;
+                    int contadorNulls = 0;
                     if (qcaux>0)
                     {
                         for(int k = 0; k < qcaux; k++) //Buscar questionCount en otro lado_____objRD.pages[j].questions.Count
@@ -1034,7 +1103,21 @@ namespace SurveyMonkeyImplementation
 
                                 for (int l = 0; l < objRD.pages[j].questions[k].answers.Count; l++)//probablemente ocupare un if
                                 {
+                                    if (!donethis)
+                                    {
+                                        int posaux = GetAQuestionPosition(survey.id, objRD.pages[j].id, objRD.pages[j].questions[k].id);
+                                        if (l < posaux)
+                                        {
+                                            for (int z = 0; z < posaux - l - 1; z++)
+                                            {
+                                                csvtext += "NULL\",\"";
 
+                                                contadorNulls++;
+                                            }
+                                            donethis = true;
+                                        }
+
+                                    }
                                     if (objRD.pages[j].questions[k].answers[l].choice_id != null)
                                     {
                                         //Encontrar el texto de la choice id
@@ -1053,7 +1136,7 @@ namespace SurveyMonkeyImplementation
                                             }
                                         }
                                         csvtext += temporal/*+ "\","*/;
-
+                                        contadorNulls++;
                                     }
                                     else if (objRD.pages[j].questions[k].answers.Count > 0)
                                     {
@@ -1067,21 +1150,22 @@ namespace SurveyMonkeyImplementation
                                         }
 
                                         csvtext += newContent;
+                                        contadorNulls++;
                                     }
                                     else
                                     {
                                         csvtext += "NULL";
+                                        contadorNulls++;
                                     }
                                 }
-                            }else
+                            }else if (qcaux > contadorNulls)
                             {
                                 csvtext += "NULL";
+                                contadorNulls++;
                             }
-                            csvtext += "\",";
+                            if (qcaux > contadorNulls)
+                                csvtext += "\",";
                         }
-                    }else
-                    {
-                        csvtext += "\"NULL \", ";
                     }
 
                 }
@@ -1091,7 +1175,7 @@ namespace SurveyMonkeyImplementation
             File.WriteAllText(filePath, csvtext);
             return true;
         }
-        static bool ResponsesToCSVPriorTo(SurveyForm survey)//Corregido
+        static bool ResponsesToCSVPriorTo(SurveyForm survey)
         {
             loadSettings();
             string tmpAux = RemoveLineEndings(datesPrior.ToString().Trim());
@@ -1125,6 +1209,8 @@ namespace SurveyMonkeyImplementation
                     for (int j = 0; j < objRD.pages.Count; j++)
                     {
                         int qcaux = GetAPageQuestionCount(survey.id, objRD.pages[j].id);
+                        bool donethis = false;
+                        int contadorNulls = 0;
                         if (qcaux > 0)
                         {
                             for (int k = 0; k < qcaux; k++)
@@ -1134,7 +1220,21 @@ namespace SurveyMonkeyImplementation
                                 {
                                     for (int l = 0; l < objRD.pages[j].questions[k].answers.Count; l++)
                                     {
+                                        if (!donethis)
+                                        {
+                                            int posaux = GetAQuestionPosition(survey.id, objRD.pages[j].id, objRD.pages[j].questions[k].id);
+                                            if (l < posaux)
+                                            {
+                                                for (int z = 0; z < posaux - l - 1; z++)
+                                                {
+                                                    csvtext += "NULL\",\"";
 
+                                                    contadorNulls++;
+                                                }
+                                                donethis = true;
+                                            }
+
+                                        }
                                         if (objRD.pages[j].questions[k].answers[l].choice_id != null)
                                         {
                                             //Encontrar el texto de la choice id
@@ -1153,7 +1253,7 @@ namespace SurveyMonkeyImplementation
                                                 }
                                             }
                                             csvtext += temporal/*+ "\","*/;
-
+                                            contadorNulls++;
                                         }
                                         else if (objRD.pages[j].questions[k].answers.Count > 0)
                                         {
@@ -1167,22 +1267,22 @@ namespace SurveyMonkeyImplementation
                                             }
 
                                             csvtext += newContent;
+                                            contadorNulls++;
                                         }
                                         else
                                         {
                                             csvtext += "NULL";
+                                            contadorNulls++;
                                         }
                                     }
-                                }else
+                                }else if (qcaux > contadorNulls)
                                 {
                                     csvtext += "NULL";
+                                    contadorNulls++;
                                 }
-                                csvtext += "\",";
+                                if (qcaux > contadorNulls)
+                                    csvtext += "\",";
                             }
-                        }
-                        else
-                        {
-                            csvtext += "\"NULL \", ";
                         }
 
                     }
@@ -1193,7 +1293,7 @@ namespace SurveyMonkeyImplementation
             File.WriteAllText(filePath, csvtext);
             return true;
         }
-        static bool ResponsesToCSVPriorTo(SurveyForm survey, int num_registros)//Corregido
+        static bool ResponsesToCSVPriorTo(SurveyForm survey, int num_registros)
         {
             loadSettings();
             string tmpAux = RemoveLineEndings(datesPrior.ToString().Trim());
@@ -1230,6 +1330,8 @@ namespace SurveyMonkeyImplementation
                     for (int j = 0; j < objRD.pages.Count; j++)
                     {
                         int qcaux = GetAPageQuestionCount(survey.id, objRD.pages[j].id);
+                        bool donethis = false;
+                        int contadorNulls = 0;
                         if (qcaux > 0)
                         {
                             for (int k = 0; k < qcaux; k++)
@@ -1239,6 +1341,21 @@ namespace SurveyMonkeyImplementation
                                 {
                                     for (int l = 0; l < objRD.pages[j].questions[k].answers.Count; l++)
                                     {
+                                        if (!donethis)
+                                        {
+                                            int posaux = GetAQuestionPosition(survey.id, objRD.pages[j].id, objRD.pages[j].questions[k].id);
+                                            if (l < posaux)
+                                            {
+                                                for (int z = 0; z < posaux - l - 1; z++)
+                                                {
+                                                    csvtext += "NULL\",\"";
+
+                                                    contadorNulls++;
+                                                }
+                                                donethis = true;
+                                            }
+
+                                        }
 
                                         if (objRD.pages[j].questions[k].answers[l].choice_id != null)
                                         {
@@ -1258,7 +1375,7 @@ namespace SurveyMonkeyImplementation
                                                 }
                                             }
                                             csvtext += temporal/*+ "\","*/;
-
+                                            contadorNulls++;
                                         }
                                         else if (objRD.pages[j].questions[k].answers.Count > 0)
                                         {
@@ -1272,23 +1389,24 @@ namespace SurveyMonkeyImplementation
                                             }
 
                                             csvtext += newContent;
+                                            contadorNulls++;
                                         }
                                         else
                                         {
                                             csvtext += "NULL";
+                                            contadorNulls++;
                                         }
                                     }
-                                }else
+                                }else if (qcaux > contadorNulls)
                                 {
                                     csvtext += "NULL";
+                                    contadorNulls++;
                                 }
-                                csvtext += "\",";
+                                if (qcaux > contadorNulls)
+                                    csvtext += "\",";
                             }
                         }
-                        else
-                        {
-                            csvtext += "\"NULL \", ";
-                        }
+                        
 
                     }
                     csvtext += "\n";
@@ -1298,7 +1416,7 @@ namespace SurveyMonkeyImplementation
             File.WriteAllText(filePath, csvtext);
             return true;
         }
-        static bool ResponsesToCSVPriorTo(SurveyForm survey, string num_registros)//Corregido
+        static bool ResponsesToCSVPriorTo(SurveyForm survey, string num_registros)
         {
             loadSettings();
             string tmpAux = RemoveLineEndings(datesPrior.ToString().Trim());
@@ -1341,6 +1459,8 @@ namespace SurveyMonkeyImplementation
                     for (int j = 0; j < objRD.pages.Count; j++)
                     {
                         int qcaux = GetAPageQuestionCount(survey.id, objRD.pages[j].id);
+                        bool donethis = false;
+                        int contadorNulls = 0;
                         if (qcaux > 0)
                         {
                             for (int k = 0; k < qcaux; k++)
@@ -1350,6 +1470,21 @@ namespace SurveyMonkeyImplementation
                                 {
                                     for (int l = 0; l < objRD.pages[j].questions[k].answers.Count; l++)
                                     {
+                                        if (!donethis)
+                                        {
+                                            int posaux = GetAQuestionPosition(survey.id, objRD.pages[j].id, objRD.pages[j].questions[k].id);
+                                            if (l < posaux)
+                                            {
+                                                for (int z = 0; z < posaux - l - 1; z++)
+                                                {
+                                                    csvtext += "NULL\",\"";
+
+                                                    contadorNulls++;
+                                                }
+                                                donethis = true;
+                                            }
+
+                                        }
 
                                         if (objRD.pages[j].questions[k].answers[l].choice_id != null)
                                         {
@@ -1369,7 +1504,7 @@ namespace SurveyMonkeyImplementation
                                                 }
                                             }
                                             csvtext += temporal/*+ "\","*/;
-
+                                            contadorNulls++;
                                         }
                                         else if (objRD.pages[j].questions[k].answers.Count > 0)
                                         {
@@ -1383,24 +1518,23 @@ namespace SurveyMonkeyImplementation
                                             }
 
                                             csvtext += newContent;
+                                            contadorNulls++;
                                         }
                                         else
                                         {
                                             csvtext += "NULL";
+                                            contadorNulls++;
                                         }
                                     }
-                                }else
+                                }else if (qcaux > contadorNulls)
                                 {
                                     csvtext += "NULL";
+                                    contadorNulls++;
                                 }
-                                csvtext += "\",";
+                                if (qcaux > contadorNulls)
+                                    csvtext += "\",";
                             }
                         }
-                        else
-                        {
-                            csvtext += "\"NULL \", ";
-                        }
-
                     }
                     csvtext += "\n";
                 }
@@ -1409,7 +1543,7 @@ namespace SurveyMonkeyImplementation
             File.WriteAllText(filePath, csvtext);
             return true;
         }
-        static bool ResponsesToCSVAfterTo(SurveyForm survey)//Corregido
+        static bool ResponsesToCSVAfterTo(SurveyForm survey)
         {
             loadSettings();
             string tmpAux = RemoveLineEndings(datesAfter.ToString().Trim());
@@ -1443,6 +1577,8 @@ namespace SurveyMonkeyImplementation
                     for (int j = 0; j < objRD.pages.Count; j++)
                     {
                         int qcaux = GetAPageQuestionCount(survey.id, objRD.pages[j].id);
+                        bool donethis = false;
+                        int contadorNulls = 0;
                         if (qcaux > 0)
                         {
                             for (int k = 0; k < qcaux; k++)
@@ -1452,6 +1588,21 @@ namespace SurveyMonkeyImplementation
                                 {
                                     for (int l = 0; l < objRD.pages[j].questions[k].answers.Count; l++)
                                     {
+                                        if (!donethis)
+                                        {
+                                            int posaux = GetAQuestionPosition(survey.id, objRD.pages[j].id, objRD.pages[j].questions[k].id);
+                                            if (l < posaux)
+                                            {
+                                                for (int z = 0; z < posaux - l - 1; z++)
+                                                {
+                                                    csvtext += "NULL\",\"";
+
+                                                    contadorNulls++;
+                                                }
+                                                donethis = true;
+                                            }
+
+                                        }
 
                                         if (objRD.pages[j].questions[k].answers[l].choice_id != null)
                                         {
@@ -1471,7 +1622,7 @@ namespace SurveyMonkeyImplementation
                                                 }
                                             }
                                             csvtext += temporal/*+ "\","*/;
-
+                                            contadorNulls++;
                                         }
                                         else if (objRD.pages[j].questions[k].answers.Count > 0)
                                         {
@@ -1485,23 +1636,23 @@ namespace SurveyMonkeyImplementation
                                             }
 
                                             csvtext += newContent;
+                                            contadorNulls++;
                                         }
                                         else
                                         {
                                             csvtext += "NULL";
+                                            contadorNulls++;
                                         }
                                     }
                                 }
-                                else
+                                else if (qcaux > contadorNulls)
                                 {
                                     csvtext += "NULL";
+                                    contadorNulls++;
                                 }
-                                csvtext += "\",";
+                                if (qcaux > contadorNulls)
+                                    csvtext += "\",";
                             }
-                        }
-                        else
-                        {
-                            csvtext += "\"NULL \", ";
                         }
 
                     }
@@ -1512,7 +1663,7 @@ namespace SurveyMonkeyImplementation
             File.WriteAllText(filePath, csvtext);
             return true;
         }
-        static bool ResponsesToCSVAfterTo(SurveyForm survey, int num_registros)//Corregido
+        static bool ResponsesToCSVAfterTo(SurveyForm survey, int num_registros)
         {
             loadSettings();
             string tmpAux = RemoveLineEndings(datesAfter.ToString().Trim());
@@ -1549,6 +1700,8 @@ namespace SurveyMonkeyImplementation
                     for (int j = 0; j < objRD.pages.Count; j++)
                     {
                         int qcaux = GetAPageQuestionCount(survey.id, objRD.pages[j].id);
+                        bool donethis = false;
+                        int contadorNulls = 0;
                         if (qcaux > 0)
                         {
                             for (int k = 0; k < qcaux; k++)
@@ -1558,6 +1711,21 @@ namespace SurveyMonkeyImplementation
                                 {
                                     for (int l = 0; l < objRD.pages[j].questions[k].answers.Count; l++)
                                     {
+                                        if (!donethis)
+                                        {
+                                            int posaux = GetAQuestionPosition(survey.id, objRD.pages[j].id, objRD.pages[j].questions[k].id);
+                                            if (l < posaux)
+                                            {
+                                                for (int z = 0; z < posaux - l - 1; z++)
+                                                {
+                                                    csvtext += "NULL\",\"";
+
+                                                    contadorNulls++;
+                                                }
+                                                donethis = true;
+                                            }
+
+                                        }
 
                                         if (objRD.pages[j].questions[k].answers[l].choice_id != null)
                                         {
@@ -1577,7 +1745,7 @@ namespace SurveyMonkeyImplementation
                                                 }
                                             }
                                             csvtext += temporal/*+ "\","*/;
-
+                                            contadorNulls++;
                                         }
                                         else if (objRD.pages[j].questions[k].answers.Count > 0)
                                         {
@@ -1591,23 +1759,23 @@ namespace SurveyMonkeyImplementation
                                             }
 
                                             csvtext += newContent;
+                                            contadorNulls++;
                                         }
                                         else
                                         {
                                             csvtext += "NULL";
+                                            contadorNulls++;
                                         }
                                     }
                                 }
-                                else
+                                else if (qcaux > contadorNulls)
                                 {
                                     csvtext += "NULL";
+                                    contadorNulls++;
                                 }
-                                csvtext += "\",";
+                                if (qcaux > contadorNulls)
+                                    csvtext += "\",";
                             }
-                        }
-                        else
-                        {
-                            csvtext += "\"NULL \", ";
                         }
 
                     }
@@ -1618,7 +1786,7 @@ namespace SurveyMonkeyImplementation
             File.WriteAllText(filePath, csvtext);
             return true;
         }
-        static bool ResponsesToCSVAfterTo(SurveyForm survey, string num_registros)//Corregido
+        static bool ResponsesToCSVAfterTo(SurveyForm survey, string num_registros)
         {
             loadSettings();
             string tmpAux = RemoveLineEndings(datesAfter.ToString().Trim());
@@ -1662,6 +1830,8 @@ namespace SurveyMonkeyImplementation
                     for (int j = 0; j < objRD.pages.Count; j++)
                     {
                         int qcaux = GetAPageQuestionCount(survey.id, objRD.pages[j].id);
+                        bool donethis = false;
+                        int contadorNulls = 0;
                         if (qcaux > 0)
                         {
                             for (int k = 0; k < qcaux; k++)
@@ -1671,6 +1841,21 @@ namespace SurveyMonkeyImplementation
                                 {
                                     for (int l = 0; l < objRD.pages[j].questions[k].answers.Count; l++)
                                     {
+                                        if (!donethis)
+                                        {
+                                            int posaux = GetAQuestionPosition(survey.id, objRD.pages[j].id, objRD.pages[j].questions[k].id);
+                                            if (l < posaux)
+                                            {
+                                                for (int z = 0; z < posaux - l - 1; z++)
+                                                {
+                                                    csvtext += "NULL\",\"";
+
+                                                    contadorNulls++;
+                                                }
+                                                donethis = true;
+                                            }
+
+                                        }
 
                                         if (objRD.pages[j].questions[k].answers[l].choice_id != null)
                                         {
@@ -1690,7 +1875,7 @@ namespace SurveyMonkeyImplementation
                                                 }
                                             }
                                             csvtext += temporal/*+ "\","*/;
-
+                                            contadorNulls++;
                                         }
                                         else if (objRD.pages[j].questions[k].answers.Count > 0)
                                         {
@@ -1704,24 +1889,25 @@ namespace SurveyMonkeyImplementation
                                             }
 
                                             csvtext += newContent;
+                                            contadorNulls++;
                                         }
                                         else
                                         {
                                             csvtext += "NULL";
+                                            contadorNulls++;
                                         }
                                     }
                                 }
-                                else
+                                else if (qcaux > contadorNulls)
                                 {
                                     csvtext += "NULL";
+                                    contadorNulls++;
                                 }
-                                csvtext += "\",";
+                                if (qcaux > contadorNulls)
+                                    csvtext += "\",";
                             }
                         }
-                        else
-                        {
-                            csvtext += "\"NULL \", ";
-                        }
+                        
 
                     }
                     csvtext += "\n";
@@ -1766,17 +1952,34 @@ namespace SurveyMonkeyImplementation
                     for (int j = 0; j < objRD.pages.Count; j++)
                     {
                         int qcaux = GetAPageQuestionCount(surveyID, objRD.pages[j].id);
-
+                        int contadorNulls = 0;
                         if (qcaux > 0)
                         {
+                            bool donethis = false;
                             for (int k = 0; k < qcaux; k++) //objRD.pages[j].id debo buscar este id en otro lado
                             {
                                 csvtext += "\"";
                                 if (objRD.pages[j].questions.Count > k)
                                 {
+                                    
                                     for (int l = 0; l < objRD.pages[j].questions[k].answers.Count; l++)
                                     {
-
+                                        if (!donethis)
+                                        {
+                                            int posaux = GetAQuestionPosition(surveyID, objRD.pages[j].id, objRD.pages[j].questions[k].id);
+                                            if (l < posaux )
+                                            {
+                                                for (int z = 0; z < posaux-l-1; z++)
+                                                {
+                                                    csvtext += "NULL\",\"";
+                                                   
+                                                    contadorNulls++;
+                                                }
+                                                donethis = true;
+                                            }
+                                            
+                                        }
+                                        
                                         if (objRD.pages[j].questions[k].answers[l].choice_id != null)
                                         {
                                             //Encontrar el texto de la choice id
@@ -1795,7 +1998,7 @@ namespace SurveyMonkeyImplementation
                                                 }
                                             }
                                             csvtext += temporal/*+ "\","*/;
-
+                                            contadorNulls++;
                                         }
                                         else if (objRD.pages[j].questions[k].answers.Count > 0)
                                         {
@@ -1807,27 +2010,25 @@ namespace SurveyMonkeyImplementation
                                                 newContent += Regex.Replace(Content, @"\t|\n|\r|,", "") + "_";
 
                                             }
-
                                             csvtext += newContent;
+                                            contadorNulls++;
                                         }
                                         else
                                         {
                                             csvtext += "NULL";
+                                            contadorNulls++;
                                         }
                                     }
                                 }
-                                else
+                                else if (qcaux > contadorNulls)
                                 {
                                     csvtext += "NULL";
+                                    contadorNulls++;
                                 }
+                                
                                 csvtext += "\",";
                             }
-                        }
-                        else
-                        {
-                            csvtext += "\"NULL \", ";
-                        }
-
+                        }                       
                     }
                     csvtext += "\n";
                 }
@@ -1853,16 +2054,18 @@ namespace SurveyMonkeyImplementation
                     csvtext += "\"" + surveyID + "\", ";
                     csvtext += "\"" + objRD.date_modified + "\", " + "\"" + objRD.date_created + "\", ";
                     csvtext += "\"" + objRD.ip_address + "\", ";
-                    csvtext += "\"" + objRD.response_status + "\", " + "NULL" + "\", ";
+                    csvtext += "\"" + objRD.response_status + "\", \"" + "NULL" + "\", ";
                     csvtext += "\"" + objRD.recipient_id + "\", ";
                     csvtext += "\"" + objRD.total_time + "\", ";
                     Console.WriteLine(objRD.response_status);
                     for (int j = 0; j < objRD.pages.Count; j++)
                     {
                         int qcaux = GetAPageQuestionCount(surveyID, objRD.pages[j].id);
-
+                        bool donethis = false;
+                        int contadorNulls = 0;
                         if (qcaux > 0)
                         {
+
                             for (int k = 0; k < qcaux; k++) //objRD.pages[j].id debo buscar este id en otro lado
                             {
                                 csvtext += "\"";
@@ -1870,7 +2073,19 @@ namespace SurveyMonkeyImplementation
                                 {
                                     for (int l = 0; l < objRD.pages[j].questions[k].answers.Count; l++)
                                     {
-
+                                        if (!donethis)
+                                        {
+                                            int posaux = GetAQuestionPosition(surveyID, objRD.pages[j].id, objRD.pages[j].questions[k].id);
+                                            if (l < posaux)
+                                            {
+                                                for (int z = 0; z < posaux-l-1; z++)
+                                                {
+                                                    csvtext += "NULL\",\"";
+                                                    contadorNulls++;
+                                                }
+                                            }
+                                            donethis = true;
+                                        }
                                         if (objRD.pages[j].questions[k].answers[l].choice_id != null)
                                         {
                                             //Encontrar el texto de la choice id
@@ -1889,6 +2104,7 @@ namespace SurveyMonkeyImplementation
                                                 }
                                             }
                                             csvtext += temporal/*+ "\","*/;
+                                            contadorNulls++;
 
                                         }
                                         else if (objRD.pages[j].questions[k].answers.Count > 0)
@@ -1903,23 +2119,23 @@ namespace SurveyMonkeyImplementation
                                             }
 
                                             csvtext += newContent;
+                                            contadorNulls++;
                                         }
                                         else
                                         {
-                                            csvtext += "NULL";
+                                            csvtext += "NULO";
+                                            contadorNulls++;
                                         }
                                     }
                                 }
-                                else
+                                else if (qcaux > contadorNulls)
                                 {
-                                    csvtext += "NULL";
+                                    csvtext += "NULL";//poner un contador
+                                    contadorNulls++;
                                 }
-                                csvtext += "\",";
+                                if (qcaux >= contadorNulls)
+                                    csvtext += "\",";
                             }
-                        }
-                        else
-                        {
-                            csvtext += "\"NULL \", ";
                         }
 
                     }

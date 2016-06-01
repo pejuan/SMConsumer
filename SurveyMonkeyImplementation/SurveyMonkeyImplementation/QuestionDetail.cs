@@ -12,6 +12,7 @@ namespace SurveyMonkeyImplementation
         public string subtype { get; set; }
         public Answer answers { get; set; }
 
+        public int position { get; set; }
         public string page_id { get; set; }
         public QuestionDetail() { }
     }

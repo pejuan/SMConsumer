@@ -10,5 +10,7 @@ namespace SurveyMonkeyImplementation
     {
         public string heading { get; set; }
         public string id { get; set; }
+
+        public int position { get; set; }
     }
 }
