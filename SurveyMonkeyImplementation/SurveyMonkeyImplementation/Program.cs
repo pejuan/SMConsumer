@@ -50,7 +50,13 @@ namespace SurveyMonkeyImplementation
             //{
             //    Console.WriteLine(i+")"+prueba[i]);
             //}
-            ResponsesToCSV(BringResponsesIDsAccordingToSettings("74972790"));
+
+
+            //ResponsesToCSV(BringResponsesIDsAccordingToSettings("74972790"));
+            loadSettings();
+            ResponsesToCSV(GetSurveyDetails("74972790"),numRegistry);
+            
+            
             //loadSettings();
             //DateTime datet = DateTime.Parse(date);
             //string date2 = "2014-02-09T19:39:00";
@@ -744,15 +750,16 @@ namespace SurveyMonkeyImplementation
                     for (int j = 0; j < objRD.pages.Count; j++)
                     {
                         int qcaux = GetAPageQuestionCount(SurveyFormDetailsList[m].id, objRD.pages[j].id);
-                        bool donethis = false;
                         int contadorNulls = 0;
                         if (qcaux > 0)
                         {
-                            for (int k = 0; k < qcaux; k++)
+                            bool donethis = false;
+                            for (int k = 0; k < qcaux; k++) //objRD.pages[j].id debo buscar este id en otro lado
                             {
                                 csvtext += "\"";
-                                if (objRD.pages[j].questions.Count > k)
+                                if (objRD.pages[j].questions.Count > k)//Poner objRD.pages[j].questions.Count en otra variable y comparar con esa ////////////////////////////
                                 {
+
                                     for (int l = 0; l < objRD.pages[j].questions[k].answers.Count; l++)
                                     {
                                         if (!donethis)
@@ -801,7 +808,6 @@ namespace SurveyMonkeyImplementation
                                                 newContent += Regex.Replace(Content, @"\t|\n|\r|,", "") + "_";
 
                                             }
-
                                             csvtext += newContent;
                                             contadorNulls++;
                                         }
@@ -811,13 +817,16 @@ namespace SurveyMonkeyImplementation
                                             contadorNulls++;
                                         }
                                     }
-                                }else if (qcaux > contadorNulls)
+                                    csvtext += "\",";
+                                }
+                                else if (qcaux > contadorNulls)
                                 {
-                                    csvtext += "NULL";
+                                    csvtext += "NULL\",";
                                     contadorNulls++;
                                 }
-                                if (qcaux > contadorNulls)
-                                    csvtext += "\",";
+
+
+
                             }
                         }
                     }
@@ -854,15 +863,16 @@ namespace SurveyMonkeyImplementation
                 for (int j = 0; j < objRD.pages.Count; j++)
                 {
                     int qcaux = GetAPageQuestionCount(survey.id, objRD.pages[j].id);
-                    bool donethis = false;
                     int contadorNulls = 0;
                     if (qcaux > 0)
                     {
+                        bool donethis = false;
                         for (int k = 0; k < qcaux; k++) //objRD.pages[j].id debo buscar este id en otro lado
                         {
                             csvtext += "\"";
-                            if (objRD.pages[j].questions.Count > k)
+                            if (objRD.pages[j].questions.Count > k)//Poner objRD.pages[j].questions.Count en otra variable y comparar con esa ////////////////////////////
                             {
+
                                 for (int l = 0; l < objRD.pages[j].questions[k].answers.Count; l++)
                                 {
                                     if (!donethis)
@@ -911,7 +921,6 @@ namespace SurveyMonkeyImplementation
                                             newContent += Regex.Replace(Content, @"\t|\n|\r|,", "") + "_";
 
                                         }
-
                                         csvtext += newContent;
                                         contadorNulls++;
                                     }
@@ -921,13 +930,16 @@ namespace SurveyMonkeyImplementation
                                         contadorNulls++;
                                     }
                                 }
-                            }else if (qcaux > contadorNulls)
+                                csvtext += "\",";
+                            }
+                            else if (qcaux > contadorNulls)
                             {
-                                csvtext += "NULL";
+                                csvtext += "NULL\",";
                                 contadorNulls++;
                             }
-                            if (qcaux > contadorNulls)
-                                csvtext += "\",";
+
+
+
                         }
                     }
 
@@ -969,15 +981,16 @@ namespace SurveyMonkeyImplementation
                 for (int j = 0; j < objRD.pages.Count; j++)
                 {
                     int qcaux = GetAPageQuestionCount(survey.id, objRD.pages[j].id);
-                    bool donethis = false;
                     int contadorNulls = 0;
-                    if (qcaux> 0)
+                    if (qcaux > 0)
                     {
-                        for (int k = 0; k < qcaux; k++)
+                        bool donethis = false;
+                        for (int k = 0; k < qcaux; k++) //objRD.pages[j].id debo buscar este id en otro lado
                         {
                             csvtext += "\"";
-                            if (objRD.pages[j].questions.Count > k)
+                            if (objRD.pages[j].questions.Count > k)//Poner objRD.pages[j].questions.Count en otra variable y comparar con esa ////////////////////////////
                             {
+
                                 for (int l = 0; l < objRD.pages[j].questions[k].answers.Count; l++)
                                 {
                                     if (!donethis)
@@ -995,6 +1008,7 @@ namespace SurveyMonkeyImplementation
                                         }
 
                                     }
+
                                     if (objRD.pages[j].questions[k].answers[l].choice_id != null)
                                     {
                                         //Encontrar el texto de la choice id
@@ -1025,7 +1039,6 @@ namespace SurveyMonkeyImplementation
                                             newContent += Regex.Replace(Content, @"\t|\n|\r|,", "") + "_";
 
                                         }
-
                                         csvtext += newContent;
                                         contadorNulls++;
                                     }
@@ -1035,16 +1048,19 @@ namespace SurveyMonkeyImplementation
                                         contadorNulls++;
                                     }
                                 }
-                            }else if (qcaux > contadorNulls)
+                                csvtext += "\",";
+                            }
+                            else if (qcaux > contadorNulls)
                             {
-                                csvtext += "NULL";
+                                csvtext += "NULL\",";
                                 contadorNulls++;
                             }
-                            if (qcaux > contadorNulls)
-                                csvtext += "\",";
+
+
+
                         }
                     }
-                    
+
 
                 }
                 csvtext += "\n";
@@ -1090,18 +1106,17 @@ namespace SurveyMonkeyImplementation
                 for (int j = 0; j < objRD.pages.Count; j++)
                 {
                     int qcaux = GetAPageQuestionCount(survey.id,objRD.pages[j].id);
-                    bool donethis = false;
                     int contadorNulls = 0;
-                    if (qcaux>0)
+                    if (qcaux > 0)
                     {
-                        for(int k = 0; k < qcaux; k++) //Buscar questionCount en otro lado_____objRD.pages[j].questions.Count
+                        bool donethis = false;
+                        for (int k = 0; k < qcaux; k++) //objRD.pages[j].id debo buscar este id en otro lado
                         {
                             csvtext += "\"";
-                            if (objRD.pages[j].questions.Count > k)//objRD.pages[j].questions.Count >= k
+                            if (objRD.pages[j].questions.Count > k)//Poner objRD.pages[j].questions.Count en otra variable y comparar con esa ////////////////////////////
                             {
 
-
-                                for (int l = 0; l < objRD.pages[j].questions[k].answers.Count; l++)//probablemente ocupare un if
+                                for (int l = 0; l < objRD.pages[j].questions[k].answers.Count; l++)
                                 {
                                     if (!donethis)
                                     {
@@ -1118,6 +1133,7 @@ namespace SurveyMonkeyImplementation
                                         }
 
                                     }
+
                                     if (objRD.pages[j].questions[k].answers[l].choice_id != null)
                                     {
                                         //Encontrar el texto de la choice id
@@ -1148,7 +1164,6 @@ namespace SurveyMonkeyImplementation
                                             newContent += Regex.Replace(Content, @"\t|\n|\r|,", "") + "_";
 
                                         }
-
                                         csvtext += newContent;
                                         contadorNulls++;
                                     }
@@ -1158,13 +1173,16 @@ namespace SurveyMonkeyImplementation
                                         contadorNulls++;
                                     }
                                 }
-                            }else if (qcaux > contadorNulls)
+                                csvtext += "\",";
+                            }
+                            else if (qcaux > contadorNulls)
                             {
-                                csvtext += "NULL";
+                                csvtext += "NULL\",";
                                 contadorNulls++;
                             }
-                            if (qcaux > contadorNulls)
-                                csvtext += "\",";
+
+
+
                         }
                     }
 
@@ -1209,15 +1227,16 @@ namespace SurveyMonkeyImplementation
                     for (int j = 0; j < objRD.pages.Count; j++)
                     {
                         int qcaux = GetAPageQuestionCount(survey.id, objRD.pages[j].id);
-                        bool donethis = false;
                         int contadorNulls = 0;
                         if (qcaux > 0)
                         {
-                            for (int k = 0; k < qcaux; k++)
+                            bool donethis = false;
+                            for (int k = 0; k < qcaux; k++) //objRD.pages[j].id debo buscar este id en otro lado
                             {
                                 csvtext += "\"";
-                                if (objRD.pages[j].questions.Count > k)
+                                if (objRD.pages[j].questions.Count > k)//Poner objRD.pages[j].questions.Count en otra variable y comparar con esa ////////////////////////////
                                 {
+
                                     for (int l = 0; l < objRD.pages[j].questions[k].answers.Count; l++)
                                     {
                                         if (!donethis)
@@ -1235,6 +1254,7 @@ namespace SurveyMonkeyImplementation
                                             }
 
                                         }
+
                                         if (objRD.pages[j].questions[k].answers[l].choice_id != null)
                                         {
                                             //Encontrar el texto de la choice id
@@ -1265,7 +1285,6 @@ namespace SurveyMonkeyImplementation
                                                 newContent += Regex.Replace(Content, @"\t|\n|\r|,", "") + "_";
 
                                             }
-
                                             csvtext += newContent;
                                             contadorNulls++;
                                         }
@@ -1275,13 +1294,16 @@ namespace SurveyMonkeyImplementation
                                             contadorNulls++;
                                         }
                                     }
-                                }else if (qcaux > contadorNulls)
+                                    csvtext += "\",";
+                                }
+                                else if (qcaux > contadorNulls)
                                 {
-                                    csvtext += "NULL";
+                                    csvtext += "NULL\",";
                                     contadorNulls++;
                                 }
-                                if (qcaux > contadorNulls)
-                                    csvtext += "\",";
+
+
+
                             }
                         }
 
@@ -1330,15 +1352,16 @@ namespace SurveyMonkeyImplementation
                     for (int j = 0; j < objRD.pages.Count; j++)
                     {
                         int qcaux = GetAPageQuestionCount(survey.id, objRD.pages[j].id);
-                        bool donethis = false;
                         int contadorNulls = 0;
                         if (qcaux > 0)
                         {
-                            for (int k = 0; k < qcaux; k++)
+                            bool donethis = false;
+                            for (int k = 0; k < qcaux; k++) //objRD.pages[j].id debo buscar este id en otro lado
                             {
                                 csvtext += "\"";
-                                if (objRD.pages[j].questions.Count > k)
+                                if (objRD.pages[j].questions.Count > k)//Poner objRD.pages[j].questions.Count en otra variable y comparar con esa ////////////////////////////
                                 {
+
                                     for (int l = 0; l < objRD.pages[j].questions[k].answers.Count; l++)
                                     {
                                         if (!donethis)
@@ -1387,7 +1410,6 @@ namespace SurveyMonkeyImplementation
                                                 newContent += Regex.Replace(Content, @"\t|\n|\r|,", "") + "_";
 
                                             }
-
                                             csvtext += newContent;
                                             contadorNulls++;
                                         }
@@ -1397,16 +1419,19 @@ namespace SurveyMonkeyImplementation
                                             contadorNulls++;
                                         }
                                     }
-                                }else if (qcaux > contadorNulls)
+                                    csvtext += "\",";
+                                }
+                                else if (qcaux > contadorNulls)
                                 {
-                                    csvtext += "NULL";
+                                    csvtext += "NULL\",";
                                     contadorNulls++;
                                 }
-                                if (qcaux > contadorNulls)
-                                    csvtext += "\",";
+
+
+
                             }
                         }
-                        
+
 
                     }
                     csvtext += "\n";
@@ -1459,15 +1484,16 @@ namespace SurveyMonkeyImplementation
                     for (int j = 0; j < objRD.pages.Count; j++)
                     {
                         int qcaux = GetAPageQuestionCount(survey.id, objRD.pages[j].id);
-                        bool donethis = false;
                         int contadorNulls = 0;
                         if (qcaux > 0)
                         {
-                            for (int k = 0; k < qcaux; k++)
+                            bool donethis = false;
+                            for (int k = 0; k < qcaux; k++) //objRD.pages[j].id debo buscar este id en otro lado
                             {
                                 csvtext += "\"";
-                                if (objRD.pages[j].questions.Count > k)
+                                if (objRD.pages[j].questions.Count > k)//Poner objRD.pages[j].questions.Count en otra variable y comparar con esa ////////////////////////////
                                 {
+
                                     for (int l = 0; l < objRD.pages[j].questions[k].answers.Count; l++)
                                     {
                                         if (!donethis)
@@ -1516,7 +1542,6 @@ namespace SurveyMonkeyImplementation
                                                 newContent += Regex.Replace(Content, @"\t|\n|\r|,", "") + "_";
 
                                             }
-
                                             csvtext += newContent;
                                             contadorNulls++;
                                         }
@@ -1526,13 +1551,16 @@ namespace SurveyMonkeyImplementation
                                             contadorNulls++;
                                         }
                                     }
-                                }else if (qcaux > contadorNulls)
+                                    csvtext += "\",";
+                                }
+                                else if (qcaux > contadorNulls)
                                 {
-                                    csvtext += "NULL";
+                                    csvtext += "NULL\",";
                                     contadorNulls++;
                                 }
-                                if (qcaux > contadorNulls)
-                                    csvtext += "\",";
+
+
+
                             }
                         }
                     }
@@ -1577,15 +1605,16 @@ namespace SurveyMonkeyImplementation
                     for (int j = 0; j < objRD.pages.Count; j++)
                     {
                         int qcaux = GetAPageQuestionCount(survey.id, objRD.pages[j].id);
-                        bool donethis = false;
                         int contadorNulls = 0;
                         if (qcaux > 0)
                         {
-                            for (int k = 0; k < qcaux; k++)
+                            bool donethis = false;
+                            for (int k = 0; k < qcaux; k++) //objRD.pages[j].id debo buscar este id en otro lado
                             {
                                 csvtext += "\"";
-                                if (objRD.pages[j].questions.Count > k)
+                                if (objRD.pages[j].questions.Count > k)//Poner objRD.pages[j].questions.Count en otra variable y comparar con esa ////////////////////////////
                                 {
+
                                     for (int l = 0; l < objRD.pages[j].questions[k].answers.Count; l++)
                                     {
                                         if (!donethis)
@@ -1634,7 +1663,6 @@ namespace SurveyMonkeyImplementation
                                                 newContent += Regex.Replace(Content, @"\t|\n|\r|,", "") + "_";
 
                                             }
-
                                             csvtext += newContent;
                                             contadorNulls++;
                                         }
@@ -1644,14 +1672,16 @@ namespace SurveyMonkeyImplementation
                                             contadorNulls++;
                                         }
                                     }
+                                    csvtext += "\",";
                                 }
                                 else if (qcaux > contadorNulls)
                                 {
-                                    csvtext += "NULL";
+                                    csvtext += "NULL\",";
                                     contadorNulls++;
                                 }
-                                if (qcaux > contadorNulls)
-                                    csvtext += "\",";
+
+
+
                             }
                         }
 
@@ -1700,15 +1730,16 @@ namespace SurveyMonkeyImplementation
                     for (int j = 0; j < objRD.pages.Count; j++)
                     {
                         int qcaux = GetAPageQuestionCount(survey.id, objRD.pages[j].id);
-                        bool donethis = false;
                         int contadorNulls = 0;
                         if (qcaux > 0)
                         {
-                            for (int k = 0; k < qcaux; k++)
+                            bool donethis = false;
+                            for (int k = 0; k < qcaux; k++) //objRD.pages[j].id debo buscar este id en otro lado
                             {
                                 csvtext += "\"";
-                                if (objRD.pages[j].questions.Count > k)
+                                if (objRD.pages[j].questions.Count > k)//Poner objRD.pages[j].questions.Count en otra variable y comparar con esa ////////////////////////////
                                 {
+
                                     for (int l = 0; l < objRD.pages[j].questions[k].answers.Count; l++)
                                     {
                                         if (!donethis)
@@ -1757,7 +1788,6 @@ namespace SurveyMonkeyImplementation
                                                 newContent += Regex.Replace(Content, @"\t|\n|\r|,", "") + "_";
 
                                             }
-
                                             csvtext += newContent;
                                             contadorNulls++;
                                         }
@@ -1767,14 +1797,16 @@ namespace SurveyMonkeyImplementation
                                             contadorNulls++;
                                         }
                                     }
+                                    csvtext += "\",";
                                 }
                                 else if (qcaux > contadorNulls)
                                 {
-                                    csvtext += "NULL";
+                                    csvtext += "NULL\",";
                                     contadorNulls++;
                                 }
-                                if (qcaux > contadorNulls)
-                                    csvtext += "\",";
+
+
+
                             }
                         }
 
@@ -1830,15 +1862,16 @@ namespace SurveyMonkeyImplementation
                     for (int j = 0; j < objRD.pages.Count; j++)
                     {
                         int qcaux = GetAPageQuestionCount(survey.id, objRD.pages[j].id);
-                        bool donethis = false;
                         int contadorNulls = 0;
                         if (qcaux > 0)
                         {
-                            for (int k = 0; k < qcaux; k++)
+                            bool donethis = false;
+                            for (int k = 0; k < qcaux; k++) //objRD.pages[j].id debo buscar este id en otro lado
                             {
                                 csvtext += "\"";
-                                if (objRD.pages[j].questions.Count > k)
+                                if (objRD.pages[j].questions.Count > k)//Poner objRD.pages[j].questions.Count en otra variable y comparar con esa ////////////////////////////
                                 {
+
                                     for (int l = 0; l < objRD.pages[j].questions[k].answers.Count; l++)
                                     {
                                         if (!donethis)
@@ -1887,7 +1920,6 @@ namespace SurveyMonkeyImplementation
                                                 newContent += Regex.Replace(Content, @"\t|\n|\r|,", "") + "_";
 
                                             }
-
                                             csvtext += newContent;
                                             contadorNulls++;
                                         }
@@ -1897,17 +1929,19 @@ namespace SurveyMonkeyImplementation
                                             contadorNulls++;
                                         }
                                     }
+                                    csvtext += "\",";
                                 }
                                 else if (qcaux > contadorNulls)
                                 {
-                                    csvtext += "NULL";
+                                    csvtext += "NULL\",";
                                     contadorNulls++;
                                 }
-                                if (qcaux > contadorNulls)
-                                    csvtext += "\",";
+
+
+
                             }
                         }
-                        
+
 
                     }
                     csvtext += "\n";
@@ -2019,14 +2053,16 @@ namespace SurveyMonkeyImplementation
                                             contadorNulls++;
                                         }
                                     }
+                                    csvtext += "\",";
                                 }
                                 else if (qcaux > contadorNulls)
                                 {
-                                    csvtext += "NULL";
+                                    csvtext += "NULL\",";
                                     contadorNulls++;
                                 }
+
                                 
-                                csvtext += "\",";
+
                             }
                         }                       
                     }
@@ -2061,11 +2097,11 @@ namespace SurveyMonkeyImplementation
                     for (int j = 0; j < objRD.pages.Count; j++)
                     {
                         int qcaux = GetAPageQuestionCount(surveyID, objRD.pages[j].id);
-                        bool donethis = false;
+                        
                         int contadorNulls = 0;
                         if (qcaux > 0)
                         {
-
+                            bool donethis = false;
                             for (int k = 0; k < qcaux; k++) //objRD.pages[j].id debo buscar este id en otro lado
                             {
                                 csvtext += "\"";
@@ -2127,21 +2163,21 @@ namespace SurveyMonkeyImplementation
                                             contadorNulls++;
                                         }
                                     }
+                                    csvtext += "\",";
                                 }
                                 else if (qcaux > contadorNulls)
                                 {
-                                    csvtext += "NULL";//poner un contador
+                                    csvtext += "NULL\",";//poner un contador
                                     contadorNulls++;
                                 }
-                                if (qcaux >= contadorNulls)
-                                    csvtext += "\",";
+
+                                
                             }
                         }
 
                     }
                     csvtext += "\n";
                 }
-
                 //aqui
                 File.WriteAllText(filePath, csvtext);
 
@@ -2149,6 +2185,7 @@ namespace SurveyMonkeyImplementation
 
             return true;
         }
+
         public static string RemoveLineEndings(string value)
         {
             if (String.IsNullOrEmpty(value))
