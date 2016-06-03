@@ -1,14 +1,13 @@
-<monkey>
+<root>
 	<key>qkzc3tjbennyw82xwndxepnf</key>
 	<token>yd9L90lFyr2f3FxQ273ZdyXBh6V3Yj02VXd6H0jQd2MkLEYDoaGvDzPDDNrLiKDyQ5LUSeEkgPedKDRkcxfAfuHOrs9ax7gu48NRXgHyP2iTavhcDadqLtOLPbT20deVykxxDLAX2xtpDdI8CvCC4dWnc.bzX4U2rsseKlhIEYUiKe76GwOI72Q9CMlX4wjFDw6NRYp-3xVRFcy-0P-oHaUX8kY5UKm94nnk00xwZOA=</token>
-	<settings>
-		<datesPrior>1/1/2016</datesPrior>
-		<datesAfter>1/1/2016</datesAfter>
-		<surveyName>NPS UE 2016.</surveyName>
-		<titlesContaining>NPS</titlesContaining>
-		<RegistryNumber>4</RegistryNumber>
-		<initialPage>5</initialPage>
-		<endingPage>6</endingPage>
-		<responsesPerPage>2</responsesPerPage>
-	</settings>
-</monkey>
+	<datesPrior>1/1/2016</datesPrior>
+	<datesAfter>1/1/2016</datesAfter>
+	<surveyName>NPS UE 2016.</surveyName>
+	<titlesContaining>NPS</titlesContaining>
+	<RegistryNumber>4</RegistryNumber>
+	<initialPage>1</initialPage>
+	<endingPage>6</endingPage>
+	<responsesPerPage>4</responsesPerPage>
+
+</root>

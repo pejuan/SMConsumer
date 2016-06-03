@@ -50,13 +50,13 @@ namespace SurveyMonkeyImplementation
             //{
             //    Console.WriteLine(i+")"+prueba[i]);
             //}
+            
+
+            ResponsesToCSV(BringResponsesIDsAccordingToSettings("73337763"));
+            //loadSettings();
+            //ResponsesToCSV(GetSurveyDetails("74972790"),numRegistry);
 
 
-            //ResponsesToCSV(BringResponsesIDsAccordingToSettings("74972790"));
-            loadSettings();
-            ResponsesToCSV(GetSurveyDetails("74972790"),numRegistry);
-            
-            
             //loadSettings();
             //DateTime datet = DateTime.Parse(date);
             //string date2 = "2014-02-09T19:39:00";
@@ -83,7 +83,7 @@ namespace SurveyMonkeyImplementation
             //Console.WriteLine(GetAPageQuestionCount("74972790", "240792622"));
 
             //ResponsesToCSV(GetSurveyDetailsBySurveyName(),numRegistry);
-            
+
             //SurveysToCSV();
             //loadSettings();
             //SurveysCreatedAfterToCSV();
@@ -272,7 +272,7 @@ namespace SurveyMonkeyImplementation
             {
                 XmlDocument doc = new XmlDocument();
                 doc.Load(Application.StartupPath + "\\monkey.xml");
-                XmlNode node = doc.DocumentElement.SelectSingleNode("/monkey/token");
+                XmlNode node = doc.DocumentElement.SelectSingleNode("/root/token");
                 string attr = node.InnerText;
                 token = attr;
             }
@@ -284,7 +284,7 @@ namespace SurveyMonkeyImplementation
             {
                 XmlDocument doc = new XmlDocument();
                 doc.Load(Application.StartupPath + "\\monkey.xml");
-                XmlNode node = doc.DocumentElement.SelectSingleNode("/monkey/key");
+                XmlNode node = doc.DocumentElement.SelectSingleNode("/root/key");
                 string attr = node.InnerText;
                 apikey = attr;
                 return apikey;
@@ -298,23 +298,24 @@ namespace SurveyMonkeyImplementation
         {
             if (!settingsLoaded)
             {
+
                 XmlDocument doc = new XmlDocument();
                 doc.Load(Application.StartupPath + "\\monkey.xml");
-                XmlNode datesPriornode = doc.DocumentElement.SelectSingleNode("/monkey/settings/datesPrior");
+                XmlNode datesPriornode = doc.DocumentElement.SelectSingleNode("/root/datesPrior");
                 datesPrior = DateTime.Parse(datesPriornode.InnerText);
-                XmlNode datesAfternode = doc.DocumentElement.SelectSingleNode("/monkey/settings/datesAfter");
+                XmlNode datesAfternode = doc.DocumentElement.SelectSingleNode("/root/datesAfter");
                 datesAfter = DateTime.Parse(datesAfternode.InnerText);
-                XmlNode titlesContainingNode = doc.DocumentElement.SelectSingleNode("/monkey/settings/titlesContaining");
+                XmlNode titlesContainingNode = doc.DocumentElement.SelectSingleNode("/root/titlesContaining");
                 titlesContaining = titlesContainingNode.InnerText;
-                XmlNode RegistryNumberNode = doc.DocumentElement.SelectSingleNode("/monkey/settings/RegistryNumber");
+                XmlNode RegistryNumberNode = doc.DocumentElement.SelectSingleNode("/root/RegistryNumber");
                 numRegistry = RegistryNumberNode.InnerText;
-                XmlNode surveyNameNode = doc.DocumentElement.SelectSingleNode("/monkey/settings/surveyName");
+                XmlNode surveyNameNode = doc.DocumentElement.SelectSingleNode("/root/surveyName");
                 defaultSurveyName = surveyNameNode.InnerText;
-                XmlNode initialPageNode = doc.DocumentElement.SelectSingleNode("/monkey/settings/initialPage");
+                XmlNode initialPageNode = doc.DocumentElement.SelectSingleNode("/root/initialPage");
                 initialPage = initialPageNode.InnerText;
-                XmlNode endingPageNode = doc.DocumentElement.SelectSingleNode("/monkey/settings/endingPage");
+                XmlNode endingPageNode = doc.DocumentElement.SelectSingleNode("/root/endingPage");
                 endingPage = endingPageNode.InnerText;
-                XmlNode responsesPerPageNode = doc.DocumentElement.SelectSingleNode("/monkey/settings/responsesPerPage");
+                XmlNode responsesPerPageNode = doc.DocumentElement.SelectSingleNode("/root/responsesPerPage");
                 responsesPerPage = responsesPerPageNode.InnerText;
                 settingsLoaded = true;
             }
@@ -352,7 +353,6 @@ namespace SurveyMonkeyImplementation
 
             return surv;
         }
-
         static SurveyForm GetSurveyDetailsBySurveyName()
         {
             loadSettings();
@@ -578,7 +578,6 @@ namespace SurveyMonkeyImplementation
 
             return responsedetail;
         }
-
         static WebRequest GetResponseListWithSettings(string surveyID, int page, string total, int RespPages)
         {
             var request = WebRequest.Create(baseURL + "surveys/" + surveyID + "/responses?page=" + page + "&per_page=" + total + "&api_key=" + getApiKey());
