@@ -52,7 +52,7 @@ namespace SurveyMonkeyImplementation
             //}
             
 
-            ResponsesToCSV(BringResponsesIDsAccordingToSettings("73337763"));
+            ResponsesToCSV(BringResponsesIDsAccordingToSettings("68489249"));
             //loadSettings();
             //ResponsesToCSV(GetSurveyDetails("74972790"),numRegistry);
 
@@ -298,7 +298,8 @@ namespace SurveyMonkeyImplementation
         {
             if (!settingsLoaded)
             {
-
+                String tmp = getApiKey();
+                String tmp2 = getHeader();
                 XmlDocument doc = new XmlDocument();
                 doc.Load(Application.StartupPath + "\\monkey.xml");
                 XmlNode datesPriornode = doc.DocumentElement.SelectSingleNode("/root/datesPrior");
@@ -1950,7 +1951,6 @@ namespace SurveyMonkeyImplementation
             File.WriteAllText(filePath, csvtext);
             return true;
         }
-
         static bool ResponsesToCSV(List<string> listOfResponsesIDs)
         {
             if (listOfResponsesIDs.Count==0)
@@ -2184,7 +2184,6 @@ namespace SurveyMonkeyImplementation
 
             return true;
         }
-
         public static string RemoveLineEndings(string value)
         {
             if (String.IsNullOrEmpty(value))
