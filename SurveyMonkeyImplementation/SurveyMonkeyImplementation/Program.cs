@@ -29,6 +29,8 @@ namespace SurveyMonkeyImplementation
         static string initialPage = "";
         static string endingPage = "";
         static string responsesPerPage = "";
+        static int requestCounter = 0;
+
 
         static string baseURL = "https://api.surveymonkey.net/v3/";
         static int responsePageAct = 1;
@@ -50,9 +52,13 @@ namespace SurveyMonkeyImplementation
             //{
             //    Console.WriteLine(i+")"+prueba[i]);
             //}
-            
 
-            ResponsesToCSV(BringResponsesIDsAccordingToSettings("68489249"));
+            //Console.WriteLine("Started");
+            //System.Threading.Thread.Sleep(5000);
+            //Console.WriteLine("Waited 5 seconds");
+
+            //ResponsesToCSV(BringResponsesIDsAccordingToSettings("68489249"));
+
             //loadSettings();
             //ResponsesToCSV(GetSurveyDetails("74972790"),numRegistry);
 
@@ -176,6 +182,7 @@ namespace SurveyMonkeyImplementation
         }
         static List<String> BringSurveyIDs()
         {
+            waitIfLimitReached();
             GetSurveys();
             List<String> IDsSurveys = new List<string>();
             for (int i = 0; i < survlist.data.Count; i++)
@@ -191,6 +198,7 @@ namespace SurveyMonkeyImplementation
             List<SurveyForm> SurveyFormDetailsList = new List<SurveyForm>();
             for (int i = 0; i < SurveyIDs.Count; i++)
             {
+                waitIfLimitReached();
                 SurveyFormDetailsList.Add(GetSurveyDetails(SurveyIDs[i]));
             }
 
@@ -198,6 +206,7 @@ namespace SurveyMonkeyImplementation
         }
         static bool fillPagesIDs(SurveyForm objsf)
         {
+            waitIfLimitReached();
             GetPageList(objsf.id);
             PagesIDs = new List<string>();
             for (int i = 0; i < pagelist.data.Count; i++)
@@ -208,6 +217,7 @@ namespace SurveyMonkeyImplementation
         }
         static List<String> BringPagesIDs(SurveyForm objsf)
         {
+            waitIfLimitReached();
             GetPageList(objsf.id);
             List<string> IdPages = new List<string>();
             for (int i = 0; i < pagelist.data.Count; i++)
@@ -219,6 +229,7 @@ namespace SurveyMonkeyImplementation
         static List<String> BringResponsesIDs(string surveyID)
         {
             List<string> IDsResponses = new List<string>();
+            waitIfLimitReached();
             GetResponseList(surveyID);
             for (int j = 0; j < listaResponseList.Count; j++)
             {
@@ -237,6 +248,7 @@ namespace SurveyMonkeyImplementation
             rp++;
             string x = num_registros.ToString();
             listaResponseList = new List<ResponseList>();
+            waitIfLimitReached();
             GetResponseList(surveyID,1,x,rp);
             for (int j = 0; j < listaResponseList.Count; j++)
             {
@@ -253,6 +265,7 @@ namespace SurveyMonkeyImplementation
             loadSettings();
             listaResponseList = new List<ResponseList>();
             List<string> IDsResponses = new List<string>();
+            waitIfLimitReached();
             GetResponseList(surveyID, int.Parse(initialPage), responsesPerPage, int.Parse(endingPage));
             for (int j = 0; j < listaResponseList.Count; j++)
             {
@@ -323,10 +336,11 @@ namespace SurveyMonkeyImplementation
         }
         static WebRequest GetSurveys()
         {
-
+            waitIfLimitReached();
             var request = WebRequest.Create(baseURL+"surveys?api_key=" + getApiKey());
             request.Headers["Authorization"] = getHeader();
             var response = request.GetResponse();
+            requestCounter++;
             Stream dataStream = response.GetResponseStream();
             StreamReader reader = new StreamReader(dataStream);
             string responseFromServer = reader.ReadToEnd();
@@ -340,9 +354,11 @@ namespace SurveyMonkeyImplementation
         }
         static SurveyForm GetSurveyDetails(string survey_id)
         {
+            waitIfLimitReached();
             var request = WebRequest.Create(baseURL + "surveys/" + survey_id + "/details?api_key=" + getApiKey());
             request.Headers["Authorization"] = getHeader();
             var response = request.GetResponse();
+            requestCounter++;
             Stream dataStream = response.GetResponseStream();
             StreamReader reader = new StreamReader(dataStream);
             string responseFromServer = reader.ReadToEnd();
@@ -356,10 +372,12 @@ namespace SurveyMonkeyImplementation
         }
         static SurveyForm GetSurveyDetailsBySurveyName()
         {
+            waitIfLimitReached();
             loadSettings();
             var request = WebRequest.Create(baseURL + "surveys?api_key=" + getApiKey());
             request.Headers["Authorization"] = getHeader();
             var response = request.GetResponse();
+            requestCounter++;
             Stream dataStream = response.GetResponseStream();
             StreamReader reader = new StreamReader(dataStream);
             string responseFromServer = reader.ReadToEnd();
@@ -382,9 +400,11 @@ namespace SurveyMonkeyImplementation
         }
         static int GetAPageQuestionCount(string surveyID, string page_id)
         {
+            waitIfLimitReached();
             var request = WebRequest.Create(baseURL + "surveys/" + surveyID + "/pages/"+page_id+"?api_key=" + getApiKey());
             request.Headers["Authorization"] = getHeader();
             var response = request.GetResponse();
+            requestCounter++;
             Stream dataStream = response.GetResponseStream();
             StreamReader reader = new StreamReader(dataStream);
 
@@ -400,10 +420,12 @@ namespace SurveyMonkeyImplementation
         }
         static SurveyForm GetSurveyDetailsBySurveyName(string surveyname)
         {
+            waitIfLimitReached();
             loadSettings();
             var request = WebRequest.Create(baseURL + "surveys?api_key=" + getApiKey());
             request.Headers["Authorization"] = getHeader();
             var response = request.GetResponse();
+            requestCounter++;
             Stream dataStream = response.GetResponseStream();
             StreamReader reader = new StreamReader(dataStream);
             string responseFromServer = reader.ReadToEnd();
@@ -426,9 +448,11 @@ namespace SurveyMonkeyImplementation
         }
         static QuestionDetail GetQuestionDetails(string survey_id, string page_id, string question_id)
         {
+            waitIfLimitReached();
             var request = WebRequest.Create(baseURL+"surveys/" + survey_id + "/pages/" + page_id + "/questions/" + question_id + "?api_key=" + getApiKey());
             request.Headers["Authorization"] = getHeader();
             var response = request.GetResponse();
+            requestCounter++;
             Stream dataStream = response.GetResponseStream();
             StreamReader reader = new StreamReader(dataStream);
 
@@ -444,9 +468,11 @@ namespace SurveyMonkeyImplementation
         }
         static int GetAQuestionPosition(string survey_id, string page_id, string question_id)
         {
+            waitIfLimitReached();
             var request = WebRequest.Create(baseURL + "surveys/" + survey_id + "/pages/" + page_id + "/questions/" + question_id + "?api_key=" + getApiKey());
             request.Headers["Authorization"] = getHeader();
             var response = request.GetResponse();
+            requestCounter++;
             Stream dataStream = response.GetResponseStream();
             StreamReader reader = new StreamReader(dataStream);
 
@@ -463,9 +489,11 @@ namespace SurveyMonkeyImplementation
         }
         static WebRequest GetPageList(string surveyID)
         {
+            waitIfLimitReached();
             var request = WebRequest.Create(baseURL+"surveys/" + surveyID + "/pages?api_key=" + getApiKey());
             request.Headers["Authorization"] = getHeader();
             var response = request.GetResponse();
+            requestCounter++;
             Stream dataStream = response.GetResponseStream();
             StreamReader reader = new StreamReader(dataStream);
 
@@ -482,9 +510,11 @@ namespace SurveyMonkeyImplementation
         }
         static WebRequest GetQuestionList(string surveyID, string pageID)
         {
+            waitIfLimitReached();
             var request = WebRequest.Create(baseURL+"surveys/" + surveyID + "/pages/" + pageID + "/questions?api_key=" + getApiKey());
             request.Headers["Authorization"] = getHeader();
             var response = request.GetResponse();
+            requestCounter++;
             Stream dataStream = response.GetResponseStream();
             StreamReader reader = new StreamReader(dataStream);
             string responseFromServer = reader.ReadToEnd();
@@ -498,9 +528,11 @@ namespace SurveyMonkeyImplementation
         }
         static QuestionList BringQuestionList(string surveyID, string pageID)
         {
+            waitIfLimitReached();
             var request = WebRequest.Create(baseURL + "surveys/" + surveyID + "/pages/" + pageID + "/questions?api_key=" + getApiKey());
             request.Headers["Authorization"] = getHeader();
             var response = request.GetResponse();
+            requestCounter++;
             Stream dataStream = response.GetResponseStream();
             StreamReader reader = new StreamReader(dataStream);
             string responseFromServer = reader.ReadToEnd();
@@ -514,9 +546,11 @@ namespace SurveyMonkeyImplementation
         }
         static WebRequest GetResponseList(string surveyID)
         {
+            waitIfLimitReached();
             var request = WebRequest.Create(baseURL+"surveys/" + surveyID + "/responses?api_key=" + getApiKey());
             request.Headers["Authorization"] = getHeader();
             var response = request.GetResponse();
+            requestCounter++;
             Stream dataStream = response.GetResponseStream();
             StreamReader reader = new StreamReader(dataStream);
 
@@ -536,14 +570,17 @@ namespace SurveyMonkeyImplementation
             x++;
             responsePageAct = 1;
             string respPageStr = responsePageAct.ToString();
+            waitIfLimitReached();
             GetResponseList(surveyID,1,total,x);
             return request;
         }
         static WebRequest GetResponseList(string surveyID,int page,string total, int RespPages)
         {
+            waitIfLimitReached();
             var request = WebRequest.Create(baseURL+"surveys/" + surveyID + "/responses?page="+page+"&per_page=" + total + "&api_key=" + getApiKey());
             request.Headers["Authorization"] = getHeader();
             var response = request.GetResponse();
+            requestCounter++;
             Stream dataStream = response.GetResponseStream();
             StreamReader reader = new StreamReader(dataStream);
 
@@ -557,15 +594,18 @@ namespace SurveyMonkeyImplementation
             response.Close();
             if (page != RespPages)
             {
+                waitIfLimitReached();
                 GetResponseList(surveyID, page+1, total, RespPages); //Llamado recursivo para que vaya a todas las paginas de responses
             }
             return request;
         }
         static ResponseDetail GetResponseDetails(string response_id)
         {
+            waitIfLimitReached();
             var request = WebRequest.Create(baseURL+"responses/"+response_id+"/details?api_key=" + getApiKey());
             request.Headers["Authorization"] = getHeader();
             var response = request.GetResponse();
+            requestCounter++;
             Stream dataStream = response.GetResponseStream();
             StreamReader reader = new StreamReader(dataStream);
 
@@ -581,9 +621,11 @@ namespace SurveyMonkeyImplementation
         }
         static WebRequest GetResponseListWithSettings(string surveyID, int page, string total, int RespPages)
         {
+            waitIfLimitReached();
             var request = WebRequest.Create(baseURL + "surveys/" + surveyID + "/responses?page=" + page + "&per_page=" + total + "&api_key=" + getApiKey());
             request.Headers["Authorization"] = getHeader();
             var response = request.GetResponse();
+            requestCounter++;
             Stream dataStream = response.GetResponseStream();
             StreamReader reader = new StreamReader(dataStream);
 
@@ -597,15 +639,18 @@ namespace SurveyMonkeyImplementation
             response.Close();
             if (page != RespPages)
             {
+                waitIfLimitReached();
                 GetResponseList(surveyID, page + 1, total, RespPages); //Llamado recursivo para que vaya a todas las paginas de responses
             }
             return request;
         }
         static string MakeARequest(string Request)
         {
+            waitIfLimitReached();
             var request = WebRequest.Create(Request);
             request.Headers["Authorization"] = getHeader();
             var response = request.GetResponse();
+            requestCounter++;
             Stream dataStream = response.GetResponseStream();
             StreamReader reader = new StreamReader(dataStream);
             string responseFromServer = reader.ReadToEnd();
@@ -617,6 +662,7 @@ namespace SurveyMonkeyImplementation
         static bool SurveysToCSV()
         {
             string filePath = Application.StartupPath + "\\SurveyForm.csv";
+            waitIfLimitReached();
             List<SurveyForm> lista = BringSurveys(BringSurveyIDs());
             String csvtext = "SurveyFormId, SurveyFormName, SurveyLink, SurveyLanguage, SurveyQuestionCount, SurveyPageCount, SurveyDateCreated, SurveyDateModified, ProjectId\n";
             for (int i = 0; i < lista.Count; i++)
@@ -638,6 +684,7 @@ namespace SurveyMonkeyImplementation
         {
             loadSettings();
             string filePath = Application.StartupPath + "\\SurveyFormStartingWith"+ titlesContaining + ".csv";
+            waitIfLimitReached();
             List<SurveyForm> lista = BringSurveys(BringSurveyIDs());
             String csvtext = "SurveyFormId, SurveyFormName, SurveyLink, SurveyLanguage, SurveyQuestionCount, SurveyPageCount, SurveyDateCreated, SurveyDateModified, ProjectId\n";
             for (int i = 0; i < lista.Count; i++)
@@ -669,6 +716,7 @@ namespace SurveyMonkeyImplementation
             nameAux=nameAux.Replace(".", string.Empty);
             string filePath = Application.StartupPath + "\\SurveyFormPriorTo" + nameAux + ".csv";
             Console.WriteLine(nameAux);
+            waitIfLimitReached();
             List<SurveyForm> lista = BringSurveys(BringSurveyIDs());
             String csvtext = "SurveyFormId, SurveyFormName, SurveyLink, SurveyLanguage, SurveyQuestionCount, SurveyPageCount, SurveyDateCreated, SurveyDateModified, ProjectId\n";
             for (int i = 0; i < lista.Count; i++)
@@ -699,6 +747,7 @@ namespace SurveyMonkeyImplementation
             String nameAux = Regex.Replace(tmpAux, @":|/", "-");
             nameAux = nameAux.Replace(".", string.Empty);
             string filePath = Application.StartupPath + "\\SurveyFormAfterTo" + nameAux + ".csv";
+            waitIfLimitReached();
             List<SurveyForm> lista = BringSurveys(BringSurveyIDs());
             String csvtext = "SurveyFormId, SurveyFormName, SurveyLink, SurveyLanguage, SurveyQuestionCount, SurveyPageCount, SurveyDateCreated, SurveyDateModified, ProjectId\n";
             for (int i = 0; i < lista.Count; i++)
@@ -731,10 +780,12 @@ namespace SurveyMonkeyImplementation
                 csvtext += ", QUESTION" + i;
             }
             csvtext += "\n";
+            waitIfLimitReached();
             List<SurveyForm> SurveyFormDetailsList = BringSurveys(BringSurveyIDs());
             List<string> listaprueba = new List<string>();
             for (int m = 0; m < SurveyFormDetailsList.Count; m++)
             {
+                waitIfLimitReached();
                 listaprueba = BringResponsesIDs(SurveyFormDetailsList[m].id);
                 for (int i = 0; i < listaprueba.Count; i++)
                 {
@@ -2194,6 +2245,14 @@ namespace SurveyMonkeyImplementation
             string paragraphSeparator = ((char)0x2029).ToString();
 
             return value.Replace("\r\n", string.Empty).Replace("\n", string.Empty).Replace("\r", string.Empty).Replace(lineSeparator, string.Empty).Replace(paragraphSeparator, string.Empty);
+        }
+        static void waitIfLimitReached()
+        {
+            if (requestCounter == 14000)
+            {
+                System.Threading.Thread.Sleep(86400000);
+                requestCounter = 0;
+            }
         }
     }
 }
