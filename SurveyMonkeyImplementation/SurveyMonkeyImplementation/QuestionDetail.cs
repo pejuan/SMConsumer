@@ -11,7 +11,7 @@ namespace SurveyMonkeyImplementation
         public string family { get; set; }
         public string subtype { get; set; }
         public Answer answers { get; set; }
-
+        public List<Heading> headings { get; set; }
         public int position { get; set; }
         public string page_id { get; set; }
         public QuestionDetail() { }

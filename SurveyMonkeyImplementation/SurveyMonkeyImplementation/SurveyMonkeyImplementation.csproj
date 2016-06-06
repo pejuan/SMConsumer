@@ -56,6 +56,7 @@
   <ItemGroup>
     <Compile Include="Answer.cs" />
     <Compile Include="Choice.cs" />
+    <Compile Include="Heading.cs" />
     <Compile Include="Page.cs" />
     <Compile Include="PageList.cs" />
     <Compile Include="Program.cs" />

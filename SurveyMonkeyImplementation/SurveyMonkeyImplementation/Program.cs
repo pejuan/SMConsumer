@@ -62,7 +62,7 @@ namespace SurveyMonkeyImplementation
             //loadSettings();
             //ResponsesToCSV(GetSurveyDetails("74972790"),numRegistry);
 
-
+            QuestionsToCSV();
             //loadSettings();
             //DateTime datet = DateTime.Parse(date);
             //string date2 = "2014-02-09T19:39:00";
@@ -2253,6 +2253,26 @@ namespace SurveyMonkeyImplementation
                 System.Threading.Thread.Sleep(86400000);
                 requestCounter = 0;
             }
+        }
+        static bool QuestionsToCSV()
+        {
+
+
+            string filePath = Application.StartupPath + "\\Questions.csv";
+            waitIfLimitReached();
+            List<SurveyForm> lista = BringSurveys(BringSurveyIDs());
+            for (int i = 0; i < lista.Count; i++)
+            {
+                for (int j = 0; j < lista[i].pages.Count; j++)
+                {
+                    for (int k = 0; k < lista[i].pages[j].questions.Count; k++)
+			        {
+			            Console.WriteLine(lista[i].pages[j].questions[k].headings[0].heading);//Imprime la pregunta
+			        }
+                    
+                }
+            }
+            return true;
         }
     }
 }
