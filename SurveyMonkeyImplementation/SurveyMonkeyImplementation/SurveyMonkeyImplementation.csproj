@@ -70,6 +70,7 @@
     <Compile Include="ResponseList.cs" />
     <Compile Include="ResponsePage.cs" />
     <Compile Include="ResponseQuestion.cs" />
+    <Compile Include="Row.cs" />
     <Compile Include="Survey.cs" />
     <Compile Include="SurveyForm.cs" />
     <Compile Include="SurveyList.cs" />
