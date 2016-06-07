@@ -2206,7 +2206,22 @@ namespace SurveyMonkeyImplementation
                                 {
                                     if (objRD.pages[j].questions[auxiliar].answers[l].choice_id != null)
                                     {
-                                        csvtext += objRD.pages[j].questions[auxiliar].answers[l].choice_id + "_";
+                                        QuestionDetail objQD = GetQuestionDetails(survey.id, objRD.pages[j].id, objRD.pages[j].questions[auxiliar].id);
+                                        for (int q = 0; q < objQD.answers.choices.Count; q++)//Como pueden ser multiple choice, debo concatenarlas
+                                        {
+                                            if (objQD.answers.choices[q].id == objRD.pages[j].questions[auxiliar].answers[l].choice_id)
+                                            {
+                                                //csvtext += "\"" + objQD.answers.choices[q].text + "\", ";
+                                                string Content = RemoveLineEndings(objQD.answers.choices[q].text);
+                                                string newCont = Regex.Replace(Content, @"\t|\n|\r|,", "");
+                                                //temporal += newCont + "_";
+                                                csvtext += newCont + "_";
+                                            }
+                                        }
+
+                                        //csvtext += objRD.pages[j].questions[auxiliar].answers[l].choice_id + "_";
+
+
                                     }
                                     else if (objRD.pages[j].questions[auxiliar].answers[l].text != null)
                                     {
