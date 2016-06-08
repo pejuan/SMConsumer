@@ -9,6 +9,7 @@ namespace SurveyMonkeyImplementation
     class ResponseAnswer
     {
         public string choice_id { get; set; }
+        public string row_id { get; set; }
         public string text { get; set; }
 
         public ResponseAnswer() { }

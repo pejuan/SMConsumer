@@ -2201,12 +2201,16 @@ namespace SurveyMonkeyImplementation
                             int qcpos = GetAQuestionPosition(survey.id, objRD.pages[j].id, objRD.pages[j].questions[auxiliar].id);
                             if (k+1 == qcpos)
                             {
-                                
+                                string tmprow_id = "";
                                 for (int l = 0; l < objRD.pages[j].questions[auxiliar].answers.Count; l++)
                                 {
                                     if (objRD.pages[j].questions[auxiliar].answers[l].choice_id != null)
                                     {
                                         QuestionDetail objQD = GetQuestionDetails(survey.id, objRD.pages[j].id, objRD.pages[j].questions[auxiliar].id);
+                                        if (tmprow_id != objRD.pages[j].questions[auxiliar].answers[l].row_id && (l != 0))
+                                        {
+                                            csvtext += "||";
+                                        }
                                         for (int q = 0; q < objQD.answers.choices.Count; q++)//Como pueden ser multiple choice, debo concatenarlas
                                         {
                                             if (objQD.answers.choices[q].id == objRD.pages[j].questions[auxiliar].answers[l].choice_id)
@@ -2216,9 +2220,11 @@ namespace SurveyMonkeyImplementation
                                                 string newCont = Regex.Replace(Content, @"\t|\n|\r|,", "");
                                                 //temporal += newCont + "_";
                                                 csvtext += newCont + "_";
+                                                
                                             }
                                         }
-
+                                        
+                                        tmprow_id = objRD.pages[j].questions[auxiliar].answers[l].row_id;
                                         //csvtext += objRD.pages[j].questions[auxiliar].answers[l].choice_id + "_";
 
 
