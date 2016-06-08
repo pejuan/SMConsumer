@@ -3124,7 +3124,6 @@ namespace SurveyMonkeyImplementation
             {
                 rdlist.Add(GetResponseDetails(listOfResponsesIDs[i]));
             }
-            string surveyID = rdlist[0].survey_id;
             //Debo de poner el heading del csv mejor en otra variable para poder hacer append en caso ya haya un archivo creado
             string filePath = Application.StartupPath + "\\SurveyResponses" + ".csv";
             String csvtext = "SurveyResponseId, SurveyFormID, SurveyResponseDateModified, SurveyResponseDateCreated, SurveyResponseIp, SurveyResponseCompleted, RecipientId, TotalTime";
@@ -3134,10 +3133,6 @@ namespace SurveyMonkeyImplementation
             }
             csvtext += "\n";
             waitIfLimitReached();
-            List<SurveyForm> SurveyFormDetailsList = BringSurveys(BringSurveyIDs());
-            List<string> listaprueba = new List<string>();
-
-            listaprueba = BringResponsesIDs(SurveyFormDetailsList[b].id);
             for (int i = 0; i < rdlist.Count; i++)
             {
                 ResponseDetail objRD = rdlist[i];
@@ -3153,7 +3148,7 @@ namespace SurveyMonkeyImplementation
                 for (int j = 0; j < objRD.pages.Count; j++)
                 {
 
-                    int qcaux = GetAPageQuestionCount(objRD.survey_id.id, objRD.pages[j].id);
+                    int qcaux = GetAPageQuestionCount(objRD.survey_id, objRD.pages[j].id);
                     int auxiliar = 0;
                     int questcountreal = objRD.pages[j].questions.Count;
                     for (int k = 0; k < qcaux; k++)
@@ -3169,7 +3164,7 @@ namespace SurveyMonkeyImplementation
                                 {
                                     if (objRD.pages[j].questions[auxiliar].answers[l].choice_id != null)
                                     {
-                                        QuestionDetail objQD = GetQuestionDetails(objRD.survey_id.id, objRD.pages[j].id, objRD.pages[j].questions[auxiliar].id);
+                                        QuestionDetail objQD = GetQuestionDetails(objRD.survey_id, objRD.pages[j].id, objRD.pages[j].questions[auxiliar].id);
                                         if (tmprow_id != objRD.pages[j].questions[auxiliar].answers[l].row_id && (l != 0))
                                         {
                                             csvtext += "||";
