@@ -50,7 +50,8 @@ namespace SurveyMonkeyImplementation
 
             //QuestionsToCSV();
             //ResponsesToCSV(GetSurveyDetails("80589076"));
-            NewResponsesToCSV(GetSurveyDetails("80589076"));
+            //NewResponsesToCSV(GetSurveyDetails("80589076"));
+            QuestionsToCSV(GetSurveyDetails("74972790"));
 
         }
         static bool fillSurveyIDs()
@@ -2149,18 +2150,78 @@ namespace SurveyMonkeyImplementation
 
             string filePath = Application.StartupPath + "\\Questions.csv";
             waitIfLimitReached();
+            string heading = "SurveyFormId,SurveyQuestionDetail,SurveyQuestionName,SurveyQuestionType\n";
+            string csvtext = "";
+            
             List<SurveyForm> lista = BringSurveys(BringSurveyIDs());
             for (int i = 0; i < lista.Count; i++)
             {
+                int counter = 1;
                 for (int j = 0; j < lista[i].pages.Count; j++)
                 {
                     for (int k = 0; k < lista[i].pages[j].questions.Count; k++)
 			        {
 			            Console.WriteLine(lista[i].pages[j].questions[k].headings[0].heading);//Imprime la pregunta
+                        csvtext += "\"" + lista[i].id + "\",\"" + "QUESTION" + counter + "\",\"" + lista[i].pages[j].questions[k].headings[0].heading + "\",\"" + lista[i].pages[j].questions[k].family + "\"";
+                        csvtext += "\n";
+                        counter++;
 			        }
                     
                 }
+                for (int j = counter; j < 101; j++)
+                {
+                    csvtext += "\"" + lista[i].id + "\",\"" + "QUESTION" + j + "\",\"" + "NULL" + "\",\"" + "NULL" + "\"";
+                    csvtext += "\n";
 
+                }
+
+            }
+            heading += csvtext;
+            if (File.Exists(filePath))
+            {
+                File.AppendAllText(filePath, csvtext);
+            }
+            else
+            {
+                File.WriteAllText(filePath, heading);
+            }
+            return true;
+        }
+
+        static bool QuestionsToCSV(SurveyForm survey)
+        {
+
+
+            string filePath = Application.StartupPath + "\\Questions.csv";
+            waitIfLimitReached();
+            string heading = "SurveyFormId,SurveyQuestionDetail,SurveyQuestionName,SurveyQuestionType\n";
+            string csvtext = "";
+            int counter = 1;
+            for (int j = 0; j < survey.pages.Count; j++)
+            {
+                for (int k = 0; k < survey.pages[j].questions.Count; k++)
+                {
+                    Console.WriteLine(survey.pages[j].questions[k].headings[0].heading);//Imprime la pregunta
+                    csvtext += "\"" + survey.id + "\",\"" + "QUESTION" + counter + "\",\"" + survey.pages[j].questions[k].headings[0].heading + "\",\"" + survey.pages[j].questions[k].family+"\"";
+                    csvtext += "\n";
+                    counter++;
+                }
+
+            }
+            for (int i = counter; i < 101; i++)
+            {
+                csvtext += "\"" + survey.id + "\",\"" + "QUESTION" + i + "\",\"" + "NULL" + "\",\"" + "NULL" + "\"";
+                csvtext += "\n";
+
+            }
+            heading += csvtext;
+            if (File.Exists(filePath))
+            {
+                File.AppendAllText(filePath, csvtext);
+            }
+            else
+            {
+                File.WriteAllText(filePath, heading);
             }
             return true;
         }
@@ -2170,12 +2231,13 @@ namespace SurveyMonkeyImplementation
         {
             //Debo de poner el heading del csv mejor en otra variable para poder hacer append en caso ya haya un archivo creado
             string filePath = Application.StartupPath + "\\SurveyResponses"+ ".csv";
-            String csvtext = "SurveyResponseId, SurveyFormID, SurveyResponseDateModified, SurveyResponseDateCreated, SurveyResponseIp, SurveyResponseCompleted, RecipientId, TotalTime";
+            String heading = "SurveyResponseId,SurveyFormID,SurveyResponseDateModified,SurveyResponseDateCreated,SurveyResponseIp,SurveyResponseCompleted,RecipientId,TotalTime";
             for (int i = 1; i < 101; i++)
             {
-                csvtext += ", QUESTION" + i;
+                heading += ", QUESTION" + i;
             }
-            csvtext += "\n";
+            heading += "\n";
+            String csvtext = "";
             waitIfLimitReached();
             List<SurveyForm> SurveyFormDetailsList = BringSurveys(BringSurveyIDs());
             List<string> listaprueba = new List<string>();
@@ -2257,18 +2319,27 @@ namespace SurveyMonkeyImplementation
                 }
             }
 
-            File.WriteAllText(filePath, csvtext);
+            heading += csvtext;
+            if (File.Exists(filePath))
+            {
+                File.AppendAllText(filePath, csvtext);
+            }
+            else
+            {
+                File.WriteAllText(filePath, heading);
+            }
             return true;
         }
         static bool NewResponsesToCSV(SurveyForm survey)//Este es el bueno
         {
             string filePath = Application.StartupPath + "\\SurveyResponses" + survey.title.Trim() + ".csv";
-            String csvtext = "SurveyResponseId, SurveyFormID, SurveyResponseDateModified, SurveyResponseDateCreated, SurveyResponseIp, SurveyResponseCompleted, RecipientId, TotalTime";
+            String heading = "SurveyResponseId,SurveyFormID,SurveyResponseDateModified,SurveyResponseDateCreated,SurveyResponseIp,SurveyResponseCompleted,RecipientId,TotalTime";
             for (int i = 1; i < 101; i++)
             {
-                csvtext += ", QUESTION" + i;
+                heading += ", QUESTION" + i;
             }
-            csvtext += "\n";
+            heading += "\n";
+            String csvtext = "";
             List<string> listaprueba = new List<string>();
 
             listaprueba = BringResponsesIDs(survey.id);
@@ -2345,18 +2416,27 @@ namespace SurveyMonkeyImplementation
                 csvtext += "\n";
             }
 
-            File.WriteAllText(filePath, csvtext);
+            heading += csvtext;
+            if (File.Exists(filePath))
+            {
+                File.AppendAllText(filePath, csvtext);
+            }
+            else
+            {
+                File.WriteAllText(filePath, heading);
+            }
             return true;
         }
         static bool NewResponsesToCSV(SurveyForm survey, int num_registros)//Este es el bueno
         {
             string filePath = Application.StartupPath + "\\SurveyResponses" + survey.title.Trim() + ".csv";
-            String csvtext = "SurveyResponseId, SurveyFormID, SurveyResponseDateModified, SurveyResponseDateCreated, SurveyResponseIp, SurveyResponseCompleted, RecipientId, TotalTime";
+            String heading = "SurveyResponseId,SurveyFormID,SurveyResponseDateModified,SurveyResponseDateCreated,SurveyResponseIp,SurveyResponseCompleted,RecipientId,TotalTime";
             for (int i = 1; i < 101; i++)
             {
-                csvtext += ", QUESTION" + i;
+                heading += ", QUESTION" + i;
             }
-            csvtext += "\n";
+            heading += "\n";
+            String csvtext = "";
             List<string> listaprueba = new List<string>();
 
             listaprueba = BringResponsesIDs(survey.id);
@@ -2438,18 +2518,27 @@ namespace SurveyMonkeyImplementation
                 csvtext += "\n";
             }
 
-            File.WriteAllText(filePath, csvtext);
+            heading += csvtext;
+            if (File.Exists(filePath))
+            {
+                File.AppendAllText(filePath, csvtext);
+            }
+            else
+            {
+                File.WriteAllText(filePath, heading);
+            }
             return true;
         }
         static bool NewResponsesToCSV(SurveyForm survey, string num_registros)//Este es el bueno
         {
             string filePath = Application.StartupPath + "\\SurveyResponses" + survey.title.Trim() + ".csv";
-            String csvtext = "SurveyResponseId, SurveyFormID, SurveyResponseDateModified, SurveyResponseDateCreated, SurveyResponseIp, SurveyResponseCompleted, RecipientId, TotalTime";
+            String heading = "SurveyResponseId,SurveyFormID,SurveyResponseDateModified,SurveyResponseDateCreated,SurveyResponseIp,SurveyResponseCompleted,RecipientId,TotalTime";
             for (int i = 1; i < 101; i++)
             {
-                csvtext += ", QUESTION" + i;
+                heading += ", QUESTION" + i;
             }
-            csvtext += "\n";
+            heading += "\n";
+            String csvtext = "";
             List<string> listaprueba = new List<string>();
 
             listaprueba = BringResponsesIDs(survey.id);
@@ -2531,18 +2620,27 @@ namespace SurveyMonkeyImplementation
                 csvtext += "\n";
             }
 
-            File.WriteAllText(filePath, csvtext);
+            heading += csvtext;
+            if (File.Exists(filePath))
+            {
+                File.AppendAllText(filePath, csvtext);
+            }
+            else
+            {
+                File.WriteAllText(filePath, heading);
+            }
             return true;
         }
         static bool NewResponsesToCSVPriorTo(SurveyForm survey)//Este es el bueno
         {
             string filePath = Application.StartupPath + "\\SurveyResponses" + survey.title.Trim() + ".csv";
-            String csvtext = "SurveyResponseId, SurveyFormID, SurveyResponseDateModified, SurveyResponseDateCreated, SurveyResponseIp, SurveyResponseCompleted, RecipientId, TotalTime";
+            String heading = "SurveyResponseId,SurveyFormID,SurveyResponseDateModified,SurveyResponseDateCreated,SurveyResponseIp,SurveyResponseCompleted,RecipientId,TotalTime";
             for (int i = 1; i < 101; i++)
             {
-                csvtext += ", QUESTION" + i;
+                heading += ", QUESTION" + i;
             }
-            csvtext += "\n";
+            heading += "\n";
+            String csvtext = "";
             List<string> listaprueba = new List<string>();
 
             listaprueba = BringResponsesIDs(survey.id);
@@ -2624,18 +2722,27 @@ namespace SurveyMonkeyImplementation
                 }
             }
 
-            File.WriteAllText(filePath, csvtext);
+            heading += csvtext;
+            if (File.Exists(filePath))
+            {
+                File.AppendAllText(filePath, csvtext);
+            }
+            else
+            {
+                File.WriteAllText(filePath, heading);
+            }
             return true;
         }
         static bool NewResponsesToCSVPriorTo(SurveyForm survey, int num_registros)//Este es el bueno
         {
             string filePath = Application.StartupPath + "\\SurveyResponses" + survey.title.Trim() + ".csv";
-            String csvtext = "SurveyResponseId, SurveyFormID, SurveyResponseDateModified, SurveyResponseDateCreated, SurveyResponseIp, SurveyResponseCompleted, RecipientId, TotalTime";
+            String heading = "SurveyResponseId,SurveyFormID,SurveyResponseDateModified,SurveyResponseDateCreated,SurveyResponseIp,SurveyResponseCompleted,RecipientId,TotalTime";
             for (int i = 1; i < 101; i++)
             {
-                csvtext += ", QUESTION" + i;
+                heading += ", QUESTION" + i;
             }
-            csvtext += "\n";
+            heading += "\n";
+            String csvtext = "";
             List<string> listaprueba = new List<string>();
 
             listaprueba = BringResponsesIDs(survey.id);
@@ -2722,18 +2829,27 @@ namespace SurveyMonkeyImplementation
                 }
             }
 
-            File.WriteAllText(filePath, csvtext);
+            heading += csvtext;
+            if (File.Exists(filePath))
+            {
+                File.AppendAllText(filePath, csvtext);
+            }
+            else
+            {
+                File.WriteAllText(filePath, heading);
+            }
             return true;
         }
         static bool NewResponsesToCSVPriorTo(SurveyForm survey, string num_registros)//Este es el bueno
         {
             string filePath = Application.StartupPath + "\\SurveyResponses" + survey.title.Trim() + ".csv";
-            String csvtext = "SurveyResponseId, SurveyFormID, SurveyResponseDateModified, SurveyResponseDateCreated, SurveyResponseIp, SurveyResponseCompleted, RecipientId, TotalTime";
+            String heading = "SurveyResponseId,SurveyFormID,SurveyResponseDateModified,SurveyResponseDateCreated,SurveyResponseIp,SurveyResponseCompleted,RecipientId,TotalTime";
             for (int i = 1; i < 101; i++)
             {
-                csvtext += ", QUESTION" + i;
+                heading += ", QUESTION" + i;
             }
-            csvtext += "\n";
+            heading += "\n";
+            String csvtext = "";
             List<string> listaprueba = new List<string>();
 
             listaprueba = BringResponsesIDs(survey.id);
@@ -2820,18 +2936,27 @@ namespace SurveyMonkeyImplementation
                 }
             }
 
-            File.WriteAllText(filePath, csvtext);
+            heading += csvtext;
+            if (File.Exists(filePath))
+            {
+                File.AppendAllText(filePath, csvtext);
+            }
+            else
+            {
+                File.WriteAllText(filePath, heading);
+            }
             return true;
         }
         static bool NewResponsesToCSVAfterTo(SurveyForm survey)//Este es el bueno
         {
             string filePath = Application.StartupPath + "\\SurveyResponses" + survey.title.Trim() + ".csv";
-            String csvtext = "SurveyResponseId, SurveyFormID, SurveyResponseDateModified, SurveyResponseDateCreated, SurveyResponseIp, SurveyResponseCompleted, RecipientId, TotalTime";
+            String heading = "SurveyResponseId,SurveyFormID,SurveyResponseDateModified,SurveyResponseDateCreated,SurveyResponseIp,SurveyResponseCompleted,RecipientId,TotalTime";
             for (int i = 1; i < 101; i++)
             {
-                csvtext += ", QUESTION" + i;
+                heading += ", QUESTION" + i;
             }
-            csvtext += "\n";
+            heading += "\n";
+            String csvtext = "";
             List<string> listaprueba = new List<string>();
 
             listaprueba = BringResponsesIDs(survey.id);
@@ -2913,18 +3038,27 @@ namespace SurveyMonkeyImplementation
                 }
             }
 
-            File.WriteAllText(filePath, csvtext);
+            heading += csvtext;
+            if (File.Exists(filePath))
+            {
+                File.AppendAllText(filePath, csvtext);
+            }
+            else
+            {
+                File.WriteAllText(filePath, heading);
+            }
             return true;
         }
         static bool NewResponsesToCSVAfterTo(SurveyForm survey, int num_registros)//Este es el bueno
         {
             string filePath = Application.StartupPath + "\\SurveyResponses" + survey.title.Trim() + ".csv";
-            String csvtext = "SurveyResponseId, SurveyFormID, SurveyResponseDateModified, SurveyResponseDateCreated, SurveyResponseIp, SurveyResponseCompleted, RecipientId, TotalTime";
+            String heading = "SurveyResponseId,SurveyFormID,SurveyResponseDateModified,SurveyResponseDateCreated,SurveyResponseIp,SurveyResponseCompleted,RecipientId,TotalTime";
             for (int i = 1; i < 101; i++)
             {
-                csvtext += ", QUESTION" + i;
+                heading += ", QUESTION" + i;
             }
-            csvtext += "\n";
+            heading += "\n";
+            String csvtext = "";
             List<string> listaprueba = new List<string>();
 
             listaprueba = BringResponsesIDs(survey.id);
@@ -3011,18 +3145,27 @@ namespace SurveyMonkeyImplementation
                 }
             }
 
-            File.WriteAllText(filePath, csvtext);
+            heading += csvtext;
+            if (File.Exists(filePath))
+            {
+                File.AppendAllText(filePath, csvtext);
+            }
+            else
+            {
+                File.WriteAllText(filePath, heading);
+            }
             return true;
         }
         static bool NewResponsesToCSVAfterTo(SurveyForm survey, string num_registros)//Este es el bueno
         {
             string filePath = Application.StartupPath + "\\SurveyResponses" + survey.title.Trim() + ".csv";
-            String csvtext = "SurveyResponseId, SurveyFormID, SurveyResponseDateModified, SurveyResponseDateCreated, SurveyResponseIp, SurveyResponseCompleted, RecipientId, TotalTime";
+            String heading = "SurveyResponseId,SurveyFormID,SurveyResponseDateModified,SurveyResponseDateCreated,SurveyResponseIp,SurveyResponseCompleted,RecipientId,TotalTime";
             for (int i = 1; i < 101; i++)
             {
-                csvtext += ", QUESTION" + i;
+                heading += ", QUESTION" + i;
             }
-            csvtext += "\n";
+            heading += "\n";
+            String csvtext = "";
             List<string> listaprueba = new List<string>();
 
             listaprueba = BringResponsesIDs(survey.id);
@@ -3109,7 +3252,15 @@ namespace SurveyMonkeyImplementation
                 }
             }
 
-            File.WriteAllText(filePath, csvtext);
+            heading += csvtext;
+            if (File.Exists(filePath))
+            {
+                File.AppendAllText(filePath, csvtext);
+            }
+            else
+            {
+                File.WriteAllText(filePath, heading);
+            }
             return true;
         }
         static bool NewResponsesToCSV(List<string> listOfResponsesIDs)//Este es el bueno
@@ -3126,12 +3277,13 @@ namespace SurveyMonkeyImplementation
             }
             //Debo de poner el heading del csv mejor en otra variable para poder hacer append en caso ya haya un archivo creado
             string filePath = Application.StartupPath + "\\SurveyResponses" + ".csv";
-            String csvtext = "SurveyResponseId, SurveyFormID, SurveyResponseDateModified, SurveyResponseDateCreated, SurveyResponseIp, SurveyResponseCompleted, RecipientId, TotalTime";
+            String heading = "SurveyResponseId,SurveyFormID,SurveyResponseDateModified,SurveyResponseDateCreated,SurveyResponseIp,SurveyResponseCompleted,RecipientId,TotalTime";
             for (int i = 1; i < 101; i++)
             {
-                csvtext += ", QUESTION" + i;
+                heading += ", QUESTION" + i;
             }
-            csvtext += "\n";
+            heading += "\n";
+            String csvtext = "";
             waitIfLimitReached();
             for (int i = 0; i < rdlist.Count; i++)
             {
@@ -3205,9 +3357,17 @@ namespace SurveyMonkeyImplementation
                 }
                 csvtext += "\n";
             }
-            
 
-            File.WriteAllText(filePath, csvtext);
+
+            heading += csvtext;
+            if (File.Exists(filePath))
+            {
+                File.AppendAllText(filePath, csvtext);
+            }
+            else
+            {
+                File.WriteAllText(filePath, heading);
+            }
             return true;
         }
     }
