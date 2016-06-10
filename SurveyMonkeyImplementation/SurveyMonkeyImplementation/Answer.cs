@@ -9,6 +9,7 @@ namespace SurveyMonkeyImplementation
     class Answer
     {
         public List<Choice> choices { get; set; }
+        public List<Row> rows { get; set; }
         public Answer() { }
     }
 }

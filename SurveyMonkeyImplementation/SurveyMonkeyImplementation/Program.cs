@@ -49,7 +49,7 @@ namespace SurveyMonkeyImplementation
         {
 
             //QuestionsToCSV();
-            //ResponsesToCSV(GetSurveyDetails("80589076"));
+            ResponsesToCSV(GetSurveyDetails("80589076"));
             //NewResponsesToCSV(GetSurveyDetails("80589076"));
             //QuestionsToCSV(GetSurveyDetails("74972790"));
 
@@ -801,7 +801,7 @@ namespace SurveyMonkeyImplementation
             String heading = "SurveyResponseId,SurveyFormID,SurveyResponseDateModified,SurveyResponseDateCreated,SurveyResponseIp,SurveyResponseCompleted,RecipientId,TotalTime";
             for (int i = 1; i < 101; i++)
             {
-                heading += ", QUESTION" + i;
+                heading += ",QUESTION" + i;
             }
             heading += "\n";
             String csvtext = "";
@@ -868,8 +868,26 @@ namespace SurveyMonkeyImplementation
                                         }
                                         else if (objRD.pages[j].questions[auxiliar].answers[l].text != null)
                                         {
-                                            string tmp = RemoveLineEndings(objRD.pages[j].questions[auxiliar].answers[l].text);
-                                            csvtext += Regex.Replace(tmp, @"\t|\n|\r|,", "") + "_";
+                                            QuestionDetail objQD = GetQuestionDetails(SurveyFormDetailsList[b].id, objRD.pages[j].id, objRD.pages[j].questions[auxiliar].id);
+                                            if (objQD.family == "open_ended" && objQD.subtype == "multi")
+                                            {
+                                                for (int v = 0; v < objQD.answers.rows.Count; v++)
+                                                {
+                                                    if (objRD.pages[j].questions[auxiliar].answers[l].row_id == objQD.answers.rows[v].id)
+                                                    {
+
+                                                        string tmp = RemoveLineEndings(objRD.pages[j].questions[auxiliar].answers[l].text);
+                                                        csvtext += objQD.answers.rows[v].position + ")" + Regex.Replace(tmp, @"\t|\n|\r|,", "") + "  ";
+
+                                                    }
+                                                }
+
+                                            }
+                                            else
+                                            {
+                                                string tmp = RemoveLineEndings(objRD.pages[j].questions[auxiliar].answers[l].text);
+                                                csvtext += Regex.Replace(tmp, @"\t|\n|\r|,", "") + "_";
+                                            }
                                         }
                                     }
 
@@ -903,7 +921,7 @@ namespace SurveyMonkeyImplementation
             String heading = "SurveyResponseId,SurveyFormID,SurveyResponseDateModified,SurveyResponseDateCreated,SurveyResponseIp,SurveyResponseCompleted,RecipientId,TotalTime";
             for (int i = 1; i < 101; i++)
             {
-                heading += ", QUESTION" + i;
+                heading += ",QUESTION" + i;
             }
             heading += "\n";
             String csvtext = "";
@@ -966,10 +984,29 @@ namespace SurveyMonkeyImplementation
                                     }
                                     else if (objRD.pages[j].questions[auxiliar].answers[l].text != null)
                                     {
-                                        string tmp = RemoveLineEndings(objRD.pages[j].questions[auxiliar].answers[l].text);
-                                        csvtext += Regex.Replace(tmp, @"\t|\n|\r|,", "") + "_";
+                                        QuestionDetail objQD = GetQuestionDetails(survey.id, objRD.pages[j].id, objRD.pages[j].questions[auxiliar].id);
+                                        if (objQD.family == "open_ended" && objQD.subtype == "multi")
+                                        {
+                                            for (int b = 0; b < objQD.answers.rows.Count; b++)
+			                                {
+			                                    if (objRD.pages[j].questions[auxiliar].answers[l].row_id == objQD.answers.rows[b].id)
+                                                {
+
+                                                    string tmp = RemoveLineEndings(objRD.pages[j].questions[auxiliar].answers[l].text);
+                                                    csvtext += objQD.answers.rows[b].position+")" + Regex.Replace(tmp, @"\t|\n|\r|,", "") + "  ";
+                                                                                                      
+                                                }
+			                                }
+                                            
+                                        }
+                                        else
+                                        {
+                                            string tmp = RemoveLineEndings(objRD.pages[j].questions[auxiliar].answers[l].text);
+                                            csvtext += Regex.Replace(tmp, @"\t|\n|\r|,", "") + "_";
+                                        }
+                                        
                                     }
-                                }
+                                }                               
                                 
                                 auxiliar++;
                             }
@@ -1000,7 +1037,7 @@ namespace SurveyMonkeyImplementation
             String heading = "SurveyResponseId,SurveyFormID,SurveyResponseDateModified,SurveyResponseDateCreated,SurveyResponseIp,SurveyResponseCompleted,RecipientId,TotalTime";
             for (int i = 1; i < 101; i++)
             {
-                heading += ", QUESTION" + i;
+                heading += ",QUESTION" + i;
             }
             heading += "\n";
             String csvtext = "";
@@ -1068,8 +1105,26 @@ namespace SurveyMonkeyImplementation
                                     }
                                     else if (objRD.pages[j].questions[auxiliar].answers[l].text != null)
                                     {
-                                        string tmp = RemoveLineEndings(objRD.pages[j].questions[auxiliar].answers[l].text);
-                                        csvtext += Regex.Replace(tmp, @"\t|\n|\r|,", "") + "_";
+                                        QuestionDetail objQD = GetQuestionDetails(survey.id, objRD.pages[j].id, objRD.pages[j].questions[auxiliar].id);
+                                        if (objQD.family == "open_ended" && objQD.subtype == "multi")
+                                        {
+                                            for (int b = 0; b < objQD.answers.rows.Count; b++)
+                                            {
+                                                if (objRD.pages[j].questions[auxiliar].answers[l].row_id == objQD.answers.rows[b].id)
+                                                {
+
+                                                    string tmp = RemoveLineEndings(objRD.pages[j].questions[auxiliar].answers[l].text);
+                                                    csvtext += objQD.answers.rows[b].position + ")" + Regex.Replace(tmp, @"\t|\n|\r|,", "") + "  ";
+
+                                                }
+                                            }
+
+                                        }
+                                        else
+                                        {
+                                            string tmp = RemoveLineEndings(objRD.pages[j].questions[auxiliar].answers[l].text);
+                                            csvtext += Regex.Replace(tmp, @"\t|\n|\r|,", "") + "_";
+                                        }
                                     }
                                 }
 
@@ -1102,7 +1157,7 @@ namespace SurveyMonkeyImplementation
             String heading = "SurveyResponseId,SurveyFormID,SurveyResponseDateModified,SurveyResponseDateCreated,SurveyResponseIp,SurveyResponseCompleted,RecipientId,TotalTime";
             for (int i = 1; i < 101; i++)
             {
-                heading += ", QUESTION" + i;
+                heading += ",QUESTION" + i;
             }
             heading += "\n";
             String csvtext = "";
@@ -1170,8 +1225,26 @@ namespace SurveyMonkeyImplementation
                                     }
                                     else if (objRD.pages[j].questions[auxiliar].answers[l].text != null)
                                     {
-                                        string tmp = RemoveLineEndings(objRD.pages[j].questions[auxiliar].answers[l].text);
-                                        csvtext += Regex.Replace(tmp, @"\t|\n|\r|,", "") + "_";
+                                        QuestionDetail objQD = GetQuestionDetails(survey.id, objRD.pages[j].id, objRD.pages[j].questions[auxiliar].id);
+                                        if (objQD.family == "open_ended" && objQD.subtype == "multi")
+                                        {
+                                            for (int b = 0; b < objQD.answers.rows.Count; b++)
+                                            {
+                                                if (objRD.pages[j].questions[auxiliar].answers[l].row_id == objQD.answers.rows[b].id)
+                                                {
+
+                                                    string tmp = RemoveLineEndings(objRD.pages[j].questions[auxiliar].answers[l].text);
+                                                    csvtext += objQD.answers.rows[b].position + ")" + Regex.Replace(tmp, @"\t|\n|\r|,", "") + "  ";
+
+                                                }
+                                            }
+
+                                        }
+                                        else
+                                        {
+                                            string tmp = RemoveLineEndings(objRD.pages[j].questions[auxiliar].answers[l].text);
+                                            csvtext += Regex.Replace(tmp, @"\t|\n|\r|,", "") + "_";
+                                        }
                                     }
                                 }
 
@@ -1204,7 +1277,7 @@ namespace SurveyMonkeyImplementation
             String heading = "SurveyResponseId,SurveyFormID,SurveyResponseDateModified,SurveyResponseDateCreated,SurveyResponseIp,SurveyResponseCompleted,RecipientId,TotalTime";
             for (int i = 1; i < 101; i++)
             {
-                heading += ", QUESTION" + i;
+                heading += ",QUESTION" + i;
             }
             heading += "\n";
             String csvtext = "";
@@ -1271,8 +1344,26 @@ namespace SurveyMonkeyImplementation
                                         }
                                         else if (objRD.pages[j].questions[auxiliar].answers[l].text != null)
                                         {
-                                            string tmp = RemoveLineEndings(objRD.pages[j].questions[auxiliar].answers[l].text);
-                                            csvtext += Regex.Replace(tmp, @"\t|\n|\r|,", "") + "_";
+                                            QuestionDetail objQD = GetQuestionDetails(survey.id, objRD.pages[j].id, objRD.pages[j].questions[auxiliar].id);
+                                            if (objQD.family == "open_ended" && objQD.subtype == "multi")
+                                            {
+                                                for (int b = 0; b < objQD.answers.rows.Count; b++)
+                                                {
+                                                    if (objRD.pages[j].questions[auxiliar].answers[l].row_id == objQD.answers.rows[b].id)
+                                                    {
+
+                                                        string tmp = RemoveLineEndings(objRD.pages[j].questions[auxiliar].answers[l].text);
+                                                        csvtext += objQD.answers.rows[b].position + ")" + Regex.Replace(tmp, @"\t|\n|\r|,", "") + "  ";
+
+                                                    }
+                                                }
+
+                                            }
+                                            else
+                                            {
+                                                string tmp = RemoveLineEndings(objRD.pages[j].questions[auxiliar].answers[l].text);
+                                                csvtext += Regex.Replace(tmp, @"\t|\n|\r|,", "") + "_";
+                                            }
                                         }
                                     }
 
@@ -1306,7 +1397,7 @@ namespace SurveyMonkeyImplementation
             String heading = "SurveyResponseId,SurveyFormID,SurveyResponseDateModified,SurveyResponseDateCreated,SurveyResponseIp,SurveyResponseCompleted,RecipientId,TotalTime";
             for (int i = 1; i < 101; i++)
             {
-                heading += ", QUESTION" + i;
+                heading += ",QUESTION" + i;
             }
             heading += "\n";
             String csvtext = "";
@@ -1378,8 +1469,26 @@ namespace SurveyMonkeyImplementation
                                         }
                                         else if (objRD.pages[j].questions[auxiliar].answers[l].text != null)
                                         {
-                                            string tmp = RemoveLineEndings(objRD.pages[j].questions[auxiliar].answers[l].text);
-                                            csvtext += Regex.Replace(tmp, @"\t|\n|\r|,", "") + "_";
+                                            QuestionDetail objQD = GetQuestionDetails(survey.id, objRD.pages[j].id, objRD.pages[j].questions[auxiliar].id);
+                                            if (objQD.family == "open_ended" && objQD.subtype == "multi")
+                                            {
+                                                for (int b = 0; b < objQD.answers.rows.Count; b++)
+                                                {
+                                                    if (objRD.pages[j].questions[auxiliar].answers[l].row_id == objQD.answers.rows[b].id)
+                                                    {
+
+                                                        string tmp = RemoveLineEndings(objRD.pages[j].questions[auxiliar].answers[l].text);
+                                                        csvtext += objQD.answers.rows[b].position + ")" + Regex.Replace(tmp, @"\t|\n|\r|,", "") + "  ";
+
+                                                    }
+                                                }
+
+                                            }
+                                            else
+                                            {
+                                                string tmp = RemoveLineEndings(objRD.pages[j].questions[auxiliar].answers[l].text);
+                                                csvtext += Regex.Replace(tmp, @"\t|\n|\r|,", "") + "_";
+                                            }
                                         }
                                     }
 
@@ -1413,7 +1522,7 @@ namespace SurveyMonkeyImplementation
             String heading = "SurveyResponseId,SurveyFormID,SurveyResponseDateModified,SurveyResponseDateCreated,SurveyResponseIp,SurveyResponseCompleted,RecipientId,TotalTime";
             for (int i = 1; i < 101; i++)
             {
-                heading += ", QUESTION" + i;
+                heading += ",QUESTION" + i;
             }
             heading += "\n";
             String csvtext = "";
@@ -1485,8 +1594,26 @@ namespace SurveyMonkeyImplementation
                                         }
                                         else if (objRD.pages[j].questions[auxiliar].answers[l].text != null)
                                         {
-                                            string tmp = RemoveLineEndings(objRD.pages[j].questions[auxiliar].answers[l].text);
-                                            csvtext += Regex.Replace(tmp, @"\t|\n|\r|,", "") + "_";
+                                            QuestionDetail objQD = GetQuestionDetails(survey.id, objRD.pages[j].id, objRD.pages[j].questions[auxiliar].id);
+                                            if (objQD.family == "open_ended" && objQD.subtype == "multi")
+                                            {
+                                                for (int b = 0; b < objQD.answers.rows.Count; b++)
+                                                {
+                                                    if (objRD.pages[j].questions[auxiliar].answers[l].row_id == objQD.answers.rows[b].id)
+                                                    {
+
+                                                        string tmp = RemoveLineEndings(objRD.pages[j].questions[auxiliar].answers[l].text);
+                                                        csvtext += objQD.answers.rows[b].position + ")" + Regex.Replace(tmp, @"\t|\n|\r|,", "") + "  ";
+
+                                                    }
+                                                }
+
+                                            }
+                                            else
+                                            {
+                                                string tmp = RemoveLineEndings(objRD.pages[j].questions[auxiliar].answers[l].text);
+                                                csvtext += Regex.Replace(tmp, @"\t|\n|\r|,", "") + "_";
+                                            }
                                         }
                                     }
 
@@ -1520,7 +1647,7 @@ namespace SurveyMonkeyImplementation
             String heading = "SurveyResponseId,SurveyFormID,SurveyResponseDateModified,SurveyResponseDateCreated,SurveyResponseIp,SurveyResponseCompleted,RecipientId,TotalTime";
             for (int i = 1; i < 101; i++)
             {
-                heading += ", QUESTION" + i;
+                heading += ",QUESTION" + i;
             }
             heading += "\n";
             String csvtext = "";
@@ -1587,8 +1714,26 @@ namespace SurveyMonkeyImplementation
                                         }
                                         else if (objRD.pages[j].questions[auxiliar].answers[l].text != null)
                                         {
-                                            string tmp = RemoveLineEndings(objRD.pages[j].questions[auxiliar].answers[l].text);
-                                            csvtext += Regex.Replace(tmp, @"\t|\n|\r|,", "") + "_";
+                                            QuestionDetail objQD = GetQuestionDetails(survey.id, objRD.pages[j].id, objRD.pages[j].questions[auxiliar].id);
+                                            if (objQD.family == "open_ended" && objQD.subtype == "multi")
+                                            {
+                                                for (int b = 0; b < objQD.answers.rows.Count; b++)
+                                                {
+                                                    if (objRD.pages[j].questions[auxiliar].answers[l].row_id == objQD.answers.rows[b].id)
+                                                    {
+
+                                                        string tmp = RemoveLineEndings(objRD.pages[j].questions[auxiliar].answers[l].text);
+                                                        csvtext += objQD.answers.rows[b].position + ")" + Regex.Replace(tmp, @"\t|\n|\r|,", "") + "  ";
+
+                                                    }
+                                                }
+
+                                            }
+                                            else
+                                            {
+                                                string tmp = RemoveLineEndings(objRD.pages[j].questions[auxiliar].answers[l].text);
+                                                csvtext += Regex.Replace(tmp, @"\t|\n|\r|,", "") + "_";
+                                            }
                                         }
                                     }
 
@@ -1622,7 +1767,7 @@ namespace SurveyMonkeyImplementation
             String heading = "SurveyResponseId,SurveyFormID,SurveyResponseDateModified,SurveyResponseDateCreated,SurveyResponseIp,SurveyResponseCompleted,RecipientId,TotalTime";
             for (int i = 1; i < 101; i++)
             {
-                heading += ", QUESTION" + i;
+                heading += ",QUESTION" + i;
             }
             heading += "\n";
             String csvtext = "";
@@ -1694,8 +1839,26 @@ namespace SurveyMonkeyImplementation
                                         }
                                         else if (objRD.pages[j].questions[auxiliar].answers[l].text != null)
                                         {
-                                            string tmp = RemoveLineEndings(objRD.pages[j].questions[auxiliar].answers[l].text);
-                                            csvtext += Regex.Replace(tmp, @"\t|\n|\r|,", "") + "_";
+                                            QuestionDetail objQD = GetQuestionDetails(survey.id, objRD.pages[j].id, objRD.pages[j].questions[auxiliar].id);
+                                            if (objQD.family == "open_ended" && objQD.subtype == "multi")
+                                            {
+                                                for (int b = 0; b < objQD.answers.rows.Count; b++)
+                                                {
+                                                    if (objRD.pages[j].questions[auxiliar].answers[l].row_id == objQD.answers.rows[b].id)
+                                                    {
+
+                                                        string tmp = RemoveLineEndings(objRD.pages[j].questions[auxiliar].answers[l].text);
+                                                        csvtext += objQD.answers.rows[b].position + ")" + Regex.Replace(tmp, @"\t|\n|\r|,", "") + "  ";
+
+                                                    }
+                                                }
+
+                                            }
+                                            else
+                                            {
+                                                string tmp = RemoveLineEndings(objRD.pages[j].questions[auxiliar].answers[l].text);
+                                                csvtext += Regex.Replace(tmp, @"\t|\n|\r|,", "") + "_";
+                                            }
                                         }
                                     }
 
@@ -1729,7 +1892,7 @@ namespace SurveyMonkeyImplementation
             String heading = "SurveyResponseId,SurveyFormID,SurveyResponseDateModified,SurveyResponseDateCreated,SurveyResponseIp,SurveyResponseCompleted,RecipientId,TotalTime";
             for (int i = 1; i < 101; i++)
             {
-                heading += ", QUESTION" + i;
+                heading += ",QUESTION" + i;
             }
             heading += "\n";
             String csvtext = "";
@@ -1801,8 +1964,26 @@ namespace SurveyMonkeyImplementation
                                         }
                                         else if (objRD.pages[j].questions[auxiliar].answers[l].text != null)
                                         {
-                                            string tmp = RemoveLineEndings(objRD.pages[j].questions[auxiliar].answers[l].text);
-                                            csvtext += Regex.Replace(tmp, @"\t|\n|\r|,", "") + "_";
+                                            QuestionDetail objQD = GetQuestionDetails(survey.id, objRD.pages[j].id, objRD.pages[j].questions[auxiliar].id);
+                                            if (objQD.family == "open_ended" && objQD.subtype == "multi")
+                                            {
+                                                for (int b = 0; b < objQD.answers.rows.Count; b++)
+                                                {
+                                                    if (objRD.pages[j].questions[auxiliar].answers[l].row_id == objQD.answers.rows[b].id)
+                                                    {
+
+                                                        string tmp = RemoveLineEndings(objRD.pages[j].questions[auxiliar].answers[l].text);
+                                                        csvtext += objQD.answers.rows[b].position + ")" + Regex.Replace(tmp, @"\t|\n|\r|,", "") + "  ";
+
+                                                    }
+                                                }
+
+                                            }
+                                            else
+                                            {
+                                                string tmp = RemoveLineEndings(objRD.pages[j].questions[auxiliar].answers[l].text);
+                                                csvtext += Regex.Replace(tmp, @"\t|\n|\r|,", "") + "_";
+                                            }
                                         }
                                     }
 
@@ -1847,7 +2028,7 @@ namespace SurveyMonkeyImplementation
             String heading = "SurveyResponseId,SurveyFormID,SurveyResponseDateModified,SurveyResponseDateCreated,SurveyResponseIp,SurveyResponseCompleted,RecipientId,TotalTime";
             for (int i = 1; i < 101; i++)
             {
-                heading += ", QUESTION" + i;
+                heading += ",QUESTION" + i;
             }
             heading += "\n";
             String csvtext = "";
@@ -1908,8 +2089,26 @@ namespace SurveyMonkeyImplementation
                                     }
                                     else if (objRD.pages[j].questions[auxiliar].answers[l].text != null)
                                     {
-                                        string tmp = RemoveLineEndings(objRD.pages[j].questions[auxiliar].answers[l].text);
-                                        csvtext += Regex.Replace(tmp, @"\t|\n|\r|,", "") + "_";
+                                        QuestionDetail objQD = GetQuestionDetails(survey.id, objRD.pages[j].id, objRD.pages[j].questions[auxiliar].id);
+                                        if (objQD.family == "open_ended" && objQD.subtype == "multi")
+                                        {
+                                            for (int b = 0; b < objQD.answers.rows.Count; b++)
+                                            {
+                                                if (objRD.pages[j].questions[auxiliar].answers[l].row_id == objQD.answers.rows[b].id)
+                                                {
+
+                                                    string tmp = RemoveLineEndings(objRD.pages[j].questions[auxiliar].answers[l].text);
+                                                    csvtext += objQD.answers.rows[b].position + ")" + Regex.Replace(tmp, @"\t|\n|\r|,", "") + "  ";
+
+                                                }
+                                            }
+
+                                        }
+                                        else
+                                        {
+                                            string tmp = RemoveLineEndings(objRD.pages[j].questions[auxiliar].answers[l].text);
+                                            csvtext += Regex.Replace(tmp, @"\t|\n|\r|,", "") + "_";
+                                        }
                                     }
                                 }
 
