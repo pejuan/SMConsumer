@@ -549,7 +549,8 @@ namespace SurveyMonkeyImplementation
             string filePath = Application.StartupPath + "\\SurveyForm.csv";
             waitIfLimitReached();
             List<SurveyForm> lista = BringSurveys(BringSurveyIDs());
-            String csvtext = "SurveyFormId, SurveyFormName, SurveyLink, SurveyLanguage, SurveyQuestionCount, SurveyPageCount, SurveyDateCreated, SurveyDateModified, ProjectId\n";
+            String heading = "SurveyFormId, SurveyFormName, SurveyLink, SurveyLanguage, SurveyQuestionCount, SurveyPageCount, SurveyDateCreated, SurveyDateModified, ProjectId\n";
+            String csvtext = "";
             for (int i = 0; i < lista.Count; i++)
             {
                 csvtext += "\""+lista[i].id + "\", ";
@@ -562,7 +563,16 @@ namespace SurveyMonkeyImplementation
                 csvtext += "\"" + lista[i].date_modified + "\", ";
                 csvtext += 1 + "\n";
             }
-            File.WriteAllText(filePath, csvtext);
+
+            heading += csvtext;
+            if (File.Exists(filePath))
+            {
+                File.AppendAllText(filePath, csvtext);
+            }
+            else
+            {
+                File.WriteAllText(filePath, heading);
+            }
             return true;
         }
         static bool SurveysTitleContainingToCSV()
@@ -571,7 +581,8 @@ namespace SurveyMonkeyImplementation
             string filePath = Application.StartupPath + "\\SurveyFormStartingWith"+ titlesContaining + ".csv";
             waitIfLimitReached();
             List<SurveyForm> lista = BringSurveys(BringSurveyIDs());
-            String csvtext = "SurveyFormId, SurveyFormName, SurveyLink, SurveyLanguage, SurveyQuestionCount, SurveyPageCount, SurveyDateCreated, SurveyDateModified, ProjectId\n";
+            String heading = "SurveyFormId, SurveyFormName, SurveyLink, SurveyLanguage, SurveyQuestionCount, SurveyPageCount, SurveyDateCreated, SurveyDateModified, ProjectId\n";
+            String csvtext = "";
             for (int i = 0; i < lista.Count; i++)
             {
                 if (lista[i].title.Contains(titlesContaining))
@@ -589,7 +600,15 @@ namespace SurveyMonkeyImplementation
                 }
                 
             }
-            File.WriteAllText(filePath, csvtext);
+            heading += csvtext;
+            if (File.Exists(filePath))
+            {
+                File.AppendAllText(filePath, csvtext);
+            }
+            else
+            {
+                File.WriteAllText(filePath, heading);
+            }
             return true;
         }
         static bool SurveysCreatedPriorToCSV()
@@ -603,7 +622,8 @@ namespace SurveyMonkeyImplementation
             Console.WriteLine(nameAux);
             waitIfLimitReached();
             List<SurveyForm> lista = BringSurveys(BringSurveyIDs());
-            String csvtext = "SurveyFormId, SurveyFormName, SurveyLink, SurveyLanguage, SurveyQuestionCount, SurveyPageCount, SurveyDateCreated, SurveyDateModified, ProjectId\n";
+            String heading = "SurveyFormId, SurveyFormName, SurveyLink, SurveyLanguage, SurveyQuestionCount, SurveyPageCount, SurveyDateCreated, SurveyDateModified, ProjectId\n";
+            String csvtext = "";
             for (int i = 0; i < lista.Count; i++)
             {
                 DateTime datetmp = DateTime.Parse(lista[i].date_created);
@@ -622,7 +642,15 @@ namespace SurveyMonkeyImplementation
                 }
 
             }
-            File.WriteAllText(filePath, csvtext);
+            heading += csvtext;
+            if (File.Exists(filePath))
+            {
+                File.AppendAllText(filePath, csvtext);
+            }
+            else
+            {
+                File.WriteAllText(filePath, heading);
+            }
             return true;
         }
         static bool SurveysCreatedAfterToCSV()
@@ -634,7 +662,8 @@ namespace SurveyMonkeyImplementation
             string filePath = Application.StartupPath + "\\SurveyFormAfterTo" + nameAux + ".csv";
             waitIfLimitReached();
             List<SurveyForm> lista = BringSurveys(BringSurveyIDs());
-            String csvtext = "SurveyFormId, SurveyFormName, SurveyLink, SurveyLanguage, SurveyQuestionCount, SurveyPageCount, SurveyDateCreated, SurveyDateModified, ProjectId\n";
+            String heading = "SurveyFormId, SurveyFormName, SurveyLink, SurveyLanguage, SurveyQuestionCount, SurveyPageCount, SurveyDateCreated, SurveyDateModified, ProjectId\n";
+            String csvtext = "";
             for (int i = 0; i < lista.Count; i++)
             {
                 DateTime datetmp = DateTime.Parse(lista[i].date_created);
@@ -653,7 +682,15 @@ namespace SurveyMonkeyImplementation
                 }
 
             }
-            File.WriteAllText(filePath, csvtext);
+            heading += csvtext;
+            if (File.Exists(filePath))
+            {
+                File.AppendAllText(filePath, csvtext);
+            }
+            else
+            {
+                File.WriteAllText(filePath, heading);
+            }
             return true;
         }
         public static string RemoveLineEndings(string value)
