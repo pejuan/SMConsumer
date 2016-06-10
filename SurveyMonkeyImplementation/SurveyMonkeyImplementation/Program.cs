@@ -549,18 +549,18 @@ namespace SurveyMonkeyImplementation
             string filePath = Application.StartupPath + "\\SurveyForm.csv";
             waitIfLimitReached();
             List<SurveyForm> lista = BringSurveys(BringSurveyIDs());
-            String heading = "SurveyFormId, SurveyFormName, SurveyLink, SurveyLanguage, SurveyQuestionCount, SurveyPageCount, SurveyDateCreated, SurveyDateModified, ProjectId\n";
+            String heading = "SurveyFormId,SurveyFormName,SurveyLink,SurveyLanguage,SurveyQuestionCount,SurveyPageCount,SurveyDateCreated,SurveyDateModified,ProjectId\n";
             String csvtext = "";
             for (int i = 0; i < lista.Count; i++)
             {
-                csvtext += "\""+lista[i].id + "\", ";
-                csvtext += "\"" + lista[i].title + "\", ";
-                csvtext += "\"" + lista[i].preview + "\", ";
-                csvtext += "\"" + lista[i].language + "\", ";
-                csvtext += "\"" + lista[i].question_count + "\", ";
-                csvtext += "\"" + lista[i].page_count + "\", ";
-                csvtext += "\"" + lista[i].date_created + "\", ";
-                csvtext += "\"" + lista[i].date_modified + "\", ";
+                csvtext += "\""+lista[i].id + "\",";
+                csvtext += "\"" + lista[i].title + "\",";
+                csvtext += "\"" + lista[i].preview + "\",";
+                csvtext += "\"" + lista[i].language + "\",";
+                csvtext += "\"" + lista[i].question_count + "\",";
+                csvtext += "\"" + lista[i].page_count + "\",";
+                csvtext += "\"" + lista[i].date_created + "\",";
+                csvtext += "\"" + lista[i].date_modified + "\",";
                 csvtext += 1 + "\n";
             }
 
@@ -581,20 +581,20 @@ namespace SurveyMonkeyImplementation
             string filePath = Application.StartupPath + "\\SurveyFormStartingWith"+ titlesContaining + ".csv";
             waitIfLimitReached();
             List<SurveyForm> lista = BringSurveys(BringSurveyIDs());
-            String heading = "SurveyFormId, SurveyFormName, SurveyLink, SurveyLanguage, SurveyQuestionCount, SurveyPageCount, SurveyDateCreated, SurveyDateModified, ProjectId\n";
+            String heading = "SurveyFormId,SurveyFormName,SurveyLink,SurveyLanguage,SurveyQuestionCount,SurveyPageCount,SurveyDateCreated,SurveyDateModified,ProjectId\n";
             String csvtext = "";
             for (int i = 0; i < lista.Count; i++)
             {
                 if (lista[i].title.Contains(titlesContaining))
                 {
-                    csvtext += "\"" + lista[i].id + "\", ";
-                    csvtext += "\"" + lista[i].title + "\", ";
-                    csvtext += "\"" + lista[i].preview + "\", ";
-                    csvtext += "\"" + lista[i].language + "\", ";
-                    csvtext += "\"" + lista[i].question_count + "\", ";
-                    csvtext += "\"" + lista[i].page_count + "\", ";
-                    csvtext += "\"" + lista[i].date_created + "\", ";
-                    csvtext += "\"" + lista[i].date_modified + "\", ";
+                    csvtext += "\"" + lista[i].id + "\",";
+                    csvtext += "\"" + lista[i].title + "\",";
+                    csvtext += "\"" + lista[i].preview + "\",";
+                    csvtext += "\"" + lista[i].language + "\",";
+                    csvtext += "\"" + lista[i].question_count + "\",";
+                    csvtext += "\"" + lista[i].page_count + "\",";
+                    csvtext += "\"" + lista[i].date_created + "\",";
+                    csvtext += "\"" + lista[i].date_modified + "\",";
                     csvtext += 1 + "\n";
 
                 }
@@ -622,21 +622,21 @@ namespace SurveyMonkeyImplementation
             Console.WriteLine(nameAux);
             waitIfLimitReached();
             List<SurveyForm> lista = BringSurveys(BringSurveyIDs());
-            String heading = "SurveyFormId, SurveyFormName, SurveyLink, SurveyLanguage, SurveyQuestionCount, SurveyPageCount, SurveyDateCreated, SurveyDateModified, ProjectId\n";
+            String heading = "SurveyFormId,SurveyFormName,SurveyLink,SurveyLanguage,SurveyQuestionCount,SurveyPageCount,SurveyDateCreated,SurveyDateModified,ProjectId\n";
             String csvtext = "";
             for (int i = 0; i < lista.Count; i++)
             {
                 DateTime datetmp = DateTime.Parse(lista[i].date_created);
                 if (datetmp<=datesPrior)
                 {
-                    csvtext += "\"" + lista[i].id + "\", ";
-                    csvtext += "\"" + lista[i].title + "\", ";
-                    csvtext += "\"" + lista[i].preview + "\", ";
-                    csvtext += "\"" + lista[i].language + "\", ";
-                    csvtext += "\"" + lista[i].question_count + "\", ";
-                    csvtext += "\"" + lista[i].page_count + "\", ";
-                    csvtext += "\"" + lista[i].date_created + "\", ";
-                    csvtext += "\"" + lista[i].date_modified + "\", ";
+                    csvtext += "\"" + lista[i].id + "\",";
+                    csvtext += "\"" + lista[i].title + "\",";
+                    csvtext += "\"" + lista[i].preview + "\",";
+                    csvtext += "\"" + lista[i].language + "\",";
+                    csvtext += "\"" + lista[i].question_count + "\",";
+                    csvtext += "\"" + lista[i].page_count + "\",";
+                    csvtext += "\"" + lista[i].date_created + "\",";
+                    csvtext += "\"" + lista[i].date_modified + "\",";
                     csvtext += 1 + "\n";
 
                 }
@@ -662,21 +662,21 @@ namespace SurveyMonkeyImplementation
             string filePath = Application.StartupPath + "\\SurveyFormAfterTo" + nameAux + ".csv";
             waitIfLimitReached();
             List<SurveyForm> lista = BringSurveys(BringSurveyIDs());
-            String heading = "SurveyFormId, SurveyFormName, SurveyLink, SurveyLanguage, SurveyQuestionCount, SurveyPageCount, SurveyDateCreated, SurveyDateModified, ProjectId\n";
+            String heading = "SurveyFormId,SurveyFormName,SurveyLink,SurveyLanguage,SurveyQuestionCount,SurveyPageCount,SurveyDateCreated,SurveyDateModified,ProjectId\n";
             String csvtext = "";
             for (int i = 0; i < lista.Count; i++)
             {
                 DateTime datetmp = DateTime.Parse(lista[i].date_created);
                 if (datetmp >= datesAfter)
                 {
-                    csvtext += "\"" + lista[i].id + "\", ";
-                    csvtext += "\"" + lista[i].title + "\", ";
-                    csvtext += "\"" + lista[i].preview + "\", ";
-                    csvtext += "\"" + lista[i].language + "\", ";
-                    csvtext += "\"" + lista[i].question_count + "\", ";
-                    csvtext += "\"" + lista[i].page_count + "\", ";
-                    csvtext += "\"" + lista[i].date_created + "\", ";
-                    csvtext += "\"" + lista[i].date_modified + "\", ";
+                    csvtext += "\"" + lista[i].id + "\",";
+                    csvtext += "\"" + lista[i].title + "\",";
+                    csvtext += "\"" + lista[i].preview + "\",";
+                    csvtext += "\"" + lista[i].language + "\",";
+                    csvtext += "\"" + lista[i].question_count + "\",";
+                    csvtext += "\"" + lista[i].page_count + "\",";
+                    csvtext += "\"" + lista[i].date_created + "\",";
+                    csvtext += "\"" + lista[i].date_modified + "\",";
                     csvtext += 1 + "\n";
 
                 }
@@ -815,13 +815,13 @@ namespace SurveyMonkeyImplementation
                 for (int i = 0; i < listaprueba.Count; i++)
                 {
                     ResponseDetail objRD = GetResponseDetails(listaprueba[i]);
-                    csvtext += "\"" + objRD.id + "\", ";
-                    csvtext += "\"" + SurveyFormDetailsList[b].id + "\", ";
-                    csvtext += "\"" + objRD.date_modified + "\", " + "\"" + objRD.date_created + "\", ";
-                    csvtext += "\"" + objRD.ip_address + "\", ";
-                    csvtext += "\"" + objRD.response_status + "\", ";
-                    csvtext += "\"" + objRD.recipient_id + "\", ";
-                    csvtext += "\"" + objRD.total_time + "\", ";
+                    csvtext += "\"" + objRD.id + "\",";
+                    csvtext += "\"" + SurveyFormDetailsList[b].id + "\",";
+                    csvtext += "\"" + objRD.date_modified + "\"," + "\"" + objRD.date_created + "\",";
+                    csvtext += "\"" + objRD.ip_address + "\",";
+                    csvtext += "\"" + objRD.response_status + "\",";
+                    csvtext += "\"" + objRD.recipient_id + "\",";
+                    csvtext += "\"" + objRD.total_time + "\",";
                     Console.WriteLine(objRD.response_status);
 
                     for (int j = 0; j < objRD.pages.Count; j++)
@@ -931,13 +931,13 @@ namespace SurveyMonkeyImplementation
             for (int i = 0; i < listaprueba.Count; i++)
             {
                 ResponseDetail objRD = GetResponseDetails(listaprueba[i]);
-                csvtext += "\"" + objRD.id + "\", ";
-                csvtext += "\"" + survey.id + "\", ";
-                csvtext += "\"" + objRD.date_modified + "\", " + "\"" + objRD.date_created + "\", ";
-                csvtext += "\"" + objRD.ip_address + "\", ";
-                csvtext += "\"" + objRD.response_status + "\", ";
-                csvtext += "\"" + objRD.recipient_id + "\", ";
-                csvtext += "\"" + objRD.total_time + "\", ";
+                csvtext += "\"" + objRD.id + "\",";
+                csvtext += "\"" + survey.id + "\",";
+                csvtext += "\"" + objRD.date_modified + "\"," + "\"" + objRD.date_created + "\",";
+                csvtext += "\"" + objRD.ip_address + "\",";
+                csvtext += "\"" + objRD.response_status + "\",";
+                csvtext += "\"" + objRD.recipient_id + "\",";
+                csvtext += "\"" + objRD.total_time + "\",";
                 Console.WriteLine(objRD.response_status);
 
                 for (int j = 0; j < objRD.pages.Count; j++)
@@ -1052,13 +1052,13 @@ namespace SurveyMonkeyImplementation
             for (int i = 0; i < final; i++)
             {
                 ResponseDetail objRD = GetResponseDetails(listaprueba[i]);
-                csvtext += "\"" + objRD.id + "\", ";
-                csvtext += "\"" + survey.id + "\", ";
-                csvtext += "\"" + objRD.date_modified + "\", " + "\"" + objRD.date_created + "\", ";
-                csvtext += "\"" + objRD.ip_address + "\", ";
-                csvtext += "\"" + objRD.response_status + "\", ";
-                csvtext += "\"" + objRD.recipient_id + "\", ";
-                csvtext += "\"" + objRD.total_time + "\", ";
+                csvtext += "\"" + objRD.id + "\",";
+                csvtext += "\"" + survey.id + "\",";
+                csvtext += "\"" + objRD.date_modified + "\"," + "\"" + objRD.date_created + "\",";
+                csvtext += "\"" + objRD.ip_address + "\",";
+                csvtext += "\"" + objRD.response_status + "\",";
+                csvtext += "\"" + objRD.recipient_id + "\",";
+                csvtext += "\"" + objRD.total_time + "\",";
                 Console.WriteLine(objRD.response_status);
 
                 for (int j = 0; j < objRD.pages.Count; j++)
@@ -1172,13 +1172,13 @@ namespace SurveyMonkeyImplementation
             for (int i = 0; i < final; i++)
             {
                 ResponseDetail objRD = GetResponseDetails(listaprueba[i]);
-                csvtext += "\"" + objRD.id + "\", ";
-                csvtext += "\"" + survey.id + "\", ";
-                csvtext += "\"" + objRD.date_modified + "\", " + "\"" + objRD.date_created + "\", ";
-                csvtext += "\"" + objRD.ip_address + "\", ";
-                csvtext += "\"" + objRD.response_status + "\", ";
-                csvtext += "\"" + objRD.recipient_id + "\", ";
-                csvtext += "\"" + objRD.total_time + "\", ";
+                csvtext += "\"" + objRD.id + "\",";
+                csvtext += "\"" + survey.id + "\",";
+                csvtext += "\"" + objRD.date_modified + "\"," + "\"" + objRD.date_created + "\",";
+                csvtext += "\"" + objRD.ip_address + "\",";
+                csvtext += "\"" + objRD.response_status + "\",";
+                csvtext += "\"" + objRD.recipient_id + "\",";
+                csvtext += "\"" + objRD.total_time + "\",";
                 Console.WriteLine(objRD.response_status);
 
                 for (int j = 0; j < objRD.pages.Count; j++)
@@ -1291,13 +1291,13 @@ namespace SurveyMonkeyImplementation
                 {
 
                     
-                    csvtext += "\"" + objRD.id + "\", ";
-                    csvtext += "\"" + survey.id + "\", ";
-                    csvtext += "\"" + objRD.date_modified + "\", " + "\"" + objRD.date_created + "\", ";
-                    csvtext += "\"" + objRD.ip_address + "\", ";
-                    csvtext += "\"" + objRD.response_status + "\", ";
-                    csvtext += "\"" + objRD.recipient_id + "\", ";
-                    csvtext += "\"" + objRD.total_time + "\", ";
+                    csvtext += "\"" + objRD.id + "\",";
+                    csvtext += "\"" + survey.id + "\",";
+                    csvtext += "\"" + objRD.date_modified + "\"," + "\"" + objRD.date_created + "\",";
+                    csvtext += "\"" + objRD.ip_address + "\",";
+                    csvtext += "\"" + objRD.response_status + "\",";
+                    csvtext += "\"" + objRD.recipient_id + "\",";
+                    csvtext += "\"" + objRD.total_time + "\",";
                     Console.WriteLine(objRD.response_status);
 
                     for (int j = 0; j < objRD.pages.Count; j++)
@@ -1416,13 +1416,13 @@ namespace SurveyMonkeyImplementation
                 {
 
 
-                    csvtext += "\"" + objRD.id + "\", ";
-                    csvtext += "\"" + survey.id + "\", ";
-                    csvtext += "\"" + objRD.date_modified + "\", " + "\"" + objRD.date_created + "\", ";
-                    csvtext += "\"" + objRD.ip_address + "\", ";
-                    csvtext += "\"" + objRD.response_status + "\", ";
-                    csvtext += "\"" + objRD.recipient_id + "\", ";
-                    csvtext += "\"" + objRD.total_time + "\", ";
+                    csvtext += "\"" + objRD.id + "\",";
+                    csvtext += "\"" + survey.id + "\",";
+                    csvtext += "\"" + objRD.date_modified + "\"," + "\"" + objRD.date_created + "\",";
+                    csvtext += "\"" + objRD.ip_address + "\",";
+                    csvtext += "\"" + objRD.response_status + "\",";
+                    csvtext += "\"" + objRD.recipient_id + "\",";
+                    csvtext += "\"" + objRD.total_time + "\",";
                     Console.WriteLine(objRD.response_status);
 
                     for (int j = 0; j < objRD.pages.Count; j++)
@@ -1541,13 +1541,13 @@ namespace SurveyMonkeyImplementation
                 {
 
 
-                    csvtext += "\"" + objRD.id + "\", ";
-                    csvtext += "\"" + survey.id + "\", ";
-                    csvtext += "\"" + objRD.date_modified + "\", " + "\"" + objRD.date_created + "\", ";
-                    csvtext += "\"" + objRD.ip_address + "\", ";
-                    csvtext += "\"" + objRD.response_status + "\", ";
-                    csvtext += "\"" + objRD.recipient_id + "\", ";
-                    csvtext += "\"" + objRD.total_time + "\", ";
+                    csvtext += "\"" + objRD.id + "\",";
+                    csvtext += "\"" + survey.id + "\",";
+                    csvtext += "\"" + objRD.date_modified + "\"," + "\"" + objRD.date_created + "\",";
+                    csvtext += "\"" + objRD.ip_address + "\",";
+                    csvtext += "\"" + objRD.response_status + "\",";
+                    csvtext += "\"" + objRD.recipient_id + "\",";
+                    csvtext += "\"" + objRD.total_time + "\",";
                     Console.WriteLine(objRD.response_status);
 
                     for (int j = 0; j < objRD.pages.Count; j++)
@@ -1661,13 +1661,13 @@ namespace SurveyMonkeyImplementation
                 {
 
 
-                    csvtext += "\"" + objRD.id + "\", ";
-                    csvtext += "\"" + survey.id + "\", ";
-                    csvtext += "\"" + objRD.date_modified + "\", " + "\"" + objRD.date_created + "\", ";
-                    csvtext += "\"" + objRD.ip_address + "\", ";
-                    csvtext += "\"" + objRD.response_status + "\", ";
-                    csvtext += "\"" + objRD.recipient_id + "\", ";
-                    csvtext += "\"" + objRD.total_time + "\", ";
+                    csvtext += "\"" + objRD.id + "\",";
+                    csvtext += "\"" + survey.id + "\",";
+                    csvtext += "\"" + objRD.date_modified + "\"," + "\"" + objRD.date_created + "\",";
+                    csvtext += "\"" + objRD.ip_address + "\",";
+                    csvtext += "\"" + objRD.response_status + "\",";
+                    csvtext += "\"" + objRD.recipient_id + "\",";
+                    csvtext += "\"" + objRD.total_time + "\",";
                     Console.WriteLine(objRD.response_status);
 
                     for (int j = 0; j < objRD.pages.Count; j++)
@@ -1786,13 +1786,13 @@ namespace SurveyMonkeyImplementation
                 {
 
 
-                    csvtext += "\"" + objRD.id + "\", ";
-                    csvtext += "\"" + survey.id + "\", ";
-                    csvtext += "\"" + objRD.date_modified + "\", " + "\"" + objRD.date_created + "\", ";
-                    csvtext += "\"" + objRD.ip_address + "\", ";
-                    csvtext += "\"" + objRD.response_status + "\", ";
-                    csvtext += "\"" + objRD.recipient_id + "\", ";
-                    csvtext += "\"" + objRD.total_time + "\", ";
+                    csvtext += "\"" + objRD.id + "\",";
+                    csvtext += "\"" + survey.id + "\",";
+                    csvtext += "\"" + objRD.date_modified + "\"," + "\"" + objRD.date_created + "\",";
+                    csvtext += "\"" + objRD.ip_address + "\",";
+                    csvtext += "\"" + objRD.response_status + "\",";
+                    csvtext += "\"" + objRD.recipient_id + "\",";
+                    csvtext += "\"" + objRD.total_time + "\",";
                     Console.WriteLine(objRD.response_status);
 
                     for (int j = 0; j < objRD.pages.Count; j++)
@@ -1911,13 +1911,13 @@ namespace SurveyMonkeyImplementation
                 {
 
 
-                    csvtext += "\"" + objRD.id + "\", ";
-                    csvtext += "\"" + survey.id + "\", ";
-                    csvtext += "\"" + objRD.date_modified + "\", " + "\"" + objRD.date_created + "\", ";
-                    csvtext += "\"" + objRD.ip_address + "\", ";
-                    csvtext += "\"" + objRD.response_status + "\", ";
-                    csvtext += "\"" + objRD.recipient_id + "\", ";
-                    csvtext += "\"" + objRD.total_time + "\", ";
+                    csvtext += "\"" + objRD.id + "\",";
+                    csvtext += "\"" + survey.id + "\",";
+                    csvtext += "\"" + objRD.date_modified + "\"," + "\"" + objRD.date_created + "\",";
+                    csvtext += "\"" + objRD.ip_address + "\",";
+                    csvtext += "\"" + objRD.response_status + "\",";
+                    csvtext += "\"" + objRD.recipient_id + "\",";
+                    csvtext += "\"" + objRD.total_time + "\",";
                     Console.WriteLine(objRD.response_status);
 
                     for (int j = 0; j < objRD.pages.Count; j++)
@@ -2036,13 +2036,13 @@ namespace SurveyMonkeyImplementation
             for (int i = 0; i < rdlist.Count; i++)
             {
                 ResponseDetail objRD = rdlist[i];
-                csvtext += "\"" + objRD.id + "\", ";
-                csvtext += "\"" + objRD.survey_id + "\", ";
-                csvtext += "\"" + objRD.date_modified + "\", " + "\"" + objRD.date_created + "\", ";
-                csvtext += "\"" + objRD.ip_address + "\", ";
-                csvtext += "\"" + objRD.response_status + "\", ";
-                csvtext += "\"" + objRD.recipient_id + "\", ";
-                csvtext += "\"" + objRD.total_time + "\", ";
+                csvtext += "\"" + objRD.id + "\",";
+                csvtext += "\"" + objRD.survey_id + "\",";
+                csvtext += "\"" + objRD.date_modified + "\"," + "\"" + objRD.date_created + "\",";
+                csvtext += "\"" + objRD.ip_address + "\",";
+                csvtext += "\"" + objRD.response_status + "\",";
+                csvtext += "\"" + objRD.recipient_id + "\",";
+                csvtext += "\"" + objRD.total_time + "\",";
                 Console.WriteLine(objRD.response_status);
 
                 for (int j = 0; j < objRD.pages.Count; j++)
