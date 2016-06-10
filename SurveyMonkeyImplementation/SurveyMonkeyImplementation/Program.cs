@@ -846,7 +846,7 @@ namespace SurveyMonkeyImplementation
                                             QuestionDetail objQD = GetQuestionDetails(SurveyFormDetailsList[b].id, objRD.pages[j].id, objRD.pages[j].questions[auxiliar].id);
                                             if (tmprow_id != objRD.pages[j].questions[auxiliar].answers[l].row_id && (l != 0))
                                             {
-                                                csvtext += "||";
+                                                csvtext += " || ";
                                             }
                                             for (int q = 0; q < objQD.answers.choices.Count; q++)//Como pueden ser multiple choice, debo concatenarlas
                                             {
@@ -962,7 +962,7 @@ namespace SurveyMonkeyImplementation
                                         QuestionDetail objQD = GetQuestionDetails(survey.id, objRD.pages[j].id, objRD.pages[j].questions[auxiliar].id);
                                         if (tmprow_id != objRD.pages[j].questions[auxiliar].answers[l].row_id && (l != 0))
                                         {
-                                            csvtext += "||";
+                                            csvtext += " || ";
                                         }
                                         for (int q = 0; q < objQD.answers.choices.Count; q++)//Como pueden ser multiple choice, debo concatenarlas
                                         {
@@ -1083,7 +1083,7 @@ namespace SurveyMonkeyImplementation
                                         QuestionDetail objQD = GetQuestionDetails(survey.id, objRD.pages[j].id, objRD.pages[j].questions[auxiliar].id);
                                         if (tmprow_id != objRD.pages[j].questions[auxiliar].answers[l].row_id && (l != 0))
                                         {
-                                            csvtext += "||";
+                                            csvtext += " || ";
                                         }
                                         for (int q = 0; q < objQD.answers.choices.Count; q++)//Como pueden ser multiple choice, debo concatenarlas
                                         {
@@ -1203,7 +1203,7 @@ namespace SurveyMonkeyImplementation
                                         QuestionDetail objQD = GetQuestionDetails(survey.id, objRD.pages[j].id, objRD.pages[j].questions[auxiliar].id);
                                         if (tmprow_id != objRD.pages[j].questions[auxiliar].answers[l].row_id && (l != 0))
                                         {
-                                            csvtext += "||";
+                                            csvtext += " || ";
                                         }
                                         for (int q = 0; q < objQD.answers.choices.Count; q++)//Como pueden ser multiple choice, debo concatenarlas
                                         {
@@ -1322,7 +1322,7 @@ namespace SurveyMonkeyImplementation
                                             QuestionDetail objQD = GetQuestionDetails(survey.id, objRD.pages[j].id, objRD.pages[j].questions[auxiliar].id);
                                             if (tmprow_id != objRD.pages[j].questions[auxiliar].answers[l].row_id && (l != 0))
                                             {
-                                                csvtext += "||";
+                                                csvtext += " || ";
                                             }
                                             for (int q = 0; q < objQD.answers.choices.Count; q++)//Como pueden ser multiple choice, debo concatenarlas
                                             {
@@ -1447,7 +1447,7 @@ namespace SurveyMonkeyImplementation
                                             QuestionDetail objQD = GetQuestionDetails(survey.id, objRD.pages[j].id, objRD.pages[j].questions[auxiliar].id);
                                             if (tmprow_id != objRD.pages[j].questions[auxiliar].answers[l].row_id && (l != 0))
                                             {
-                                                csvtext += "||";
+                                                csvtext += " || ";
                                             }
                                             for (int q = 0; q < objQD.answers.choices.Count; q++)//Como pueden ser multiple choice, debo concatenarlas
                                             {
@@ -1572,7 +1572,7 @@ namespace SurveyMonkeyImplementation
                                             QuestionDetail objQD = GetQuestionDetails(survey.id, objRD.pages[j].id, objRD.pages[j].questions[auxiliar].id);
                                             if (tmprow_id != objRD.pages[j].questions[auxiliar].answers[l].row_id && (l != 0))
                                             {
-                                                csvtext += "||";
+                                                csvtext += " || ";
                                             }
                                             for (int q = 0; q < objQD.answers.choices.Count; q++)//Como pueden ser multiple choice, debo concatenarlas
                                             {
@@ -1692,7 +1692,7 @@ namespace SurveyMonkeyImplementation
                                             QuestionDetail objQD = GetQuestionDetails(survey.id, objRD.pages[j].id, objRD.pages[j].questions[auxiliar].id);
                                             if (tmprow_id != objRD.pages[j].questions[auxiliar].answers[l].row_id && (l != 0))
                                             {
-                                                csvtext += "||";
+                                                csvtext += " || ";
                                             }
                                             for (int q = 0; q < objQD.answers.choices.Count; q++)//Como pueden ser multiple choice, debo concatenarlas
                                             {
@@ -1817,7 +1817,7 @@ namespace SurveyMonkeyImplementation
                                             QuestionDetail objQD = GetQuestionDetails(survey.id, objRD.pages[j].id, objRD.pages[j].questions[auxiliar].id);
                                             if (tmprow_id != objRD.pages[j].questions[auxiliar].answers[l].row_id && (l != 0))
                                             {
-                                                csvtext += "||";
+                                                csvtext += " || ";
                                             }
                                             for (int q = 0; q < objQD.answers.choices.Count; q++)//Como pueden ser multiple choice, debo concatenarlas
                                             {
@@ -1942,7 +1942,7 @@ namespace SurveyMonkeyImplementation
                                             QuestionDetail objQD = GetQuestionDetails(survey.id, objRD.pages[j].id, objRD.pages[j].questions[auxiliar].id);
                                             if (tmprow_id != objRD.pages[j].questions[auxiliar].answers[l].row_id && (l != 0))
                                             {
-                                                csvtext += "||";
+                                                csvtext += " || ";
                                             }
                                             for (int q = 0; q < objQD.answers.choices.Count; q++)//Como pueden ser multiple choice, debo concatenarlas
                                             {
@@ -2067,7 +2067,7 @@ namespace SurveyMonkeyImplementation
                                         QuestionDetail objQD = GetQuestionDetails(objRD.survey_id, objRD.pages[j].id, objRD.pages[j].questions[auxiliar].id);
                                         if (tmprow_id != objRD.pages[j].questions[auxiliar].answers[l].row_id && (l != 0))
                                         {
-                                            csvtext += "||";
+                                            csvtext += " || ";
                                         }
                                         for (int q = 0; q < objQD.answers.choices.Count; q++)//Como pueden ser multiple choice, debo concatenarlas
                                         {
@@ -2089,7 +2089,7 @@ namespace SurveyMonkeyImplementation
                                     }
                                     else if (objRD.pages[j].questions[auxiliar].answers[l].text != null)
                                     {
-                                        QuestionDetail objQD = GetQuestionDetails(survey.id, objRD.pages[j].id, objRD.pages[j].questions[auxiliar].id);
+                                        QuestionDetail objQD = GetQuestionDetails(objRD.survey_id, objRD.pages[j].id, objRD.pages[j].questions[auxiliar].id);
                                         if (objQD.family == "open_ended" && objQD.subtype == "multi")
                                         {
                                             for (int b = 0; b < objQD.answers.rows.Count; b++)
