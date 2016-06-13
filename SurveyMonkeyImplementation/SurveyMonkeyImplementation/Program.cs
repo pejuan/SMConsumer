@@ -259,6 +259,8 @@ namespace SurveyMonkeyImplementation
                 endingPage = endingPageNode.InnerText;
                 XmlNode responsesPerPageNode = doc.DocumentElement.SelectSingleNode("/root/responsesPerPage");
                 responsesPerPage = responsesPerPageNode.InnerText;
+                XmlNode nameGivenNode = doc.DocumentElement.SelectSingleNode("/root/nombreDado");
+                nameGiven = nameGivenNode.InnerText;
                 settingsLoaded = true;
             }
         }
