@@ -9,5 +9,5 @@
 	<initialPage>1</initialPage>
 	<endingPage>3</endingPage>
 	<responsesPerPage>4</responsesPerPage>
-
+	<nombreDado>SurveyMia</nombreDado>
 </root>

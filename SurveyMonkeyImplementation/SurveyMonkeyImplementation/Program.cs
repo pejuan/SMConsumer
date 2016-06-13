@@ -29,6 +29,7 @@ namespace SurveyMonkeyImplementation
         static string initialPage = "";
         static string endingPage = "";
         static string responsesPerPage = "";
+        static string nameGiven = "default";
         static int requestCounter = 0;
 
 
@@ -48,10 +49,7 @@ namespace SurveyMonkeyImplementation
         static void Main(string[] args)
         {
 
-            //QuestionsToCSV();
-            ResponsesToCSV(GetSurveyDetails("80589076"));
-            //NewResponsesToCSV(GetSurveyDetails("80589076"));
-            //QuestionsToCSV(GetSurveyDetails("74972790"));
+            
 
         }
         static bool fillSurveyIDs()
@@ -797,7 +795,15 @@ namespace SurveyMonkeyImplementation
         static bool ResponsesToCSV()//Este es el bueno
         {
             //Debo de poner el heading del csv mejor en otra variable para poder hacer append en caso ya haya un archivo creado
-            string filePath = Application.StartupPath + "\\SurveyResponses"+ ".csv";
+            if (nameGiven == "default")
+            {
+                string filePath = Application.StartupPath + "\\SurveyResponses" + ".csv";
+            }
+            else
+            {
+                string filePath = Application.StartupPath + "\\"+nameGiven+".csv"
+            }
+            
             String heading = "SurveyResponseId,SurveyFormID,SurveyResponseDateModified,SurveyResponseDateCreated,SurveyResponseIp,SurveyResponseCompleted,RecipientId,TotalTime";
             for (int i = 1; i < 101; i++)
             {
@@ -917,7 +923,15 @@ namespace SurveyMonkeyImplementation
         }
         static bool ResponsesToCSV(SurveyForm survey)//Este es el bueno
         {
-            string filePath = Application.StartupPath + "\\SurveyResponses" + survey.title.Trim() + ".csv";
+            if (nameGiven == "default")
+            {
+                string filePath = Application.StartupPath + "\\SurveyResponses" + survey.title.Trim() + ".csv";
+            }
+            else
+            {
+                string filePath = Application.StartupPath + "\\"+nameGiven+".csv"
+            }
+            
             String heading = "SurveyResponseId,SurveyFormID,SurveyResponseDateModified,SurveyResponseDateCreated,SurveyResponseIp,SurveyResponseCompleted,RecipientId,TotalTime";
             for (int i = 1; i < 101; i++)
             {
@@ -1033,6 +1047,14 @@ namespace SurveyMonkeyImplementation
         }
         static bool ResponsesToCSV(SurveyForm survey, int num_registros)//Este es el bueno
         {
+            if (nameGiven == "default")
+            {
+                string filePath = Application.StartupPath + "\\SurveyResponses" + ".csv";
+            }
+            else
+            {
+                string filePath = Application.StartupPath + "\\"+nameGiven+".csv"
+            }
             string filePath = Application.StartupPath + "\\SurveyResponses" + survey.title.Trim() + ".csv";
             String heading = "SurveyResponseId,SurveyFormID,SurveyResponseDateModified,SurveyResponseDateCreated,SurveyResponseIp,SurveyResponseCompleted,RecipientId,TotalTime";
             for (int i = 1; i < 101; i++)
@@ -1153,7 +1175,15 @@ namespace SurveyMonkeyImplementation
         }
         static bool ResponsesToCSV(SurveyForm survey, string num_registros)//Este es el bueno
         {
-            string filePath = Application.StartupPath + "\\SurveyResponses" + survey.title.Trim() + ".csv";
+            if (nameGiven == "default")
+            {
+                string filePath = Application.StartupPath + "\\SurveyResponses" + survey.title.Trim() + ".csv";
+            }
+            else
+            {
+                string filePath = Application.StartupPath + "\\"+nameGiven+".csv"
+            }
+            
             String heading = "SurveyResponseId,SurveyFormID,SurveyResponseDateModified,SurveyResponseDateCreated,SurveyResponseIp,SurveyResponseCompleted,RecipientId,TotalTime";
             for (int i = 1; i < 101; i++)
             {
@@ -1273,7 +1303,19 @@ namespace SurveyMonkeyImplementation
         }
         static bool ResponsesToCSVPriorTo(SurveyForm survey)//Este es el bueno
         {
-            string filePath = Application.StartupPath + "\\SurveyResponses" + survey.title.Trim() + ".csv";
+            loadSettings();
+            if (nameGiven == "default")
+            {               
+                string tmpAux = RemoveLineEndings(datesPrior.ToString().Trim());
+                String nameAux = Regex.Replace(tmpAux, @":|/", "-");
+                nameAux = nameAux.Replace(".", string.Empty);
+                string filePath = Application.StartupPath + "\\SurveyResponsesPriorTo" + survey.title.Trim()+"PriorTo"+ nameAux + ".csv";
+            }
+            else
+            {
+                string filePath = Application.StartupPath + "\\"+nameGiven+".csv"
+            }
+            
             String heading = "SurveyResponseId,SurveyFormID,SurveyResponseDateModified,SurveyResponseDateCreated,SurveyResponseIp,SurveyResponseCompleted,RecipientId,TotalTime";
             for (int i = 1; i < 101; i++)
             {
@@ -1393,7 +1435,19 @@ namespace SurveyMonkeyImplementation
         }
         static bool ResponsesToCSVPriorTo(SurveyForm survey, int num_registros)//Este es el bueno
         {
-            string filePath = Application.StartupPath + "\\SurveyResponses" + survey.title.Trim() + ".csv";
+            loadSettings();
+            if (nameGiven == "default")
+            {
+                string tmpAux = RemoveLineEndings(datesPrior.ToString().Trim());
+                String nameAux = Regex.Replace(tmpAux, @":|/", "-");
+                nameAux = nameAux.Replace(".", string.Empty);
+                string filePath = Application.StartupPath + "\\SurveyResponsesPriorTo" + survey.title.Trim()+"PriorTo"+ nameAux + ".csv";
+            }
+            else
+            {
+                string filePath = Application.StartupPath + "\\"+nameGiven+".csv"
+            }
+            
             String heading = "SurveyResponseId,SurveyFormID,SurveyResponseDateModified,SurveyResponseDateCreated,SurveyResponseIp,SurveyResponseCompleted,RecipientId,TotalTime";
             for (int i = 1; i < 101; i++)
             {
@@ -1518,7 +1572,19 @@ namespace SurveyMonkeyImplementation
         }
         static bool ResponsesToCSVPriorTo(SurveyForm survey, string num_registros)//Este es el bueno
         {
-            string filePath = Application.StartupPath + "\\SurveyResponses" + survey.title.Trim() + ".csv";
+            loadSettings();
+            if (nameGiven == "default")
+            {
+                string tmpAux = RemoveLineEndings(datesPrior.ToString().Trim());
+                String nameAux = Regex.Replace(tmpAux, @":|/", "-");
+                nameAux = nameAux.Replace(".", string.Empty);
+                string filePath = Application.StartupPath + "\\SurveyResponsesPriorTo" + survey.title.Trim()+"PriorTo"+ nameAux + ".csv";
+
+            }
+            else
+            {
+                string filePath = Application.StartupPath + "\\"+nameGiven+".csv"
+            }
             String heading = "SurveyResponseId,SurveyFormID,SurveyResponseDateModified,SurveyResponseDateCreated,SurveyResponseIp,SurveyResponseCompleted,RecipientId,TotalTime";
             for (int i = 1; i < 101; i++)
             {
@@ -1643,7 +1709,19 @@ namespace SurveyMonkeyImplementation
         }
         static bool ResponsesToCSVAfterTo(SurveyForm survey)//Este es el bueno
         {
-            string filePath = Application.StartupPath + "\\SurveyResponses" + survey.title.Trim() + ".csv";
+            loadSettings();
+            if (nameGiven == "default")
+            {
+                string tmpAux = RemoveLineEndings(datesAfter.ToString().Trim());
+                String nameAux = Regex.Replace(tmpAux, @":|/", "-");
+                nameAux = nameAux.Replace(".", string.Empty);
+                string filePath = Application.StartupPath + "\\SurveyResponsesPriorTo" + survey.title.Trim() + "PriorTo" + nameAux + ".csv";
+
+            }
+            else
+            {
+                string filePath = Application.StartupPath + "\\"+nameGiven+".csv"
+            }
             String heading = "SurveyResponseId,SurveyFormID,SurveyResponseDateModified,SurveyResponseDateCreated,SurveyResponseIp,SurveyResponseCompleted,RecipientId,TotalTime";
             for (int i = 1; i < 101; i++)
             {
@@ -1763,7 +1841,19 @@ namespace SurveyMonkeyImplementation
         }
         static bool ResponsesToCSVAfterTo(SurveyForm survey, int num_registros)//Este es el bueno
         {
-            string filePath = Application.StartupPath + "\\SurveyResponses" + survey.title.Trim() + ".csv";
+            loadSettings();
+            if (nameGiven == "default")
+            {
+                string tmpAux = RemoveLineEndings(datesAfter.ToString().Trim());
+                String nameAux = Regex.Replace(tmpAux, @":|/", "-");
+                nameAux = nameAux.Replace(".", string.Empty);
+                string filePath = Application.StartupPath + "\\SurveyResponsesPriorTo" + survey.title.Trim() + "PriorTo" + nameAux + ".csv";
+
+            }
+            else
+            {
+                string filePath = Application.StartupPath + "\\"+nameGiven+".csv"
+            }
             String heading = "SurveyResponseId,SurveyFormID,SurveyResponseDateModified,SurveyResponseDateCreated,SurveyResponseIp,SurveyResponseCompleted,RecipientId,TotalTime";
             for (int i = 1; i < 101; i++)
             {
@@ -1888,7 +1978,18 @@ namespace SurveyMonkeyImplementation
         }
         static bool ResponsesToCSVAfterTo(SurveyForm survey, string num_registros)//Este es el bueno
         {
-            string filePath = Application.StartupPath + "\\SurveyResponses" + survey.title.Trim() + ".csv";
+            loadSettings();
+            if (nameGiven == "default")
+            {
+                string tmpAux = RemoveLineEndings(datesAfter.ToString().Trim());
+                String nameAux = Regex.Replace(tmpAux, @":|/", "-");
+                nameAux = nameAux.Replace(".", string.Empty);
+                string filePath = Application.StartupPath + "\\SurveyResponsesPriorTo" + survey.title.Trim() + "PriorTo" + nameAux + ".csv";
+            }
+            else
+            {
+                string filePath = Application.StartupPath + "\\"+nameGiven+".csv"
+            }
             String heading = "SurveyResponseId,SurveyFormID,SurveyResponseDateModified,SurveyResponseDateCreated,SurveyResponseIp,SurveyResponseCompleted,RecipientId,TotalTime";
             for (int i = 1; i < 101; i++)
             {
@@ -2024,7 +2125,15 @@ namespace SurveyMonkeyImplementation
                 rdlist.Add(GetResponseDetails(listOfResponsesIDs[i]));
             }
             //Debo de poner el heading del csv mejor en otra variable para poder hacer append en caso ya haya un archivo creado
-            string filePath = Application.StartupPath + "\\SurveyResponses" + ".csv";
+            if (nameGiven == "default")
+            {
+                string filePath = Application.StartupPath + "\\SurveyResponses" + ".csv";
+            }
+            else
+            {
+                string filePath = Application.StartupPath + "\\"+nameGiven+".csv"
+            }
+            
             String heading = "SurveyResponseId,SurveyFormID,SurveyResponseDateModified,SurveyResponseDateCreated,SurveyResponseIp,SurveyResponseCompleted,RecipientId,TotalTime";
             for (int i = 1; i < 101; i++)
             {
