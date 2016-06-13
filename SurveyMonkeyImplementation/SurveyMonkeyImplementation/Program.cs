@@ -48,9 +48,38 @@ namespace SurveyMonkeyImplementation
         static List<ResponseList> listaResponseList;
         static void Main(string[] args)
         {
+            //SurveysToCSV();
 
-            
+            //SurveysTitleContainingToCSV();
 
+            //SurveysCreatedPriorToCSV();
+
+            //SurveysCreatedAfterToCSV();
+
+
+            //QuestionsToCSV();
+
+            //QuestionsToCSV(GetSurveyDetails("80589076"));
+
+
+            //List<SurveyForm> lista = BringSurveys(BringSurveyIDsWithTitlesContaining());
+            //for (int i = 0; i < lista.Count; i++)
+            //{
+            //    QuestionsToCSV(lista[i]);
+            //}
+
+            //ResponsesToCSV();
+
+            //ResponsesToCSV(GetSurveyDetails("80589076"));
+
+            //ResponsesToCSV(GetSurveyDetails("80589076"),numRegistry);
+
+
+            //ResponsesToCSVPriorTo(GetSurveyDetails("80589076"));
+
+            //ResponsesToCSVAfterTo(GetSurveyDetails("80589076"));
+
+            //ResponsesToCSV(BringResponsesIDsAccordingToSettings("80589076"));
         }
         static bool fillSurveyIDs()
         {
@@ -71,6 +100,22 @@ namespace SurveyMonkeyImplementation
             for (int i = 0; i < survlist.data.Count; i++)
             {
                 IDsSurveys.Add(survlist.data[i].id);
+            }
+
+            return IDsSurveys;
+        }
+        static List<String> BringSurveyIDsWithTitlesContaining()
+        {
+            waitIfLimitReached();
+            GetSurveys();
+            List<String> IDsSurveys = new List<string>();
+            for (int i = 0; i < survlist.data.Count; i++)
+            {
+                if (survlist.data[i].title.Contains(titlesContaining))
+                {
+                    IDsSurveys.Add(survlist.data[i].id);
+                }
+                
             }
 
             return IDsSurveys;
