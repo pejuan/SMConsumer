@@ -52,7 +52,7 @@ namespace SurveyMonkeyImplementation
 
             //SurveysTitleContainingToCSV();
 
-            //SurveysCreatedPriorToCSV();
+            //SurveysCreatedPriorToCSV();//Crear un between
 
             //SurveysCreatedAfterToCSV();
 
@@ -60,7 +60,6 @@ namespace SurveyMonkeyImplementation
             //QuestionsToCSV();
 
             //QuestionsToCSV(GetSurveyDetails("80589076"));
-
 
             //List<SurveyForm> lista = BringSurveys(BringSurveyIDsWithTitlesContaining());
             //for (int i = 0; i < lista.Count; i++)
@@ -736,6 +735,50 @@ namespace SurveyMonkeyImplementation
             {
                 File.WriteAllText(filePath, heading);
             }
+            return true;
+        }
+        static bool SurveysCreatedBetweenToCSV()
+        {
+            loadSettings();
+            string tmpAux = RemoveLineEndings(datesAfter.ToString().Trim());
+            String nameAux = Regex.Replace(tmpAux, @":|/", "-");
+            nameAux = nameAux.Replace(".", string.Empty);
+            string tmpAux2 = RemoveLineEndings(datesPrior.ToString().Trim());
+            String nameAux2 = Regex.Replace(tmpAux2, @":|/", "-");
+            nameAux2 = nameAux2.Replace(".", string.Empty);
+            string filePath = Application.StartupPath + "\\SurveyFormsBetweem" + nameAux+"and"+nameAux2 + ".csv";
+            waitIfLimitReached();
+            List<SurveyForm> lista = BringSurveys(BringSurveyIDs());
+            String heading = "SurveyFormId,SurveyFormName,SurveyLink,SurveyLanguage,SurveyQuestionCount,SurveyPageCount,SurveyDateCreated,SurveyDateModified,ProjectId\n";
+            String csvtext = "";
+            for (int i = 0; i < lista.Count; i++)
+            {
+                DateTime datetmp = DateTime.Parse(lista[i].date_created);
+                if (datetmp >= datesAfter && datetmp <= datesPrior)
+                {
+                    csvtext += "\"" + lista[i].id + "\",";
+                    csvtext += "\"" + lista[i].title + "\",";
+                    csvtext += "\"" + lista[i].preview + "\",";
+                    csvtext += "\"" + lista[i].language + "\",";
+                    csvtext += "\"" + lista[i].question_count + "\",";
+                    csvtext += "\"" + lista[i].page_count + "\",";
+                    csvtext += "\"" + lista[i].date_created + "\",";
+                    csvtext += "\"" + lista[i].date_modified + "\",";
+                    csvtext += 1 + "\n";
+
+                }
+
+            }
+            heading += csvtext;
+            if (File.Exists(filePath))
+            {
+                File.AppendAllText(filePath, csvtext);
+            }
+            else
+            {
+                File.WriteAllText(filePath, heading);
+            }
+
             return true;
         }
         public static string RemoveLineEndings(string value)
@@ -2294,6 +2337,423 @@ namespace SurveyMonkeyImplementation
                 csvtext += "\n";
             }
 
+
+            heading += csvtext;
+            if (File.Exists(filePath))
+            {
+                File.AppendAllText(filePath, csvtext);
+            }
+            else
+            {
+                File.WriteAllText(filePath, heading);
+            }
+            return true;
+        }
+        static bool ResponsesToCSVBetween(SurveyForm survey)//Este es el bueno
+        {
+            string filePath = "";
+            loadSettings();
+            if (nameGiven == "default")
+            {
+                string tmpAux = RemoveLineEndings(datesAfter.ToString().Trim());
+                String nameAux = Regex.Replace(tmpAux, @":|/", "-");
+                nameAux = nameAux.Replace(".", string.Empty);
+                string tmpAux2 = RemoveLineEndings(datesPrior.ToString().Trim());
+                String nameAux2 = Regex.Replace(tmpAux2, @":|/", "-");
+                nameAux2 = nameAux2.Replace(".", string.Empty);
+                filePath = Application.StartupPath + "\\SurveyResponses" + survey.title.Trim() + "between" + nameAux+"and"+ nameAux2+ ".csv";
+
+            }
+            else
+            {
+                filePath = Application.StartupPath + "\\" + nameGiven + ".csv";
+            }
+            String heading = "SurveyResponseId,SurveyFormID,SurveyResponseDateModified,SurveyResponseDateCreated,SurveyResponseIp,SurveyResponseCompleted,RecipientId,TotalTime";
+            for (int i = 1; i < 101; i++)
+            {
+                heading += ",QUESTION" + i;
+            }
+            heading += "\n";
+            String csvtext = "";
+            List<string> listaprueba = new List<string>();
+
+            listaprueba = BringResponsesIDs(survey.id);
+            for (int i = 0; i < listaprueba.Count; i++)
+            {
+                ResponseDetail objRD = GetResponseDetails(listaprueba[i]);
+                if (datesAfter <= DateTime.Parse(objRD.date_created) && datesPrior >= DateTime.Parse(objRD.date_created))
+                {
+
+
+                    csvtext += "\"" + objRD.id + "\",";
+                    csvtext += "\"" + survey.id + "\",";
+                    csvtext += "\"" + objRD.date_modified + "\"," + "\"" + objRD.date_created + "\",";
+                    csvtext += "\"" + objRD.ip_address + "\",";
+                    csvtext += "\"" + objRD.response_status + "\",";
+                    csvtext += "\"" + objRD.recipient_id + "\",";
+                    csvtext += "\"" + objRD.total_time + "\",";
+                    Console.WriteLine(objRD.response_status);
+
+                    for (int j = 0; j < objRD.pages.Count; j++)
+                    {
+
+                        int qcaux = GetAPageQuestionCount(survey.id, objRD.pages[j].id);
+                        int auxiliar = 0;
+                        int questcountreal = objRD.pages[j].questions.Count;
+                        for (int k = 0; k < qcaux; k++)
+                        {
+                            csvtext += "\"";
+                            if (questcountreal > auxiliar)
+                            {
+                                int qcpos = GetAQuestionPosition(survey.id, objRD.pages[j].id, objRD.pages[j].questions[auxiliar].id);
+                                if (k + 1 == qcpos)
+                                {
+                                    string tmprow_id = "";
+                                    for (int l = 0; l < objRD.pages[j].questions[auxiliar].answers.Count; l++)
+                                    {
+                                        if (objRD.pages[j].questions[auxiliar].answers[l].choice_id != null)
+                                        {
+                                            QuestionDetail objQD = GetQuestionDetails(survey.id, objRD.pages[j].id, objRD.pages[j].questions[auxiliar].id);
+                                            if (tmprow_id != objRD.pages[j].questions[auxiliar].answers[l].row_id && (l != 0))
+                                            {
+                                                csvtext += " || ";
+                                            }
+                                            for (int q = 0; q < objQD.answers.choices.Count; q++)//Como pueden ser multiple choice, debo concatenarlas
+                                            {
+                                                if (objQD.answers.choices[q].id == objRD.pages[j].questions[auxiliar].answers[l].choice_id)
+                                                {
+                                                    //csvtext += "\"" + objQD.answers.choices[q].text + "\", ";
+                                                    string Content = RemoveLineEndings(objQD.answers.choices[q].text);
+                                                    string newCont = Regex.Replace(Content, @"\t|\n|\r|,", "");
+                                                    //temporal += newCont + "_";
+                                                    csvtext += newCont + "_";
+
+                                                }
+                                            }
+
+                                            tmprow_id = objRD.pages[j].questions[auxiliar].answers[l].row_id;
+                                            //csvtext += objRD.pages[j].questions[auxiliar].answers[l].choice_id + "_";
+
+
+                                        }
+                                        else if (objRD.pages[j].questions[auxiliar].answers[l].text != null)
+                                        {
+                                            QuestionDetail objQD = GetQuestionDetails(survey.id, objRD.pages[j].id, objRD.pages[j].questions[auxiliar].id);
+                                            if (objQD.family == "open_ended" && objQD.subtype == "multi")
+                                            {
+                                                for (int b = 0; b < objQD.answers.rows.Count; b++)
+                                                {
+                                                    if (objRD.pages[j].questions[auxiliar].answers[l].row_id == objQD.answers.rows[b].id)
+                                                    {
+
+                                                        string tmp = RemoveLineEndings(objRD.pages[j].questions[auxiliar].answers[l].text);
+                                                        csvtext += objQD.answers.rows[b].position + ")" + Regex.Replace(tmp, @"\t|\n|\r|,", "") + "  ";
+
+                                                    }
+                                                }
+
+                                            }
+                                            else
+                                            {
+                                                string tmp = RemoveLineEndings(objRD.pages[j].questions[auxiliar].answers[l].text);
+                                                csvtext += Regex.Replace(tmp, @"\t|\n|\r|,", "") + "_";
+                                            }
+                                        }
+                                    }
+
+                                    auxiliar++;
+                                }
+
+                            }
+                            csvtext += "\",";
+
+                        }
+
+                    }
+                    csvtext += "\n";
+                }
+            }
+
+            heading += csvtext;
+            if (File.Exists(filePath))
+            {
+                File.AppendAllText(filePath, csvtext);
+            }
+            else
+            {
+                File.WriteAllText(filePath, heading);
+            }
+            return true;
+        }
+        static bool ResponsesToCSVBetween(SurveyForm survey, int num_registros)//Este es el bueno
+        {
+            string filePath = "";
+            loadSettings();
+            if (nameGiven == "default")
+            {
+                string tmpAux = RemoveLineEndings(datesAfter.ToString().Trim());
+                String nameAux = Regex.Replace(tmpAux, @":|/", "-");
+                nameAux = nameAux.Replace(".", string.Empty);
+                string tmpAux2 = RemoveLineEndings(datesPrior.ToString().Trim());
+                String nameAux2 = Regex.Replace(tmpAux2, @":|/", "-");
+                nameAux2 = nameAux2.Replace(".", string.Empty);
+                filePath = Application.StartupPath + "\\SurveyResponses" + survey.title.Trim() + "between" + nameAux + "and" + nameAux2 + ".csv";
+
+            }
+            else
+            {
+                filePath = Application.StartupPath + "\\" + nameGiven + ".csv";
+            }
+            String heading = "SurveyResponseId,SurveyFormID,SurveyResponseDateModified,SurveyResponseDateCreated,SurveyResponseIp,SurveyResponseCompleted,RecipientId,TotalTime";
+            for (int i = 1; i < 101; i++)
+            {
+                heading += ",QUESTION" + i;
+            }
+            heading += "\n";
+            String csvtext = "";
+            List<string> listaprueba = new List<string>();
+
+            listaprueba = BringResponsesIDs(survey.id);
+            int final = num_registros;
+            if (listaprueba.Count <= num_registros)
+            {
+                final = listaprueba.Count;
+            }
+            for (int i = 0; i < final; i++)
+            {
+                ResponseDetail objRD = GetResponseDetails(listaprueba[i]);
+                if (datesAfter <= DateTime.Parse(objRD.date_created) && datesPrior >= DateTime.Parse(objRD.date_created))
+                {
+
+
+                    csvtext += "\"" + objRD.id + "\",";
+                    csvtext += "\"" + survey.id + "\",";
+                    csvtext += "\"" + objRD.date_modified + "\"," + "\"" + objRD.date_created + "\",";
+                    csvtext += "\"" + objRD.ip_address + "\",";
+                    csvtext += "\"" + objRD.response_status + "\",";
+                    csvtext += "\"" + objRD.recipient_id + "\",";
+                    csvtext += "\"" + objRD.total_time + "\",";
+                    Console.WriteLine(objRD.response_status);
+
+                    for (int j = 0; j < objRD.pages.Count; j++)
+                    {
+
+                        int qcaux = GetAPageQuestionCount(survey.id, objRD.pages[j].id);
+                        int auxiliar = 0;
+                        int questcountreal = objRD.pages[j].questions.Count;
+                        for (int k = 0; k < qcaux; k++)
+                        {
+                            csvtext += "\"";
+                            if (questcountreal > auxiliar)
+                            {
+                                int qcpos = GetAQuestionPosition(survey.id, objRD.pages[j].id, objRD.pages[j].questions[auxiliar].id);
+                                if (k + 1 == qcpos)
+                                {
+                                    string tmprow_id = "";
+                                    for (int l = 0; l < objRD.pages[j].questions[auxiliar].answers.Count; l++)
+                                    {
+                                        if (objRD.pages[j].questions[auxiliar].answers[l].choice_id != null)
+                                        {
+                                            QuestionDetail objQD = GetQuestionDetails(survey.id, objRD.pages[j].id, objRD.pages[j].questions[auxiliar].id);
+                                            if (tmprow_id != objRD.pages[j].questions[auxiliar].answers[l].row_id && (l != 0))
+                                            {
+                                                csvtext += " || ";
+                                            }
+                                            for (int q = 0; q < objQD.answers.choices.Count; q++)//Como pueden ser multiple choice, debo concatenarlas
+                                            {
+                                                if (objQD.answers.choices[q].id == objRD.pages[j].questions[auxiliar].answers[l].choice_id)
+                                                {
+                                                    //csvtext += "\"" + objQD.answers.choices[q].text + "\", ";
+                                                    string Content = RemoveLineEndings(objQD.answers.choices[q].text);
+                                                    string newCont = Regex.Replace(Content, @"\t|\n|\r|,", "");
+                                                    //temporal += newCont + "_";
+                                                    csvtext += newCont + "_";
+
+                                                }
+                                            }
+
+                                            tmprow_id = objRD.pages[j].questions[auxiliar].answers[l].row_id;
+                                            //csvtext += objRD.pages[j].questions[auxiliar].answers[l].choice_id + "_";
+
+
+                                        }
+                                        else if (objRD.pages[j].questions[auxiliar].answers[l].text != null)
+                                        {
+                                            QuestionDetail objQD = GetQuestionDetails(survey.id, objRD.pages[j].id, objRD.pages[j].questions[auxiliar].id);
+                                            if (objQD.family == "open_ended" && objQD.subtype == "multi")
+                                            {
+                                                for (int b = 0; b < objQD.answers.rows.Count; b++)
+                                                {
+                                                    if (objRD.pages[j].questions[auxiliar].answers[l].row_id == objQD.answers.rows[b].id)
+                                                    {
+
+                                                        string tmp = RemoveLineEndings(objRD.pages[j].questions[auxiliar].answers[l].text);
+                                                        csvtext += objQD.answers.rows[b].position + ")" + Regex.Replace(tmp, @"\t|\n|\r|,", "") + "  ";
+
+                                                    }
+                                                }
+
+                                            }
+                                            else
+                                            {
+                                                string tmp = RemoveLineEndings(objRD.pages[j].questions[auxiliar].answers[l].text);
+                                                csvtext += Regex.Replace(tmp, @"\t|\n|\r|,", "") + "_";
+                                            }
+                                        }
+                                    }
+
+                                    auxiliar++;
+                                }
+
+                            }
+                            csvtext += "\",";
+
+                        }
+
+                    }
+                    csvtext += "\n";
+                }
+            }
+
+            heading += csvtext;
+            if (File.Exists(filePath))
+            {
+                File.AppendAllText(filePath, csvtext);
+            }
+            else
+            {
+                File.WriteAllText(filePath, heading);
+            }
+            return true;
+        }
+        static bool ResponsesToCSVBetween(SurveyForm survey, string num_registros)//Este es el bueno
+        {
+            string filePath = "";
+            loadSettings();
+            if (nameGiven == "default")
+            {
+                string tmpAux = RemoveLineEndings(datesAfter.ToString().Trim());
+                String nameAux = Regex.Replace(tmpAux, @":|/", "-");
+                nameAux = nameAux.Replace(".", string.Empty);
+                string tmpAux2 = RemoveLineEndings(datesPrior.ToString().Trim());
+                String nameAux2 = Regex.Replace(tmpAux2, @":|/", "-");
+                nameAux2 = nameAux2.Replace(".", string.Empty);
+                filePath = Application.StartupPath + "\\SurveyResponses" + survey.title.Trim() + "between" + nameAux + "and" + nameAux2 + ".csv";
+            }
+            else
+            {
+                filePath = Application.StartupPath + "\\" + nameGiven + ".csv";
+            }
+            String heading = "SurveyResponseId,SurveyFormID,SurveyResponseDateModified,SurveyResponseDateCreated,SurveyResponseIp,SurveyResponseCompleted,RecipientId,TotalTime";
+            for (int i = 1; i < 101; i++)
+            {
+                heading += ",QUESTION" + i;
+            }
+            heading += "\n";
+            String csvtext = "";
+            List<string> listaprueba = new List<string>();
+
+            listaprueba = BringResponsesIDs(survey.id);
+            int final = int.Parse(num_registros);
+            if (listaprueba.Count <= int.Parse(num_registros))
+            {
+                final = listaprueba.Count;
+            }
+            for (int i = 0; i < final; i++)
+            {
+                ResponseDetail objRD = GetResponseDetails(listaprueba[i]);
+                if (datesAfter <= DateTime.Parse(objRD.date_created) && datesPrior >= DateTime.Parse(objRD.date_created))
+                {
+
+
+                    csvtext += "\"" + objRD.id + "\",";
+                    csvtext += "\"" + survey.id + "\",";
+                    csvtext += "\"" + objRD.date_modified + "\"," + "\"" + objRD.date_created + "\",";
+                    csvtext += "\"" + objRD.ip_address + "\",";
+                    csvtext += "\"" + objRD.response_status + "\",";
+                    csvtext += "\"" + objRD.recipient_id + "\",";
+                    csvtext += "\"" + objRD.total_time + "\",";
+                    Console.WriteLine(objRD.response_status);
+
+                    for (int j = 0; j < objRD.pages.Count; j++)
+                    {
+
+                        int qcaux = GetAPageQuestionCount(survey.id, objRD.pages[j].id);
+                        int auxiliar = 0;
+                        int questcountreal = objRD.pages[j].questions.Count;
+                        for (int k = 0; k < qcaux; k++)
+                        {
+                            csvtext += "\"";
+                            if (questcountreal > auxiliar)
+                            {
+                                int qcpos = GetAQuestionPosition(survey.id, objRD.pages[j].id, objRD.pages[j].questions[auxiliar].id);
+                                if (k + 1 == qcpos)
+                                {
+                                    string tmprow_id = "";
+                                    for (int l = 0; l < objRD.pages[j].questions[auxiliar].answers.Count; l++)
+                                    {
+                                        if (objRD.pages[j].questions[auxiliar].answers[l].choice_id != null)
+                                        {
+                                            QuestionDetail objQD = GetQuestionDetails(survey.id, objRD.pages[j].id, objRD.pages[j].questions[auxiliar].id);
+                                            if (tmprow_id != objRD.pages[j].questions[auxiliar].answers[l].row_id && (l != 0))
+                                            {
+                                                csvtext += " || ";
+                                            }
+                                            for (int q = 0; q < objQD.answers.choices.Count; q++)//Como pueden ser multiple choice, debo concatenarlas
+                                            {
+                                                if (objQD.answers.choices[q].id == objRD.pages[j].questions[auxiliar].answers[l].choice_id)
+                                                {
+                                                    //csvtext += "\"" + objQD.answers.choices[q].text + "\", ";
+                                                    string Content = RemoveLineEndings(objQD.answers.choices[q].text);
+                                                    string newCont = Regex.Replace(Content, @"\t|\n|\r|,", "");
+                                                    //temporal += newCont + "_";
+                                                    csvtext += newCont + "_";
+
+                                                }
+                                            }
+
+                                            tmprow_id = objRD.pages[j].questions[auxiliar].answers[l].row_id;
+                                            //csvtext += objRD.pages[j].questions[auxiliar].answers[l].choice_id + "_";
+
+
+                                        }
+                                        else if (objRD.pages[j].questions[auxiliar].answers[l].text != null)
+                                        {
+                                            QuestionDetail objQD = GetQuestionDetails(survey.id, objRD.pages[j].id, objRD.pages[j].questions[auxiliar].id);
+                                            if (objQD.family == "open_ended" && objQD.subtype == "multi")
+                                            {
+                                                for (int b = 0; b < objQD.answers.rows.Count; b++)
+                                                {
+                                                    if (objRD.pages[j].questions[auxiliar].answers[l].row_id == objQD.answers.rows[b].id)
+                                                    {
+
+                                                        string tmp = RemoveLineEndings(objRD.pages[j].questions[auxiliar].answers[l].text);
+                                                        csvtext += objQD.answers.rows[b].position + ")" + Regex.Replace(tmp, @"\t|\n|\r|,", "") + "  ";
+
+                                                    }
+                                                }
+
+                                            }
+                                            else
+                                            {
+                                                string tmp = RemoveLineEndings(objRD.pages[j].questions[auxiliar].answers[l].text);
+                                                csvtext += Regex.Replace(tmp, @"\t|\n|\r|,", "") + "_";
+                                            }
+                                        }
+                                    }
+
+                                    auxiliar++;
+                                }
+
+                            }
+                            csvtext += "\",";
+
+                        }
+
+                    }
+                    csvtext += "\n";
+                }
+            }
 
             heading += csvtext;
             if (File.Exists(filePath))
