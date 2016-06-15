@@ -78,7 +78,7 @@ namespace SurveyMonkeyImplementation
 
             //ResponsesToCSVAfterTo(GetSurveyDetails("80589076"));
 
-            //ResponsesToCSV(BringResponsesIDsAccordingToSettings("80589076"));
+            ResponsesToCSV(BringResponsesIDsAccordingToSettings("74972790"));
         }
         static bool fillSurveyIDs()
         {
@@ -937,11 +937,12 @@ namespace SurveyMonkeyImplementation
                                 if (k + 1 == qcpos)
                                 {
                                     string tmprow_id = "";
+                                    QuestionDetail objQD = GetQuestionDetails(SurveyFormDetailsList[b].id, objRD.pages[j].id, objRD.pages[j].questions[auxiliar].id);
                                     for (int l = 0; l < objRD.pages[j].questions[auxiliar].answers.Count; l++)
                                     {
                                         if (objRD.pages[j].questions[auxiliar].answers[l].choice_id != null)
                                         {
-                                            QuestionDetail objQD = GetQuestionDetails(SurveyFormDetailsList[b].id, objRD.pages[j].id, objRD.pages[j].questions[auxiliar].id);
+                                            //QuestionDetail objQD = GetQuestionDetails(SurveyFormDetailsList[b].id, objRD.pages[j].id, objRD.pages[j].questions[auxiliar].id);
                                             if (tmprow_id != objRD.pages[j].questions[auxiliar].answers[l].row_id && (l != 0))
                                             {
                                                 csvtext += " || ";
@@ -966,7 +967,7 @@ namespace SurveyMonkeyImplementation
                                         }
                                         else if (objRD.pages[j].questions[auxiliar].answers[l].text != null)
                                         {
-                                            QuestionDetail objQD = GetQuestionDetails(SurveyFormDetailsList[b].id, objRD.pages[j].id, objRD.pages[j].questions[auxiliar].id);
+                                            //QuestionDetail objQD = GetQuestionDetails(SurveyFormDetailsList[b].id, objRD.pages[j].id, objRD.pages[j].questions[auxiliar].id);
                                             if (objQD.family == "open_ended" && objQD.subtype == "multi")
                                             {
                                                 for (int v = 0; v < objQD.answers.rows.Count; v++)
@@ -1063,11 +1064,12 @@ namespace SurveyMonkeyImplementation
                             if (k+1 == qcpos)
                             {
                                 string tmprow_id = "";
+                                QuestionDetail objQD = GetQuestionDetails(survey.id, objRD.pages[j].id, objRD.pages[j].questions[auxiliar].id);
                                 for (int l = 0; l < objRD.pages[j].questions[auxiliar].answers.Count; l++)
                                 {
                                     if (objRD.pages[j].questions[auxiliar].answers[l].choice_id != null)
                                     {
-                                        QuestionDetail objQD = GetQuestionDetails(survey.id, objRD.pages[j].id, objRD.pages[j].questions[auxiliar].id);
+                                        //QuestionDetail objQD = GetQuestionDetails(survey.id, objRD.pages[j].id, objRD.pages[j].questions[auxiliar].id);
                                         if (tmprow_id != objRD.pages[j].questions[auxiliar].answers[l].row_id && (l != 0))
                                         {
                                             csvtext += " || ";
@@ -1092,7 +1094,7 @@ namespace SurveyMonkeyImplementation
                                     }
                                     else if (objRD.pages[j].questions[auxiliar].answers[l].text != null)
                                     {
-                                        QuestionDetail objQD = GetQuestionDetails(survey.id, objRD.pages[j].id, objRD.pages[j].questions[auxiliar].id);
+                                        //QuestionDetail objQD = GetQuestionDetails(survey.id, objRD.pages[j].id, objRD.pages[j].questions[auxiliar].id);
                                         if (objQD.family == "open_ended" && objQD.subtype == "multi")
                                         {
                                             for (int b = 0; b < objQD.answers.rows.Count; b++)
@@ -1193,11 +1195,12 @@ namespace SurveyMonkeyImplementation
                             if (k + 1 == qcpos)
                             {
                                 string tmprow_id = "";
+                                QuestionDetail objQD = GetQuestionDetails(survey.id, objRD.pages[j].id, objRD.pages[j].questions[auxiliar].id);
                                 for (int l = 0; l < objRD.pages[j].questions[auxiliar].answers.Count; l++)
                                 {
                                     if (objRD.pages[j].questions[auxiliar].answers[l].choice_id != null)
                                     {
-                                        QuestionDetail objQD = GetQuestionDetails(survey.id, objRD.pages[j].id, objRD.pages[j].questions[auxiliar].id);
+                                        //QuestionDetail objQD = GetQuestionDetails(survey.id, objRD.pages[j].id, objRD.pages[j].questions[auxiliar].id);
                                         if (tmprow_id != objRD.pages[j].questions[auxiliar].answers[l].row_id && (l != 0))
                                         {
                                             csvtext += " || ";
@@ -1222,7 +1225,7 @@ namespace SurveyMonkeyImplementation
                                     }
                                     else if (objRD.pages[j].questions[auxiliar].answers[l].text != null)
                                     {
-                                        QuestionDetail objQD = GetQuestionDetails(survey.id, objRD.pages[j].id, objRD.pages[j].questions[auxiliar].id);
+                                        //QuestionDetail objQD = GetQuestionDetails(survey.id, objRD.pages[j].id, objRD.pages[j].questions[auxiliar].id);
                                         if (objQD.family == "open_ended" && objQD.subtype == "multi")
                                         {
                                             for (int b = 0; b < objQD.answers.rows.Count; b++)
@@ -1323,11 +1326,12 @@ namespace SurveyMonkeyImplementation
                             if (k + 1 == qcpos)
                             {
                                 string tmprow_id = "";
+                                QuestionDetail objQD = GetQuestionDetails(survey.id, objRD.pages[j].id, objRD.pages[j].questions[auxiliar].id);
                                 for (int l = 0; l < objRD.pages[j].questions[auxiliar].answers.Count; l++)
                                 {
                                     if (objRD.pages[j].questions[auxiliar].answers[l].choice_id != null)
                                     {
-                                        QuestionDetail objQD = GetQuestionDetails(survey.id, objRD.pages[j].id, objRD.pages[j].questions[auxiliar].id);
+                                        //QuestionDetail objQD = GetQuestionDetails(survey.id, objRD.pages[j].id, objRD.pages[j].questions[auxiliar].id);
                                         if (tmprow_id != objRD.pages[j].questions[auxiliar].answers[l].row_id && (l != 0))
                                         {
                                             csvtext += " || ";
@@ -1352,7 +1356,7 @@ namespace SurveyMonkeyImplementation
                                     }
                                     else if (objRD.pages[j].questions[auxiliar].answers[l].text != null)
                                     {
-                                        QuestionDetail objQD = GetQuestionDetails(survey.id, objRD.pages[j].id, objRD.pages[j].questions[auxiliar].id);
+                                        //QuestionDetail objQD = GetQuestionDetails(survey.id, objRD.pages[j].id, objRD.pages[j].questions[auxiliar].id);
                                         if (objQD.family == "open_ended" && objQD.subtype == "multi")
                                         {
                                             for (int b = 0; b < objQD.answers.rows.Count; b++)
@@ -1455,11 +1459,12 @@ namespace SurveyMonkeyImplementation
                                 if (k + 1 == qcpos)
                                 {
                                     string tmprow_id = "";
+                                    QuestionDetail objQD = GetQuestionDetails(survey.id, objRD.pages[j].id, objRD.pages[j].questions[auxiliar].id);
                                     for (int l = 0; l < objRD.pages[j].questions[auxiliar].answers.Count; l++)
                                     {
                                         if (objRD.pages[j].questions[auxiliar].answers[l].choice_id != null)
                                         {
-                                            QuestionDetail objQD = GetQuestionDetails(survey.id, objRD.pages[j].id, objRD.pages[j].questions[auxiliar].id);
+                                            //QuestionDetail objQD = GetQuestionDetails(survey.id, objRD.pages[j].id, objRD.pages[j].questions[auxiliar].id);
                                             if (tmprow_id != objRD.pages[j].questions[auxiliar].answers[l].row_id && (l != 0))
                                             {
                                                 csvtext += " || ";
@@ -1484,7 +1489,7 @@ namespace SurveyMonkeyImplementation
                                         }
                                         else if (objRD.pages[j].questions[auxiliar].answers[l].text != null)
                                         {
-                                            QuestionDetail objQD = GetQuestionDetails(survey.id, objRD.pages[j].id, objRD.pages[j].questions[auxiliar].id);
+                                            //QuestionDetail objQD = GetQuestionDetails(survey.id, objRD.pages[j].id, objRD.pages[j].questions[auxiliar].id);
                                             if (objQD.family == "open_ended" && objQD.subtype == "multi")
                                             {
                                                 for (int b = 0; b < objQD.answers.rows.Count; b++)
@@ -1593,11 +1598,12 @@ namespace SurveyMonkeyImplementation
                                 if (k + 1 == qcpos)
                                 {
                                     string tmprow_id = "";
+                                    QuestionDetail objQD = GetQuestionDetails(survey.id, objRD.pages[j].id, objRD.pages[j].questions[auxiliar].id);
                                     for (int l = 0; l < objRD.pages[j].questions[auxiliar].answers.Count; l++)
                                     {
                                         if (objRD.pages[j].questions[auxiliar].answers[l].choice_id != null)
                                         {
-                                            QuestionDetail objQD = GetQuestionDetails(survey.id, objRD.pages[j].id, objRD.pages[j].questions[auxiliar].id);
+                                            //QuestionDetail objQD = GetQuestionDetails(survey.id, objRD.pages[j].id, objRD.pages[j].questions[auxiliar].id);
                                             if (tmprow_id != objRD.pages[j].questions[auxiliar].answers[l].row_id && (l != 0))
                                             {
                                                 csvtext += " || ";
@@ -1622,7 +1628,7 @@ namespace SurveyMonkeyImplementation
                                         }
                                         else if (objRD.pages[j].questions[auxiliar].answers[l].text != null)
                                         {
-                                            QuestionDetail objQD = GetQuestionDetails(survey.id, objRD.pages[j].id, objRD.pages[j].questions[auxiliar].id);
+                                            //QuestionDetail objQD = GetQuestionDetails(survey.id, objRD.pages[j].id, objRD.pages[j].questions[auxiliar].id);
                                             if (objQD.family == "open_ended" && objQD.subtype == "multi")
                                             {
                                                 for (int b = 0; b < objQD.answers.rows.Count; b++)
@@ -1731,11 +1737,12 @@ namespace SurveyMonkeyImplementation
                                 if (k + 1 == qcpos)
                                 {
                                     string tmprow_id = "";
+                                    QuestionDetail objQD = GetQuestionDetails(survey.id, objRD.pages[j].id, objRD.pages[j].questions[auxiliar].id);
                                     for (int l = 0; l < objRD.pages[j].questions[auxiliar].answers.Count; l++)
                                     {
                                         if (objRD.pages[j].questions[auxiliar].answers[l].choice_id != null)
                                         {
-                                            QuestionDetail objQD = GetQuestionDetails(survey.id, objRD.pages[j].id, objRD.pages[j].questions[auxiliar].id);
+                                            //QuestionDetail objQD = GetQuestionDetails(survey.id, objRD.pages[j].id, objRD.pages[j].questions[auxiliar].id);
                                             if (tmprow_id != objRD.pages[j].questions[auxiliar].answers[l].row_id && (l != 0))
                                             {
                                                 csvtext += " || ";
@@ -1760,7 +1767,7 @@ namespace SurveyMonkeyImplementation
                                         }
                                         else if (objRD.pages[j].questions[auxiliar].answers[l].text != null)
                                         {
-                                            QuestionDetail objQD = GetQuestionDetails(survey.id, objRD.pages[j].id, objRD.pages[j].questions[auxiliar].id);
+                                            //QuestionDetail objQD = GetQuestionDetails(survey.id, objRD.pages[j].id, objRD.pages[j].questions[auxiliar].id);
                                             if (objQD.family == "open_ended" && objQD.subtype == "multi")
                                             {
                                                 for (int b = 0; b < objQD.answers.rows.Count; b++)
@@ -1864,11 +1871,12 @@ namespace SurveyMonkeyImplementation
                                 if (k + 1 == qcpos)
                                 {
                                     string tmprow_id = "";
+                                    QuestionDetail objQD = GetQuestionDetails(survey.id, objRD.pages[j].id, objRD.pages[j].questions[auxiliar].id);
                                     for (int l = 0; l < objRD.pages[j].questions[auxiliar].answers.Count; l++)
                                     {
                                         if (objRD.pages[j].questions[auxiliar].answers[l].choice_id != null)
                                         {
-                                            QuestionDetail objQD = GetQuestionDetails(survey.id, objRD.pages[j].id, objRD.pages[j].questions[auxiliar].id);
+                                            //QuestionDetail objQD = GetQuestionDetails(survey.id, objRD.pages[j].id, objRD.pages[j].questions[auxiliar].id);
                                             if (tmprow_id != objRD.pages[j].questions[auxiliar].answers[l].row_id && (l != 0))
                                             {
                                                 csvtext += " || ";
@@ -1893,7 +1901,7 @@ namespace SurveyMonkeyImplementation
                                         }
                                         else if (objRD.pages[j].questions[auxiliar].answers[l].text != null)
                                         {
-                                            QuestionDetail objQD = GetQuestionDetails(survey.id, objRD.pages[j].id, objRD.pages[j].questions[auxiliar].id);
+                                            //QuestionDetail objQD = GetQuestionDetails(survey.id, objRD.pages[j].id, objRD.pages[j].questions[auxiliar].id);
                                             if (objQD.family == "open_ended" && objQD.subtype == "multi")
                                             {
                                                 for (int b = 0; b < objQD.answers.rows.Count; b++)
@@ -2002,11 +2010,12 @@ namespace SurveyMonkeyImplementation
                                 if (k + 1 == qcpos)
                                 {
                                     string tmprow_id = "";
+                                    QuestionDetail objQD = GetQuestionDetails(survey.id, objRD.pages[j].id, objRD.pages[j].questions[auxiliar].id);
                                     for (int l = 0; l < objRD.pages[j].questions[auxiliar].answers.Count; l++)
                                     {
                                         if (objRD.pages[j].questions[auxiliar].answers[l].choice_id != null)
                                         {
-                                            QuestionDetail objQD = GetQuestionDetails(survey.id, objRD.pages[j].id, objRD.pages[j].questions[auxiliar].id);
+                                            //QuestionDetail objQD = GetQuestionDetails(survey.id, objRD.pages[j].id, objRD.pages[j].questions[auxiliar].id);
                                             if (tmprow_id != objRD.pages[j].questions[auxiliar].answers[l].row_id && (l != 0))
                                             {
                                                 csvtext += " || ";
@@ -2031,7 +2040,7 @@ namespace SurveyMonkeyImplementation
                                         }
                                         else if (objRD.pages[j].questions[auxiliar].answers[l].text != null)
                                         {
-                                            QuestionDetail objQD = GetQuestionDetails(survey.id, objRD.pages[j].id, objRD.pages[j].questions[auxiliar].id);
+                                            //QuestionDetail objQD = GetQuestionDetails(survey.id, objRD.pages[j].id, objRD.pages[j].questions[auxiliar].id);
                                             if (objQD.family == "open_ended" && objQD.subtype == "multi")
                                             {
                                                 for (int b = 0; b < objQD.answers.rows.Count; b++)
@@ -2139,11 +2148,12 @@ namespace SurveyMonkeyImplementation
                                 if (k + 1 == qcpos)
                                 {
                                     string tmprow_id = "";
+                                    QuestionDetail objQD = GetQuestionDetails(survey.id, objRD.pages[j].id, objRD.pages[j].questions[auxiliar].id);
                                     for (int l = 0; l < objRD.pages[j].questions[auxiliar].answers.Count; l++)
                                     {
                                         if (objRD.pages[j].questions[auxiliar].answers[l].choice_id != null)
                                         {
-                                            QuestionDetail objQD = GetQuestionDetails(survey.id, objRD.pages[j].id, objRD.pages[j].questions[auxiliar].id);
+                                            //QuestionDetail objQD = GetQuestionDetails(survey.id, objRD.pages[j].id, objRD.pages[j].questions[auxiliar].id);
                                             if (tmprow_id != objRD.pages[j].questions[auxiliar].answers[l].row_id && (l != 0))
                                             {
                                                 csvtext += " || ";
@@ -2168,7 +2178,7 @@ namespace SurveyMonkeyImplementation
                                         }
                                         else if (objRD.pages[j].questions[auxiliar].answers[l].text != null)
                                         {
-                                            QuestionDetail objQD = GetQuestionDetails(survey.id, objRD.pages[j].id, objRD.pages[j].questions[auxiliar].id);
+                                            //QuestionDetail objQD = GetQuestionDetails(survey.id, objRD.pages[j].id, objRD.pages[j].questions[auxiliar].id);
                                             if (objQD.family == "open_ended" && objQD.subtype == "multi")
                                             {
                                                 for (int b = 0; b < objQD.answers.rows.Count; b++)
@@ -2256,7 +2266,7 @@ namespace SurveyMonkeyImplementation
                 csvtext += "\"" + objRD.response_status + "\",";
                 csvtext += "\"" + objRD.recipient_id + "\",";
                 csvtext += "\"" + objRD.total_time + "\",";
-                Console.WriteLine(objRD.response_status);
+                Console.WriteLine(i);
 
                 for (int j = 0; j < objRD.pages.Count; j++)
                 {
@@ -2273,11 +2283,12 @@ namespace SurveyMonkeyImplementation
                             if (k + 1 == qcpos)
                             {
                                 string tmprow_id = "";
+                                QuestionDetail objQD = GetQuestionDetails(objRD.survey_id, objRD.pages[j].id, objRD.pages[j].questions[auxiliar].id);
                                 for (int l = 0; l < objRD.pages[j].questions[auxiliar].answers.Count; l++)
                                 {
                                     if (objRD.pages[j].questions[auxiliar].answers[l].choice_id != null)
                                     {
-                                        QuestionDetail objQD = GetQuestionDetails(objRD.survey_id, objRD.pages[j].id, objRD.pages[j].questions[auxiliar].id);
+                                        //QuestionDetail objQD = GetQuestionDetails(objRD.survey_id, objRD.pages[j].id, objRD.pages[j].questions[auxiliar].id);//Esto se podria mover mas arriba
                                         if (tmprow_id != objRD.pages[j].questions[auxiliar].answers[l].row_id && (l != 0))
                                         {
                                             csvtext += " || ";
@@ -2302,7 +2313,7 @@ namespace SurveyMonkeyImplementation
                                     }
                                     else if (objRD.pages[j].questions[auxiliar].answers[l].text != null)
                                     {
-                                        QuestionDetail objQD = GetQuestionDetails(objRD.survey_id, objRD.pages[j].id, objRD.pages[j].questions[auxiliar].id);
+                                        //QuestionDetail objQD = GetQuestionDetails(objRD.survey_id, objRD.pages[j].id, objRD.pages[j].questions[auxiliar].id);
                                         if (objQD.family == "open_ended" && objQD.subtype == "multi")
                                         {
                                             for (int b = 0; b < objQD.answers.rows.Count; b++)
@@ -2409,11 +2420,12 @@ namespace SurveyMonkeyImplementation
                                 if (k + 1 == qcpos)
                                 {
                                     string tmprow_id = "";
+                                    QuestionDetail objQD = GetQuestionDetails(survey.id, objRD.pages[j].id, objRD.pages[j].questions[auxiliar].id);
                                     for (int l = 0; l < objRD.pages[j].questions[auxiliar].answers.Count; l++)
                                     {
                                         if (objRD.pages[j].questions[auxiliar].answers[l].choice_id != null)
                                         {
-                                            QuestionDetail objQD = GetQuestionDetails(survey.id, objRD.pages[j].id, objRD.pages[j].questions[auxiliar].id);
+                                            //QuestionDetail objQD = GetQuestionDetails(survey.id, objRD.pages[j].id, objRD.pages[j].questions[auxiliar].id);
                                             if (tmprow_id != objRD.pages[j].questions[auxiliar].answers[l].row_id && (l != 0))
                                             {
                                                 csvtext += " || ";
@@ -2438,7 +2450,7 @@ namespace SurveyMonkeyImplementation
                                         }
                                         else if (objRD.pages[j].questions[auxiliar].answers[l].text != null)
                                         {
-                                            QuestionDetail objQD = GetQuestionDetails(survey.id, objRD.pages[j].id, objRD.pages[j].questions[auxiliar].id);
+                                            //QuestionDetail objQD = GetQuestionDetails(survey.id, objRD.pages[j].id, objRD.pages[j].questions[auxiliar].id);
                                             if (objQD.family == "open_ended" && objQD.subtype == "multi")
                                             {
                                                 for (int b = 0; b < objQD.answers.rows.Count; b++)
@@ -2550,11 +2562,12 @@ namespace SurveyMonkeyImplementation
                                 if (k + 1 == qcpos)
                                 {
                                     string tmprow_id = "";
+                                    QuestionDetail objQD = GetQuestionDetails(survey.id, objRD.pages[j].id, objRD.pages[j].questions[auxiliar].id);
                                     for (int l = 0; l < objRD.pages[j].questions[auxiliar].answers.Count; l++)
                                     {
                                         if (objRD.pages[j].questions[auxiliar].answers[l].choice_id != null)
                                         {
-                                            QuestionDetail objQD = GetQuestionDetails(survey.id, objRD.pages[j].id, objRD.pages[j].questions[auxiliar].id);
+                                            //QuestionDetail objQD = GetQuestionDetails(survey.id, objRD.pages[j].id, objRD.pages[j].questions[auxiliar].id);
                                             if (tmprow_id != objRD.pages[j].questions[auxiliar].answers[l].row_id && (l != 0))
                                             {
                                                 csvtext += " || ";
@@ -2579,7 +2592,7 @@ namespace SurveyMonkeyImplementation
                                         }
                                         else if (objRD.pages[j].questions[auxiliar].answers[l].text != null)
                                         {
-                                            QuestionDetail objQD = GetQuestionDetails(survey.id, objRD.pages[j].id, objRD.pages[j].questions[auxiliar].id);
+                                            //QuestionDetail objQD = GetQuestionDetails(survey.id, objRD.pages[j].id, objRD.pages[j].questions[auxiliar].id);
                                             if (objQD.family == "open_ended" && objQD.subtype == "multi")
                                             {
                                                 for (int b = 0; b < objQD.answers.rows.Count; b++)
@@ -2690,11 +2703,12 @@ namespace SurveyMonkeyImplementation
                                 if (k + 1 == qcpos)
                                 {
                                     string tmprow_id = "";
+                                    QuestionDetail objQD = GetQuestionDetails(survey.id, objRD.pages[j].id, objRD.pages[j].questions[auxiliar].id);
                                     for (int l = 0; l < objRD.pages[j].questions[auxiliar].answers.Count; l++)
                                     {
                                         if (objRD.pages[j].questions[auxiliar].answers[l].choice_id != null)
                                         {
-                                            QuestionDetail objQD = GetQuestionDetails(survey.id, objRD.pages[j].id, objRD.pages[j].questions[auxiliar].id);
+                                            //QuestionDetail objQD = GetQuestionDetails(survey.id, objRD.pages[j].id, objRD.pages[j].questions[auxiliar].id);
                                             if (tmprow_id != objRD.pages[j].questions[auxiliar].answers[l].row_id && (l != 0))
                                             {
                                                 csvtext += " || ";
@@ -2719,7 +2733,7 @@ namespace SurveyMonkeyImplementation
                                         }
                                         else if (objRD.pages[j].questions[auxiliar].answers[l].text != null)
                                         {
-                                            QuestionDetail objQD = GetQuestionDetails(survey.id, objRD.pages[j].id, objRD.pages[j].questions[auxiliar].id);
+                                            //QuestionDetail objQD = GetQuestionDetails(survey.id, objRD.pages[j].id, objRD.pages[j].questions[auxiliar].id);
                                             if (objQD.family == "open_ended" && objQD.subtype == "multi")
                                             {
                                                 for (int b = 0; b < objQD.answers.rows.Count; b++)
@@ -2824,11 +2838,12 @@ namespace SurveyMonkeyImplementation
                                     if (k + 1 == qcpos)
                                     {
                                         string tmprow_id = "";
+                                        QuestionDetail objQD = GetQuestionDetails(SurveyFormDetailsList[b].id, objRD.pages[j].id, objRD.pages[j].questions[auxiliar].id);
                                         for (int l = 0; l < objRD.pages[j].questions[auxiliar].answers.Count; l++)
                                         {
                                             if (objRD.pages[j].questions[auxiliar].answers[l].choice_id != null)
                                             {
-                                                QuestionDetail objQD = GetQuestionDetails(SurveyFormDetailsList[b].id, objRD.pages[j].id, objRD.pages[j].questions[auxiliar].id);
+                                                //QuestionDetail objQD = GetQuestionDetails(SurveyFormDetailsList[b].id, objRD.pages[j].id, objRD.pages[j].questions[auxiliar].id);
                                                 if (tmprow_id != objRD.pages[j].questions[auxiliar].answers[l].row_id && (l != 0))
                                                 {
                                                     csvtext += " || ";
@@ -2853,7 +2868,7 @@ namespace SurveyMonkeyImplementation
                                             }
                                             else if (objRD.pages[j].questions[auxiliar].answers[l].text != null)
                                             {
-                                                QuestionDetail objQD = GetQuestionDetails(SurveyFormDetailsList[b].id, objRD.pages[j].id, objRD.pages[j].questions[auxiliar].id);
+                                                //QuestionDetail objQD = GetQuestionDetails(SurveyFormDetailsList[b].id, objRD.pages[j].id, objRD.pages[j].questions[auxiliar].id);
                                                 if (objQD.family == "open_ended" && objQD.subtype == "multi")
                                                 {
                                                     for (int v = 0; v < objQD.answers.rows.Count; v++)
