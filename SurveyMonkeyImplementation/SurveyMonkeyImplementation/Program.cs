@@ -31,7 +31,7 @@ namespace SurveyMonkeyImplementation
         static string responsesPerPage = "";
         static string nameGiven = "default";
         static int requestCounter = 0;
-
+        static string lastPage = "";
 
         static string baseURL = "https://api.surveymonkey.net/v3/";
         static int responsePageAct = 1;
@@ -71,8 +71,8 @@ namespace SurveyMonkeyImplementation
 
             //ResponsesToCSV(GetSurveyDetails("80589076"));
 
-            ResponsesToCSV(GetSurveyDetails("74972790"), 100);
-
+            //ResponsesToCSV(GetSurveyDetails("74972790"), 100);
+            GetResponseIDListForETLs("74972790");
 
             //ResponsesToCSVPriorTo(GetSurveyDetails("80589076"));
 
@@ -260,6 +260,9 @@ namespace SurveyMonkeyImplementation
                 responsesPerPage = responsesPerPageNode.InnerText;
                 XmlNode nameGivenNode = doc.DocumentElement.SelectSingleNode("/root/nombreDado");
                 nameGiven = nameGivenNode.InnerText;
+                XmlNode lastPageNode = doc.DocumentElement.SelectSingleNode("/root/lastPage");
+                lastPage = lastPageNode.InnerText;
+
                 settingsLoaded = true;
             }
         }
@@ -573,10 +576,11 @@ namespace SurveyMonkeyImplementation
             }
             return request;
         }
-        static List<String> GetResponseIDListWithSettings(string surveyID, int page, string total)
+        static List<String> GetResponseIDListForETLs(string surveyID)
         {
             waitIfLimitReached();
-            var request = WebRequest.Create(baseURL + "surveys/" + surveyID + "/responses?page=" + page + "&per_page=" + total + "&api_key=" + getApiKey());
+            loadSettings();
+            var request = WebRequest.Create(baseURL + "surveys/" + surveyID + "/responses?page=" + lastPage + "&per_page=" + 100 + "&api_key=" + getApiKey());
             request.Headers["Authorization"] = getHeader();
             var response = request.GetResponse();
             requestCounter++;
@@ -596,6 +600,7 @@ namespace SurveyMonkeyImplementation
             }
             reader.Close();
             response.Close();
+            writeLastPage(int.Parse(lastPage)+1);
             return retvar;
         }
         static string MakeARequest(string Request)
@@ -2266,10 +2271,14 @@ namespace SurveyMonkeyImplementation
             //Debo de poner el heading del csv mejor en otra variable para poder hacer append en caso ya haya un archivo creado
             if (nameGiven == "default")
             {
-                filePath = Application.StartupPath + "\\SurveyResponses" + ".csv";
+                string tmpAux = RemoveLineEndings(DateTime.Today.ToString().Trim());
+                String nameAux = Regex.Replace(tmpAux, @":|/", "-");
+                nameAux = nameAux.Replace(".", string.Empty);
+                filePath = Application.StartupPath + "\\SurveyResponses" +nameAux+ ".csv";
             }
             else
             {
+                
                 filePath = Application.StartupPath + "\\" + nameGiven + ".csv";
             }
             
@@ -2943,6 +2952,10 @@ namespace SurveyMonkeyImplementation
         }
         static bool writeLastPage(int page)
         {
+            XmlDocument doc = new XmlDocument();
+            doc.Load(Application.StartupPath + "\\monkey.xml");
+            XmlNode lastPageNode = doc.DocumentElement.SelectSingleNode("/root/lastPage");
+            lastPageNode.InnerText = page.ToString();
             return true;
         }
 
