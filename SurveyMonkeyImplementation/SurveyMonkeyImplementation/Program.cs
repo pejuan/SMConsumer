@@ -71,14 +71,14 @@ namespace SurveyMonkeyImplementation
 
             //ResponsesToCSV(GetSurveyDetails("80589076"));
 
-            //ResponsesToCSV(GetSurveyDetails("80589076"),numRegistry);
+            ResponsesToCSV(GetSurveyDetails("74972790"), 100);
 
 
             //ResponsesToCSVPriorTo(GetSurveyDetails("80589076"));
 
             //ResponsesToCSVAfterTo(GetSurveyDetails("80589076"));
 
-            ResponsesToCSV(BringResponsesIDsAccordingToSettings("74972790"));
+            //ResponsesToCSV(BringResponsesIDsAccordingToSettings("74972790"));
         }
         static bool fillSurveyIDs()
         {
@@ -572,6 +572,31 @@ namespace SurveyMonkeyImplementation
                 GetResponseList(surveyID, page + 1, total, RespPages); //Llamado recursivo para que vaya a todas las paginas de responses
             }
             return request;
+        }
+        static List<String> GetResponseIDListWithSettings(string surveyID, int page, string total)
+        {
+            waitIfLimitReached();
+            var request = WebRequest.Create(baseURL + "surveys/" + surveyID + "/responses?page=" + page + "&per_page=" + total + "&api_key=" + getApiKey());
+            request.Headers["Authorization"] = getHeader();
+            var response = request.GetResponse();
+            requestCounter++;
+            Stream dataStream = response.GetResponseStream();
+            StreamReader reader = new StreamReader(dataStream);
+
+            string responseFromServer = reader.ReadToEnd();
+            resplist = new ResponseList();
+
+            var serializer = new System.Web.Script.Serialization.JavaScriptSerializer();
+            resplist = serializer.Deserialize<ResponseList>(responseFromServer);
+            //listaResponseList.Add(resplist);
+            List<String> retvar = new List<string>();
+            for (int i = 0; i < resplist.data.Count; i++)
+            {
+                retvar.Add(resplist.data[i].id);
+            }
+            reader.Close();
+            response.Close();
+            return retvar;
         }
         static string MakeARequest(string Request)
         {
@@ -1178,7 +1203,7 @@ namespace SurveyMonkeyImplementation
                 csvtext += "\"" + objRD.response_status + "\",";
                 csvtext += "\"" + objRD.recipient_id + "\",";
                 csvtext += "\"" + objRD.total_time + "\",";
-                Console.WriteLine(objRD.response_status);
+                Console.WriteLine(i);
 
                 for (int j = 0; j < objRD.pages.Count; j++)
                 {
@@ -2916,5 +2941,10 @@ namespace SurveyMonkeyImplementation
             }
             return true;
         }
+        static bool writeLastPage(int page)
+        {
+            return true;
+        }
+
     }
 }
