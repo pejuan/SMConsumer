@@ -72,6 +72,7 @@ namespace SurveyMonkeyImplementation
             //ResponsesToCSV(GetSurveyDetails("80589076"));
 
             //ResponsesToCSV(GetSurveyDetails("74972790"), 100);
+
             GetResponseIDListForETLs("74972790");
 
             //ResponsesToCSVPriorTo(GetSurveyDetails("80589076"));
@@ -2956,6 +2957,7 @@ namespace SurveyMonkeyImplementation
             doc.Load(Application.StartupPath + "\\monkey.xml");
             XmlNode lastPageNode = doc.DocumentElement.SelectSingleNode("/root/lastPage");
             lastPageNode.InnerText = page.ToString();
+            doc.Save(Application.StartupPath + "\\monkey.xml");
             return true;
         }
 
