@@ -66,12 +66,13 @@ namespace SurveyMonkeyImplementation
             //{
             //    QuestionsToCSV(lista[i]);
             //}
-            getRequestCounter();
-            for (int i = 0; i < 4; i++)
-            {
-                GetSurveys();
-            }
-            setRequestCounter();
+
+            //getRequestCounter();
+            //for (int i = 0; i < 4; i++)
+            //{
+            //    GetSurveys();
+            //}
+            //setRequestCounter();
 
             //ResponsesToCSV();
 
