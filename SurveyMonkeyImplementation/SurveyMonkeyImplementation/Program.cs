@@ -66,6 +66,12 @@ namespace SurveyMonkeyImplementation
             //{
             //    QuestionsToCSV(lista[i]);
             //}
+            getRequestCounter();
+            for (int i = 0; i < 4; i++)
+            {
+                GetSurveys();
+            }
+            setRequestCounter();
 
             //ResponsesToCSV();
 
@@ -73,7 +79,7 @@ namespace SurveyMonkeyImplementation
 
             //ResponsesToCSV(GetSurveyDetails("74972790"), 100);
 
-            GetResponseIDListForETLs("74972790");
+            //ResponsesToCSV(GetResponseIDListForETLs("74972790"));
 
             //ResponsesToCSVPriorTo(GetSurveyDetails("80589076"));
 
@@ -2960,6 +2966,30 @@ namespace SurveyMonkeyImplementation
             doc.Save(Application.StartupPath + "\\monkey.xml");
             return true;
         }
+        static void getRequestCounter()
+        {
 
+            XmlDocument doc = new XmlDocument();
+            doc.Load(Application.StartupPath + "\\Requests.xml");
+            XmlNode requestsNode = doc.DocumentElement.SelectSingleNode("/root/requestCounter");
+            requestCounter = int.Parse(requestsNode.InnerText);
+            XmlNode lastModifiedNode = doc.DocumentElement.SelectSingleNode("/root/lastModified");
+            DateTime lastMod = DateTime.Parse(lastModifiedNode.InnerText);
+            if (lastMod<DateTime.Today)
+            {
+                requestCounter = 0;
+                setRequestCounter();
+            }
+        }
+        static void setRequestCounter()
+        {
+            XmlDocument doc = new XmlDocument();
+            doc.Load(Application.StartupPath + "\\Requests.xml");
+            XmlNode requestsNode = doc.DocumentElement.SelectSingleNode("/root/requestCounter");
+            requestsNode.InnerText = requestCounter.ToString();
+            XmlNode lastModifiedNode = doc.DocumentElement.SelectSingleNode("/root/lastModified");
+            lastModifiedNode.InnerText = DateTime.Now.ToString();
+            doc.Save(Application.StartupPath + "\\Requests.xml");
+        }
     }
 }
