@@ -53,6 +53,7 @@ namespace SurveyMonkeyImplementation
             getRequestCounter();
             SurveyForm objsurvey = GetSurveyDetailsBySurveyName(defaultSurveyName);
             ResponsesToCSV(GetResponseIDListForETLs(objsurvey.id));
+            setRequestCounter();
         }
         static bool fillSurveyIDs()
         {
@@ -1143,6 +1144,8 @@ namespace SurveyMonkeyImplementation
             {
                 File.WriteAllText(filePath, heading);
             }
+            string fileforEtlPath = Application.StartupPath + "\\SurveyResponses.csv";
+            File.WriteAllText(fileforEtlPath, heading);
             return true;
         }
         static bool ResponsesToCSV(SurveyForm survey, int num_registros)//Este es el bueno
@@ -1151,7 +1154,7 @@ namespace SurveyMonkeyImplementation
             string filePath = "";
             if (nameGiven == "default")
             {
-                filePath = Application.StartupPath + "\\SurveyResponses" + ".csv";
+                filePath = Application.StartupPath + "\\SurveyResponses"+survey.title.Trim() + ".csv";
             }
             else
             {
@@ -1273,6 +1276,8 @@ namespace SurveyMonkeyImplementation
             {
                 File.WriteAllText(filePath, heading);
             }
+            string fileforEtlPath = Application.StartupPath + "\\SurveyResponses.csv";
+            File.WriteAllText(fileforEtlPath, heading);
             return true;
         }
         static bool ResponsesToCSV(SurveyForm survey, string num_registros)//Este es el bueno
@@ -1404,6 +1409,8 @@ namespace SurveyMonkeyImplementation
             {
                 File.WriteAllText(filePath, heading);
             }
+            string fileforEtlPath = Application.StartupPath + "\\SurveyResponses.csv";
+            File.WriteAllText(fileforEtlPath, heading);
             return true;
         }
         static bool ResponsesToCSVPriorTo(SurveyForm survey)//Este es el bueno
@@ -1538,6 +1545,8 @@ namespace SurveyMonkeyImplementation
             {
                 File.WriteAllText(filePath, heading);
             }
+            string fileforEtlPath = Application.StartupPath + "\\SurveyResponses.csv";
+            File.WriteAllText(fileforEtlPath, heading);
             return true;
         }
         static bool ResponsesToCSVPriorTo(SurveyForm survey, int num_registros)//Este es el bueno
@@ -1677,6 +1686,8 @@ namespace SurveyMonkeyImplementation
             {
                 File.WriteAllText(filePath, heading);
             }
+            string fileforEtlPath = Application.StartupPath + "\\SurveyResponses.csv";
+            File.WriteAllText(fileforEtlPath, heading);
             return true;
         }
         static bool ResponsesToCSVPriorTo(SurveyForm survey, string num_registros)//Este es el bueno
@@ -1816,6 +1827,8 @@ namespace SurveyMonkeyImplementation
             {
                 File.WriteAllText(filePath, heading);
             }
+            string fileforEtlPath = Application.StartupPath + "\\SurveyResponses.csv";
+            File.WriteAllText(fileforEtlPath, heading);
             return true;
         }
         static bool ResponsesToCSVAfterTo(SurveyForm survey)//Este es el bueno
@@ -1950,6 +1963,8 @@ namespace SurveyMonkeyImplementation
             {
                 File.WriteAllText(filePath, heading);
             }
+            string fileforEtlPath = Application.StartupPath + "\\SurveyResponses.csv";
+            File.WriteAllText(fileforEtlPath, heading);
             return true;
         }
         static bool ResponsesToCSVAfterTo(SurveyForm survey, int num_registros)//Este es el bueno
@@ -2366,6 +2381,8 @@ namespace SurveyMonkeyImplementation
             {
                 File.WriteAllText(filePath, heading);
             }
+            string fileforEtlPath = Application.StartupPath + "\\SurveyResponses.csv";
+            File.WriteAllText(fileforEtlPath,heading);
             return true;
         }
         static bool ResponsesToCSVBetween(SurveyForm survey)//Este es el bueno
@@ -2503,6 +2520,8 @@ namespace SurveyMonkeyImplementation
             {
                 File.WriteAllText(filePath, heading);
             }
+            string fileforEtlPath = Application.StartupPath + "\\SurveyResponses.csv";
+            File.WriteAllText(fileforEtlPath, heading);
             return true;
         }
         static bool ResponsesToCSVBetween(SurveyForm survey, int num_registros)//Este es el bueno
@@ -2645,6 +2664,8 @@ namespace SurveyMonkeyImplementation
             {
                 File.WriteAllText(filePath, heading);
             }
+            string fileforEtlPath = Application.StartupPath + "\\SurveyResponses.csv";
+            File.WriteAllText(fileforEtlPath, heading);
             return true;
         }
         static bool ResponsesToCSVBetween(SurveyForm survey, string num_registros)//Este es el bueno
@@ -2786,6 +2807,8 @@ namespace SurveyMonkeyImplementation
             {
                 File.WriteAllText(filePath, heading);
             }
+            string fileforEtlPath = Application.StartupPath + "\\SurveyResponses.csv";
+            File.WriteAllText(fileforEtlPath, heading);
             return true;
         }
         static bool ResponsesWithTitlesContainingToCSV()//Este es el bueno
@@ -2795,7 +2818,7 @@ namespace SurveyMonkeyImplementation
             string filePath = "";
             if (nameGiven == "default")
             {
-                filePath = Application.StartupPath + "\\SurveyResponses" + ".csv";
+                filePath = Application.StartupPath + "\\SurveyResponsesWithTitlesContaining"+titlesContaining + ".csv";
             }
             else
             {
@@ -2922,6 +2945,8 @@ namespace SurveyMonkeyImplementation
             {
                 File.WriteAllText(filePath, heading);
             }
+            string fileforEtlPath = Application.StartupPath + "\\SurveyResponses.csv";
+            File.WriteAllText(fileforEtlPath, heading);
             return true;
         }
         static bool writeLastPage(int page)
