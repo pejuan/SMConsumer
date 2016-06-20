@@ -48,45 +48,11 @@ namespace SurveyMonkeyImplementation
         static List<ResponseList> listaResponseList;
         static void Main(string[] args)
         {
-            //SurveysToCSV();
 
-            //SurveysTitleContainingToCSV();
-
-            //SurveysCreatedPriorToCSV();//Crear un between
-
-            //SurveysCreatedAfterToCSV();
-
-            //SurveysCreatedBetweenToCSV();
-            //QuestionsToCSV();
-
-            //QuestionsToCSV(GetSurveyDetails("80589076"));
-
-            //List<SurveyForm> lista = BringSurveys(BringSurveyIDsWithTitlesContaining());
-            //for (int i = 0; i < lista.Count; i++)
-            //{
-            //    QuestionsToCSV(lista[i]);
-            //}
-
-            //getRequestCounter();
-            //for (int i = 0; i < 4; i++)
-            //{
-            //    GetSurveys();
-            //}
-            //setRequestCounter();
-
-            //ResponsesToCSV();
-
-            //ResponsesToCSV(GetSurveyDetails("80589076"));
-
-            //ResponsesToCSV(GetSurveyDetails("74972790"), 100);
-
-            //ResponsesToCSV(GetResponseIDListForETLs("74972790"));
-
-            //ResponsesToCSVPriorTo(GetSurveyDetails("80589076"));
-
-            //ResponsesToCSVAfterTo(GetSurveyDetails("80589076"));
-
-            //ResponsesToCSV(BringResponsesIDsAccordingToSettings("74972790"));
+            loadSettings();
+            getRequestCounter();
+            SurveyForm objsurvey = GetSurveyDetailsBySurveyName(defaultSurveyName);
+            ResponsesToCSV(GetResponseIDListForETLs(objsurvey.id));
         }
         static bool fillSurveyIDs()
         {
@@ -2971,7 +2937,8 @@ namespace SurveyMonkeyImplementation
         {
 
             XmlDocument doc = new XmlDocument();
-            doc.Load(Application.StartupPath + "\\Requests.xml");
+            string parentOfStartupPath = Path.GetFullPath(Path.Combine(Application.StartupPath, @"../"));
+            doc.Load(parentOfStartupPath + "\\Requests.xml");
             XmlNode requestsNode = doc.DocumentElement.SelectSingleNode("/root/requestCounter");
             requestCounter = int.Parse(requestsNode.InnerText);
             XmlNode lastModifiedNode = doc.DocumentElement.SelectSingleNode("/root/lastModified");
@@ -2985,7 +2952,8 @@ namespace SurveyMonkeyImplementation
         static void setRequestCounter()
         {
             XmlDocument doc = new XmlDocument();
-            doc.Load(Application.StartupPath + "\\Requests.xml");
+            string parentOfStartupPath = Path.GetFullPath(Path.Combine(Application.StartupPath, @"../"));
+            doc.Load(parentOfStartupPath + "\\Requests.xml");
             XmlNode requestsNode = doc.DocumentElement.SelectSingleNode("/root/requestCounter");
             requestsNode.InnerText = requestCounter.ToString();
             XmlNode lastModifiedNode = doc.DocumentElement.SelectSingleNode("/root/lastModified");
