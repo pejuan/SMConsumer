@@ -48,7 +48,6 @@ namespace SurveyMonkeyImplementation
         static List<ResponseList> listaResponseList;
         static void Main(string[] args)
         {
-
             loadSettings();
             getRequestCounter();
             SurveyForm objsurvey = GetSurveyDetailsBySurveyName(defaultSurveyName);
@@ -981,6 +980,7 @@ namespace SurveyMonkeyImplementation
                                                     {
 
                                                         string tmp = RemoveLineEndings(objRD.pages[j].questions[auxiliar].answers[l].text);
+                                                        tmp = tmp.Replace('"', ' ');
                                                         csvtext += objQD.answers.rows[v].position + ")" + Regex.Replace(tmp, @"\t|\n|\r|,", "") + "  ";
 
                                                     }
@@ -990,6 +990,7 @@ namespace SurveyMonkeyImplementation
                                             else
                                             {
                                                 string tmp = RemoveLineEndings(objRD.pages[j].questions[auxiliar].answers[l].text);
+                                                tmp = tmp.Replace('"', ' ');
                                                 csvtext += Regex.Replace(tmp, @"\t|\n|\r|,", "") + "_";
                                             }
                                         }
@@ -1108,6 +1109,7 @@ namespace SurveyMonkeyImplementation
                                                 {
 
                                                     string tmp = RemoveLineEndings(objRD.pages[j].questions[auxiliar].answers[l].text);
+                                                    tmp = tmp.Replace('"', ' ');
                                                     csvtext += objQD.answers.rows[b].position+")" + Regex.Replace(tmp, @"\t|\n|\r|,", "") + "  ";
                                                                                                       
                                                 }
@@ -1117,6 +1119,7 @@ namespace SurveyMonkeyImplementation
                                         else
                                         {
                                             string tmp = RemoveLineEndings(objRD.pages[j].questions[auxiliar].answers[l].text);
+                                            tmp = tmp.Replace('"', ' ');
                                             csvtext += Regex.Replace(tmp, @"\t|\n|\r|,", "") + "_";
                                         }
                                         
@@ -1241,6 +1244,7 @@ namespace SurveyMonkeyImplementation
                                                 {
 
                                                     string tmp = RemoveLineEndings(objRD.pages[j].questions[auxiliar].answers[l].text);
+                                                    tmp = tmp.Replace('"', ' ');
                                                     csvtext += objQD.answers.rows[b].position + ")" + Regex.Replace(tmp, @"\t|\n|\r|,", "") + "  ";
 
                                                 }
@@ -1250,6 +1254,7 @@ namespace SurveyMonkeyImplementation
                                         else
                                         {
                                             string tmp = RemoveLineEndings(objRD.pages[j].questions[auxiliar].answers[l].text);
+                                            tmp = tmp.Replace('"', ' ');
                                             csvtext += Regex.Replace(tmp, @"\t|\n|\r|,", "") + "_";
                                         }
                                     }
@@ -1374,6 +1379,7 @@ namespace SurveyMonkeyImplementation
                                                 {
 
                                                     string tmp = RemoveLineEndings(objRD.pages[j].questions[auxiliar].answers[l].text);
+                                                    tmp = tmp.Replace('"', ' ');
                                                     csvtext += objQD.answers.rows[b].position + ")" + Regex.Replace(tmp, @"\t|\n|\r|,", "") + "  ";
 
                                                 }
@@ -1383,6 +1389,7 @@ namespace SurveyMonkeyImplementation
                                         else
                                         {
                                             string tmp = RemoveLineEndings(objRD.pages[j].questions[auxiliar].answers[l].text);
+                                            tmp = tmp.Replace('"', ' ');
                                             csvtext += Regex.Replace(tmp, @"\t|\n|\r|,", "") + "_";
                                         }
                                     }
@@ -1510,6 +1517,7 @@ namespace SurveyMonkeyImplementation
                                                     {
 
                                                         string tmp = RemoveLineEndings(objRD.pages[j].questions[auxiliar].answers[l].text);
+                                                        tmp = tmp.Replace('"', ' ');
                                                         csvtext += objQD.answers.rows[b].position + ")" + Regex.Replace(tmp, @"\t|\n|\r|,", "") + "  ";
 
                                                     }
@@ -1519,6 +1527,7 @@ namespace SurveyMonkeyImplementation
                                             else
                                             {
                                                 string tmp = RemoveLineEndings(objRD.pages[j].questions[auxiliar].answers[l].text);
+                                                tmp = tmp.Replace('"', ' ');
                                                 csvtext += Regex.Replace(tmp, @"\t|\n|\r|,", "") + "_";
                                             }
                                         }
@@ -1651,6 +1660,7 @@ namespace SurveyMonkeyImplementation
                                                     {
 
                                                         string tmp = RemoveLineEndings(objRD.pages[j].questions[auxiliar].answers[l].text);
+                                                        tmp = tmp.Replace('"', ' ');
                                                         csvtext += objQD.answers.rows[b].position + ")" + Regex.Replace(tmp, @"\t|\n|\r|,", "") + "  ";
 
                                                     }
@@ -1660,6 +1670,7 @@ namespace SurveyMonkeyImplementation
                                             else
                                             {
                                                 string tmp = RemoveLineEndings(objRD.pages[j].questions[auxiliar].answers[l].text);
+                                                tmp = tmp.Replace('"', ' ');
                                                 csvtext += Regex.Replace(tmp, @"\t|\n|\r|,", "") + "_";
                                             }
                                         }
@@ -1792,6 +1803,7 @@ namespace SurveyMonkeyImplementation
                                                     {
 
                                                         string tmp = RemoveLineEndings(objRD.pages[j].questions[auxiliar].answers[l].text);
+                                                        tmp = tmp.Replace('"', ' ');
                                                         csvtext += objQD.answers.rows[b].position + ")" + Regex.Replace(tmp, @"\t|\n|\r|,", "") + "  ";
 
                                                     }
@@ -1801,6 +1813,7 @@ namespace SurveyMonkeyImplementation
                                             else
                                             {
                                                 string tmp = RemoveLineEndings(objRD.pages[j].questions[auxiliar].answers[l].text);
+                                                tmp = tmp.Replace('"', ' ');
                                                 csvtext += Regex.Replace(tmp, @"\t|\n|\r|,", "") + "_";
                                             }
                                         }
@@ -1929,6 +1942,7 @@ namespace SurveyMonkeyImplementation
                                                     {
 
                                                         string tmp = RemoveLineEndings(objRD.pages[j].questions[auxiliar].answers[l].text);
+                                                        tmp = tmp.Replace('"', ' ');
                                                         csvtext += objQD.answers.rows[b].position + ")" + Regex.Replace(tmp, @"\t|\n|\r|,", "") + "  ";
 
                                                     }
@@ -1938,6 +1952,7 @@ namespace SurveyMonkeyImplementation
                                             else
                                             {
                                                 string tmp = RemoveLineEndings(objRD.pages[j].questions[auxiliar].answers[l].text);
+                                                tmp = tmp.Replace('"', ' ');
                                                 csvtext += Regex.Replace(tmp, @"\t|\n|\r|,", "") + "_";
                                             }
                                         }
@@ -2070,6 +2085,7 @@ namespace SurveyMonkeyImplementation
                                                     {
 
                                                         string tmp = RemoveLineEndings(objRD.pages[j].questions[auxiliar].answers[l].text);
+                                                        tmp = tmp.Replace('"', ' ');
                                                         csvtext += objQD.answers.rows[b].position + ")" + Regex.Replace(tmp, @"\t|\n|\r|,", "") + "  ";
 
                                                     }
@@ -2079,6 +2095,7 @@ namespace SurveyMonkeyImplementation
                                             else
                                             {
                                                 string tmp = RemoveLineEndings(objRD.pages[j].questions[auxiliar].answers[l].text);
+                                                tmp = tmp.Replace('"', ' ');
                                                 csvtext += Regex.Replace(tmp, @"\t|\n|\r|,", "") + "_";
                                             }
                                         }
@@ -2208,6 +2225,7 @@ namespace SurveyMonkeyImplementation
                                                     {
 
                                                         string tmp = RemoveLineEndings(objRD.pages[j].questions[auxiliar].answers[l].text);
+                                                        tmp = tmp.Replace('"', ' ');
                                                         csvtext += objQD.answers.rows[b].position + ")" + Regex.Replace(tmp, @"\t|\n|\r|,", "") + "  ";
 
                                                     }
@@ -2217,6 +2235,7 @@ namespace SurveyMonkeyImplementation
                                             else
                                             {
                                                 string tmp = RemoveLineEndings(objRD.pages[j].questions[auxiliar].answers[l].text);
+                                                tmp = tmp.Replace('"', ' ');
                                                 csvtext += Regex.Replace(tmp, @"\t|\n|\r|,", "") + "_";
                                             }
                                         }
@@ -2347,6 +2366,7 @@ namespace SurveyMonkeyImplementation
                                                 {
 
                                                     string tmp = RemoveLineEndings(objRD.pages[j].questions[auxiliar].answers[l].text);
+                                                    tmp = tmp.Replace('"', ' ');
                                                     csvtext += objQD.answers.rows[b].position + ")" + Regex.Replace(tmp, @"\t|\n|\r|,", "") + "  ";
 
                                                 }
@@ -2356,6 +2376,7 @@ namespace SurveyMonkeyImplementation
                                         else
                                         {
                                             string tmp = RemoveLineEndings(objRD.pages[j].questions[auxiliar].answers[l].text);
+                                            tmp = tmp.Replace('"', ' ');
                                             csvtext += Regex.Replace(tmp, @"\t|\n|\r|,", "") + "_";
                                         }
                                     }
@@ -2487,6 +2508,7 @@ namespace SurveyMonkeyImplementation
                                                     {
 
                                                         string tmp = RemoveLineEndings(objRD.pages[j].questions[auxiliar].answers[l].text);
+                                                        tmp = tmp.Replace('"', ' ');
                                                         csvtext += objQD.answers.rows[b].position + ")" + Regex.Replace(tmp, @"\t|\n|\r|,", "") + "  ";
 
                                                     }
@@ -2496,6 +2518,7 @@ namespace SurveyMonkeyImplementation
                                             else
                                             {
                                                 string tmp = RemoveLineEndings(objRD.pages[j].questions[auxiliar].answers[l].text);
+                                                tmp = tmp.Replace('"', ' ');
                                                 csvtext += Regex.Replace(tmp, @"\t|\n|\r|,", "") + "_";
                                             }
                                         }
@@ -2631,6 +2654,7 @@ namespace SurveyMonkeyImplementation
                                                     {
 
                                                         string tmp = RemoveLineEndings(objRD.pages[j].questions[auxiliar].answers[l].text);
+                                                        tmp = tmp.Replace('"', ' ');
                                                         csvtext += objQD.answers.rows[b].position + ")" + Regex.Replace(tmp, @"\t|\n|\r|,", "") + "  ";
 
                                                     }
@@ -2640,6 +2664,7 @@ namespace SurveyMonkeyImplementation
                                             else
                                             {
                                                 string tmp = RemoveLineEndings(objRD.pages[j].questions[auxiliar].answers[l].text);
+                                                tmp = tmp.Replace('"', ' ');
                                                 csvtext += Regex.Replace(tmp, @"\t|\n|\r|,", "") + "_";
                                             }
                                         }
@@ -2774,6 +2799,7 @@ namespace SurveyMonkeyImplementation
                                                     {
 
                                                         string tmp = RemoveLineEndings(objRD.pages[j].questions[auxiliar].answers[l].text);
+                                                        tmp = tmp.Replace('"', ' ');
                                                         csvtext += objQD.answers.rows[b].position + ")" + Regex.Replace(tmp, @"\t|\n|\r|,", "") + "  ";
 
                                                     }
@@ -2783,6 +2809,7 @@ namespace SurveyMonkeyImplementation
                                             else
                                             {
                                                 string tmp = RemoveLineEndings(objRD.pages[j].questions[auxiliar].answers[l].text);
+                                                tmp = tmp.Replace('"', ' ');
                                                 csvtext += Regex.Replace(tmp, @"\t|\n|\r|,", "") + "_";
                                             }
                                         }
@@ -2911,6 +2938,7 @@ namespace SurveyMonkeyImplementation
                                                         {
 
                                                             string tmp = RemoveLineEndings(objRD.pages[j].questions[auxiliar].answers[l].text);
+                                                            tmp = tmp.Replace('"', ' ');
                                                             csvtext += objQD.answers.rows[v].position + ")" + Regex.Replace(tmp, @"\t|\n|\r|,", "") + "  ";
 
                                                         }
@@ -2920,6 +2948,7 @@ namespace SurveyMonkeyImplementation
                                                 else
                                                 {
                                                     string tmp = RemoveLineEndings(objRD.pages[j].questions[auxiliar].answers[l].text);
+                                                    tmp = tmp.Replace('"', ' ');
                                                     csvtext += Regex.Replace(tmp, @"\t|\n|\r|,", "") + "_";
                                                 }
                                             }
