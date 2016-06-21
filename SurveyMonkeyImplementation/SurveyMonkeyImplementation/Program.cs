@@ -2986,7 +2986,7 @@ namespace SurveyMonkeyImplementation
             requestsNode.InnerText = requestCounter.ToString();
             XmlNode lastModifiedNode = doc.DocumentElement.SelectSingleNode("/root/lastModified");
             lastModifiedNode.InnerText = DateTime.Now.ToString();
-            doc.Save(Application.StartupPath + "\\Requests.xml");
+            doc.Save(parentOfStartupPath + "\\Requests.xml");
         }
     }
 }
