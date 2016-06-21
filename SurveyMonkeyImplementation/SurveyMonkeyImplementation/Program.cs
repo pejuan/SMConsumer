@@ -1438,7 +1438,8 @@ namespace SurveyMonkeyImplementation
             String csvtext = "";
             List<string> listaprueba = new List<string>();
 
-            listaprueba = BringResponsesIDs(survey.id);
+            //listaprueba = BringResponsesIDs(survey.id);
+            listaprueba = GetResponseIDListForETLs(survey.id);
             for (int i = 0; i < listaprueba.Count; i++)
             {
                 ResponseDetail objRD = GetResponseDetails(listaprueba[i]);
@@ -1856,7 +1857,8 @@ namespace SurveyMonkeyImplementation
             String csvtext = "";
             List<string> listaprueba = new List<string>();
 
-            listaprueba = BringResponsesIDs(survey.id);
+            //listaprueba = BringResponsesIDs(survey.id);
+            listaprueba = GetResponseIDListForETLs(survey.id);
             for (int i = 0; i < listaprueba.Count; i++)
             {
                 ResponseDetail objRD = GetResponseDetails(listaprueba[i]);
@@ -2413,7 +2415,8 @@ namespace SurveyMonkeyImplementation
             String csvtext = "";
             List<string> listaprueba = new List<string>();
 
-            listaprueba = BringResponsesIDs(survey.id);
+            //listaprueba = BringResponsesIDs(survey.id);
+            listaprueba = GetResponseIDListForETLs(survey.id);
             for (int i = 0; i < listaprueba.Count; i++)
             {
                 ResponseDetail objRD = GetResponseDetails(listaprueba[i]);
