@@ -10,13 +10,13 @@ namespace SurveyMonkeyImplementation
     {
         public string ip_address { get; set; }
         public string id { get; set; }
-        public string date_modified { get; set; }
+        public DateTime date_modified { get; set; }
         public string response_status { get; set; }
         public string custom_value { get; set; }
         public string total_time { get; set; }
         public string recipient_id { get; set; }
         public string collector_id { get; set; }
-        public string date_created { get; set; }
+        public DateTime date_created { get; set; }
         public string survey_id { get; set; }
         public string collection_mode { get; set; }
 

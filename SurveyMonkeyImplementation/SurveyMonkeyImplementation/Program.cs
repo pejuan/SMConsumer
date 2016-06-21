@@ -675,7 +675,7 @@ namespace SurveyMonkeyImplementation
             String csvtext = "";
             for (int i = 0; i < lista.Count; i++)
             {
-                DateTime datetmp = DateTime.Parse(lista[i].date_created);
+                DateTime datetmp = lista[i].date_created;
                 if (datetmp<=datesPrior)
                 {
                     csvtext += "\"" + lista[i].id + "\",";
@@ -715,7 +715,7 @@ namespace SurveyMonkeyImplementation
             String csvtext = "";
             for (int i = 0; i < lista.Count; i++)
             {
-                DateTime datetmp = DateTime.Parse(lista[i].date_created);
+                DateTime datetmp = lista[i].date_created;
                 if (datetmp >= datesAfter)
                 {
                     csvtext += "\"" + lista[i].id + "\",";
@@ -758,7 +758,7 @@ namespace SurveyMonkeyImplementation
             String csvtext = "";
             for (int i = 0; i < lista.Count; i++)
             {
-                DateTime datetmp = DateTime.Parse(lista[i].date_created);
+                DateTime datetmp = lista[i].date_created;
                 if (datetmp >= datesAfter && datetmp <= datesPrior)
                 {
                     csvtext += "\"" + lista[i].id + "\",";
@@ -1442,7 +1442,7 @@ namespace SurveyMonkeyImplementation
             for (int i = 0; i < listaprueba.Count; i++)
             {
                 ResponseDetail objRD = GetResponseDetails(listaprueba[i]);
-                if (datesPrior >= DateTime.Parse(objRD.date_created))
+                if (datesPrior >= objRD.date_created)
                 {
 
                     
@@ -1583,7 +1583,7 @@ namespace SurveyMonkeyImplementation
             for (int i = 0; i < final; i++)
             {
                 ResponseDetail objRD = GetResponseDetails(listaprueba[i]);
-                if (datesPrior >= DateTime.Parse(objRD.date_created))
+                if (datesPrior >= objRD.date_created)
                 {
 
 
@@ -1724,7 +1724,7 @@ namespace SurveyMonkeyImplementation
             for (int i = 0; i < final; i++)
             {
                 ResponseDetail objRD = GetResponseDetails(listaprueba[i]);
-                if (datesPrior >= DateTime.Parse(objRD.date_created))
+                if (datesPrior >= objRD.date_created)
                 {
 
 
@@ -1860,7 +1860,7 @@ namespace SurveyMonkeyImplementation
             for (int i = 0; i < listaprueba.Count; i++)
             {
                 ResponseDetail objRD = GetResponseDetails(listaprueba[i]);
-                if (datesAfter <= DateTime.Parse(objRD.date_created))
+                if (datesAfter <= objRD.date_created)
                 {
 
 
@@ -2001,7 +2001,7 @@ namespace SurveyMonkeyImplementation
             for (int i = 0; i < final; i++)
             {
                 ResponseDetail objRD = GetResponseDetails(listaprueba[i]);
-                if (datesAfter <= DateTime.Parse(objRD.date_created))
+                if (datesAfter <= objRD.date_created)
                 {
 
 
@@ -2139,7 +2139,7 @@ namespace SurveyMonkeyImplementation
             for (int i = 0; i < final; i++)
             {
                 ResponseDetail objRD = GetResponseDetails(listaprueba[i]);
-                if (datesAfter <= DateTime.Parse(objRD.date_created))
+                if (datesAfter <= objRD.date_created)
                 {
 
 
@@ -2417,7 +2417,7 @@ namespace SurveyMonkeyImplementation
             for (int i = 0; i < listaprueba.Count; i++)
             {
                 ResponseDetail objRD = GetResponseDetails(listaprueba[i]);
-                if (datesAfter <= DateTime.Parse(objRD.date_created) && datesPrior >= DateTime.Parse(objRD.date_created))
+                if (datesAfter <= objRD.date_created && datesPrior >= objRD.date_created)
                 {
 
 
@@ -2561,7 +2561,7 @@ namespace SurveyMonkeyImplementation
             for (int i = 0; i < final; i++)
             {
                 ResponseDetail objRD = GetResponseDetails(listaprueba[i]);
-                if (datesAfter <= DateTime.Parse(objRD.date_created) && datesPrior >= DateTime.Parse(objRD.date_created))
+                if (datesAfter <= objRD.date_created && datesPrior >= objRD.date_created)
                 {
 
 
@@ -2704,7 +2704,7 @@ namespace SurveyMonkeyImplementation
             for (int i = 0; i < final; i++)
             {
                 ResponseDetail objRD = GetResponseDetails(listaprueba[i]);
-                if (datesAfter <= DateTime.Parse(objRD.date_created) && datesPrior >= DateTime.Parse(objRD.date_created))
+                if (datesAfter <= objRD.date_created && datesPrior >= objRD.date_created)
                 {
 
 
