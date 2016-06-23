@@ -32,6 +32,8 @@ namespace SurveyMonkeyImplementation
         static string nameGiven = "default";
         static int requestCounter = 0;
         static string lastPage = "";
+        static int use = 0;
+
 
         static string baseURL = "https://api.surveymonkey.net/v3/";
         static int responsePageAct = 1;
@@ -51,7 +53,26 @@ namespace SurveyMonkeyImplementation
             loadSettings();
             getRequestCounter();
             SurveyForm objsurvey = GetSurveyDetailsBySurveyName(defaultSurveyName);
-            ResponsesToCSV(GetResponseIDListForETLs(objsurvey.id));
+            if (use==0)
+            {
+                ResponsesToCSV(GetResponseIDListForETLs(objsurvey.id));
+            }
+            else if (use==1)
+            {
+                ResponsesToCSVPriorTo(objsurvey);
+            }
+            else if (use==2)
+            {
+                ResponsesToCSVAfterTo(objsurvey);
+            }
+            else if (use==3)
+            {
+                ResponsesToCSVBetween(objsurvey);
+            }
+            else if (use==4)
+            {
+                ResponsesToCSV(GetResponseIDListForETLs(objsurvey.id));
+            }            
             setRequestCounter();
         }
         static bool fillSurveyIDs()
@@ -236,7 +257,8 @@ namespace SurveyMonkeyImplementation
                 nameGiven = nameGivenNode.InnerText;
                 XmlNode lastPageNode = doc.DocumentElement.SelectSingleNode("/root/lastPage");
                 lastPage = lastPageNode.InnerText;
-
+                XmlNode useNode = doc.DocumentElement.SelectSingleNode("/root/use");
+                use = int.Parse(useNode.InnerText);
                 settingsLoaded = true;
             }
         }
@@ -613,14 +635,9 @@ namespace SurveyMonkeyImplementation
             }
 
             heading += csvtext;
-            if (File.Exists(filePath))
-            {
-                File.AppendAllText(filePath, csvtext);
-            }
-            else
-            {
-                File.WriteAllText(filePath, heading);
-            }
+
+            File.WriteAllText(filePath, heading);
+
             return true;
         }
         static bool SurveysTitleContainingToCSV()
@@ -823,7 +840,6 @@ namespace SurveyMonkeyImplementation
                 {
                     for (int k = 0; k < lista[i].pages[j].questions.Count; k++)
 			        {
-			            Console.WriteLine(lista[i].pages[j].questions[k].headings[0].heading);//Imprime la pregunta
                         csvtext += "\"" + lista[i].id + "\",\"" + "QUESTION" + counter + "\",\"" + lista[i].pages[j].questions[k].headings[0].heading + "\",\"" + lista[i].pages[j].questions[k].family + "\"";
                         csvtext += "\n";
                         counter++;
@@ -839,14 +855,9 @@ namespace SurveyMonkeyImplementation
 
             }
             heading += csvtext;
-            if (File.Exists(filePath))
-            {
-                File.AppendAllText(filePath, csvtext);
-            }
-            else
-            {
-                File.WriteAllText(filePath, heading);
-            }
+
+            File.WriteAllText(filePath, heading);
+          
             return true;
         }
         static bool QuestionsToCSV(SurveyForm survey)
@@ -1010,14 +1021,9 @@ namespace SurveyMonkeyImplementation
             }
 
             heading += csvtext;
-            if (File.Exists(filePath))
-            {
-                File.AppendAllText(filePath, csvtext);
-            }
-            else
-            {
-                File.WriteAllText(filePath, heading);
-            }
+            
+            File.WriteAllText(filePath, heading);
+           
             return true;
         }
         static bool ResponsesToCSV(SurveyForm survey)//Este es el bueno
@@ -1042,7 +1048,7 @@ namespace SurveyMonkeyImplementation
             String csvtext = "";
             List<string> listaprueba = new List<string>();
 
-            listaprueba = BringResponsesIDs(survey.id);
+            listaprueba = GetResponseIDListForETLs(survey.id);
             for (int i = 0; i < listaprueba.Count; i++)
             {
                 ResponseDetail objRD = GetResponseDetails(listaprueba[i]);
