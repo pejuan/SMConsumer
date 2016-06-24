@@ -472,7 +472,7 @@ namespace SurveyMonkeyImplementation
             reader.Close();
             response.Close();
             listaResponseList = new List<ResponseList>();
-            //////////////////////////////////////////////////////////////////////////////
+
             string total = resplist.total;
             int x = Int32.Parse(total);
             x = x / 1000;
@@ -569,7 +569,6 @@ namespace SurveyMonkeyImplementation
 
             var serializer = new System.Web.Script.Serialization.JavaScriptSerializer();
             resplist = serializer.Deserialize<ResponseList>(responseFromServer);
-            //listaResponseList.Add(resplist);
             List<String> retvar = new List<string>();
             for (int i = 0; i < resplist.data.Count; i++)
             {
@@ -886,9 +885,8 @@ namespace SurveyMonkeyImplementation
             }
             return true;
         }
-        static bool ResponsesToCSV()//Este es el bueno
+        static bool ResponsesToCSV()
         {
-            //Debo de poner el heading del csv mejor en otra variable para poder hacer append en caso ya haya un archivo creado
             loadSettings();
             string filePath = "";
             if (nameGiven == "default")
@@ -946,32 +944,27 @@ namespace SurveyMonkeyImplementation
                                     {
                                         if (objRD.pages[j].questions[auxiliar].answers[l].choice_id != null)
                                         {
-                                            //QuestionDetail objQD = GetQuestionDetails(SurveyFormDetailsList[b].id, objRD.pages[j].id, objRD.pages[j].questions[auxiliar].id);
                                             if (tmprow_id != objRD.pages[j].questions[auxiliar].answers[l].row_id && (l != 0))
                                             {
                                                 csvtext += " || ";
                                             }
-                                            for (int q = 0; q < objQD.answers.choices.Count; q++)//Como pueden ser multiple choice, debo concatenarlas
+                                            for (int q = 0; q < objQD.answers.choices.Count; q++)
                                             {
                                                 if (objQD.answers.choices[q].id == objRD.pages[j].questions[auxiliar].answers[l].choice_id)
                                                 {
-                                                    //csvtext += "\"" + objQD.answers.choices[q].text + "\", ";
                                                     string Content = RemoveLineEndings(objQD.answers.choices[q].text);
                                                     string newCont = Regex.Replace(Content, @"\t|\n|\r|,", "");
-                                                    //temporal += newCont + "_";
                                                     csvtext += newCont + "_";
 
                                                 }
                                             }
 
                                             tmprow_id = objRD.pages[j].questions[auxiliar].answers[l].row_id;
-                                            //csvtext += objRD.pages[j].questions[auxiliar].answers[l].choice_id + "_";
 
 
                                         }
                                         else if (objRD.pages[j].questions[auxiliar].answers[l].text != null)
                                         {
-                                            //QuestionDetail objQD = GetQuestionDetails(SurveyFormDetailsList[b].id, objRD.pages[j].id, objRD.pages[j].questions[auxiliar].id);
                                             if (objQD.family == "open_ended" && objQD.subtype == "multi")
                                             {
                                                 for (int v = 0; v < objQD.answers.rows.Count; v++)
@@ -1015,7 +1008,7 @@ namespace SurveyMonkeyImplementation
            
             return true;
         }
-        static bool ResponsesToCSV(SurveyForm survey)//Este es el bueno
+        static bool ResponsesToCSV(SurveyForm survey)
         {
             loadSettings();
             string filePath = "";
@@ -1070,7 +1063,6 @@ namespace SurveyMonkeyImplementation
                                 {
                                     if (objRD.pages[j].questions[auxiliar].answers[l].choice_id != null)
                                     {
-                                        //QuestionDetail objQD = GetQuestionDetails(survey.id, objRD.pages[j].id, objRD.pages[j].questions[auxiliar].id);
                                         if (tmprow_id != objRD.pages[j].questions[auxiliar].answers[l].row_id && (l != 0))
                                         {
                                             csvtext += " || ";
@@ -1079,23 +1071,19 @@ namespace SurveyMonkeyImplementation
                                         {
                                             if (objQD.answers.choices[q].id == objRD.pages[j].questions[auxiliar].answers[l].choice_id)
                                             {
-                                                //csvtext += "\"" + objQD.answers.choices[q].text + "\", ";
                                                 string Content = RemoveLineEndings(objQD.answers.choices[q].text);
                                                 string newCont = Regex.Replace(Content, @"\t|\n|\r|,", "");
-                                                //temporal += newCont + "_";
                                                 csvtext += newCont + "_";
                                                 
                                             }
                                         }
                                         
                                         tmprow_id = objRD.pages[j].questions[auxiliar].answers[l].row_id;
-                                        //csvtext += objRD.pages[j].questions[auxiliar].answers[l].choice_id + "_";
 
 
                                     }
                                     else if (objRD.pages[j].questions[auxiliar].answers[l].text != null)
                                     {
-                                        //QuestionDetail objQD = GetQuestionDetails(survey.id, objRD.pages[j].id, objRD.pages[j].questions[auxiliar].id);
                                         if (objQD.family == "open_ended" && objQD.subtype == "multi")
                                         {
                                             for (int b = 0; b < objQD.answers.rows.Count; b++)
@@ -1146,7 +1134,7 @@ namespace SurveyMonkeyImplementation
             File.WriteAllText(fileforEtlPath, heading);
             return true;
         }
-        static bool ResponsesToCSV(SurveyForm survey, int num_registros)//Este es el bueno
+        static bool ResponsesToCSV(SurveyForm survey, int num_registros)
         {
             loadSettings();
             string filePath = "";
@@ -1205,7 +1193,6 @@ namespace SurveyMonkeyImplementation
                                 {
                                     if (objRD.pages[j].questions[auxiliar].answers[l].choice_id != null)
                                     {
-                                        //QuestionDetail objQD = GetQuestionDetails(survey.id, objRD.pages[j].id, objRD.pages[j].questions[auxiliar].id);
                                         if (tmprow_id != objRD.pages[j].questions[auxiliar].answers[l].row_id && (l != 0))
                                         {
                                             csvtext += " || ";
@@ -1214,23 +1201,19 @@ namespace SurveyMonkeyImplementation
                                         {
                                             if (objQD.answers.choices[q].id == objRD.pages[j].questions[auxiliar].answers[l].choice_id)
                                             {
-                                                //csvtext += "\"" + objQD.answers.choices[q].text + "\", ";
                                                 string Content = RemoveLineEndings(objQD.answers.choices[q].text);
                                                 string newCont = Regex.Replace(Content, @"\t|\n|\r|,", "");
-                                                //temporal += newCont + "_";
                                                 csvtext += newCont + "_";
 
                                             }
                                         }
 
                                         tmprow_id = objRD.pages[j].questions[auxiliar].answers[l].row_id;
-                                        //csvtext += objRD.pages[j].questions[auxiliar].answers[l].choice_id + "_";
 
 
                                     }
                                     else if (objRD.pages[j].questions[auxiliar].answers[l].text != null)
                                     {
-                                        //QuestionDetail objQD = GetQuestionDetails(survey.id, objRD.pages[j].id, objRD.pages[j].questions[auxiliar].id);
                                         if (objQD.family == "open_ended" && objQD.subtype == "multi")
                                         {
                                             for (int b = 0; b < objQD.answers.rows.Count; b++)
@@ -1280,7 +1263,7 @@ namespace SurveyMonkeyImplementation
             File.WriteAllText(fileforEtlPath, heading);
             return true;
         }
-        static bool ResponsesToCSV(SurveyForm survey, string num_registros)//Este es el bueno
+        static bool ResponsesToCSV(SurveyForm survey, string num_registros)
         {
             loadSettings();
             string filePath = "";
@@ -1340,7 +1323,6 @@ namespace SurveyMonkeyImplementation
                                 {
                                     if (objRD.pages[j].questions[auxiliar].answers[l].choice_id != null)
                                     {
-                                        //QuestionDetail objQD = GetQuestionDetails(survey.id, objRD.pages[j].id, objRD.pages[j].questions[auxiliar].id);
                                         if (tmprow_id != objRD.pages[j].questions[auxiliar].answers[l].row_id && (l != 0))
                                         {
                                             csvtext += " || ";
@@ -1349,23 +1331,19 @@ namespace SurveyMonkeyImplementation
                                         {
                                             if (objQD.answers.choices[q].id == objRD.pages[j].questions[auxiliar].answers[l].choice_id)
                                             {
-                                                //csvtext += "\"" + objQD.answers.choices[q].text + "\", ";
                                                 string Content = RemoveLineEndings(objQD.answers.choices[q].text);
                                                 string newCont = Regex.Replace(Content, @"\t|\n|\r|,", "");
-                                                //temporal += newCont + "_";
                                                 csvtext += newCont + "_";
 
                                             }
                                         }
 
                                         tmprow_id = objRD.pages[j].questions[auxiliar].answers[l].row_id;
-                                        //csvtext += objRD.pages[j].questions[auxiliar].answers[l].choice_id + "_";
 
 
                                     }
                                     else if (objRD.pages[j].questions[auxiliar].answers[l].text != null)
                                     {
-                                        //QuestionDetail objQD = GetQuestionDetails(survey.id, objRD.pages[j].id, objRD.pages[j].questions[auxiliar].id);
                                         if (objQD.family == "open_ended" && objQD.subtype == "multi")
                                         {
                                             for (int b = 0; b < objQD.answers.rows.Count; b++)
@@ -1415,7 +1393,7 @@ namespace SurveyMonkeyImplementation
             File.WriteAllText(fileforEtlPath, heading);
             return true;
         }
-        static bool ResponsesToCSVPriorTo(SurveyForm survey)//Este es el bueno
+        static bool ResponsesToCSVPriorTo(SurveyForm survey)
         {
             string filePath = "";
             loadSettings();
@@ -1440,7 +1418,6 @@ namespace SurveyMonkeyImplementation
             String csvtext = "";
             List<string> listaprueba = new List<string>();
 
-            //listaprueba = BringResponsesIDs(survey.id);
             listaprueba = GetResponseIDListForETLs(survey.id);
             for (int i = 0; i < listaprueba.Count; i++)
             {
@@ -1478,7 +1455,6 @@ namespace SurveyMonkeyImplementation
                                     {
                                         if (objRD.pages[j].questions[auxiliar].answers[l].choice_id != null)
                                         {
-                                            //QuestionDetail objQD = GetQuestionDetails(survey.id, objRD.pages[j].id, objRD.pages[j].questions[auxiliar].id);
                                             if (tmprow_id != objRD.pages[j].questions[auxiliar].answers[l].row_id && (l != 0))
                                             {
                                                 csvtext += " || ";
@@ -1487,23 +1463,19 @@ namespace SurveyMonkeyImplementation
                                             {
                                                 if (objQD.answers.choices[q].id == objRD.pages[j].questions[auxiliar].answers[l].choice_id)
                                                 {
-                                                    //csvtext += "\"" + objQD.answers.choices[q].text + "\", ";
                                                     string Content = RemoveLineEndings(objQD.answers.choices[q].text);
                                                     string newCont = Regex.Replace(Content, @"\t|\n|\r|,", "");
-                                                    //temporal += newCont + "_";
                                                     csvtext += newCont + "_";
 
                                                 }
                                             }
 
                                             tmprow_id = objRD.pages[j].questions[auxiliar].answers[l].row_id;
-                                            //csvtext += objRD.pages[j].questions[auxiliar].answers[l].choice_id + "_";
 
 
                                         }
                                         else if (objRD.pages[j].questions[auxiliar].answers[l].text != null)
                                         {
-                                            //QuestionDetail objQD = GetQuestionDetails(survey.id, objRD.pages[j].id, objRD.pages[j].questions[auxiliar].id);
                                             if (objQD.family == "open_ended" && objQD.subtype == "multi")
                                             {
                                                 for (int b = 0; b < objQD.answers.rows.Count; b++)
@@ -1554,7 +1526,7 @@ namespace SurveyMonkeyImplementation
             File.WriteAllText(fileforEtlPath, heading);
             return true;
         }
-        static bool ResponsesToCSVPriorTo(SurveyForm survey, int num_registros)//Este es el bueno
+        static bool ResponsesToCSVPriorTo(SurveyForm survey, int num_registros)
         {
             string filePath = "";
             loadSettings();
@@ -1621,7 +1593,6 @@ namespace SurveyMonkeyImplementation
                                     {
                                         if (objRD.pages[j].questions[auxiliar].answers[l].choice_id != null)
                                         {
-                                            //QuestionDetail objQD = GetQuestionDetails(survey.id, objRD.pages[j].id, objRD.pages[j].questions[auxiliar].id);
                                             if (tmprow_id != objRD.pages[j].questions[auxiliar].answers[l].row_id && (l != 0))
                                             {
                                                 csvtext += " || ";
@@ -1630,23 +1601,19 @@ namespace SurveyMonkeyImplementation
                                             {
                                                 if (objQD.answers.choices[q].id == objRD.pages[j].questions[auxiliar].answers[l].choice_id)
                                                 {
-                                                    //csvtext += "\"" + objQD.answers.choices[q].text + "\", ";
                                                     string Content = RemoveLineEndings(objQD.answers.choices[q].text);
                                                     string newCont = Regex.Replace(Content, @"\t|\n|\r|,", "");
-                                                    //temporal += newCont + "_";
                                                     csvtext += newCont + "_";
 
                                                 }
                                             }
 
                                             tmprow_id = objRD.pages[j].questions[auxiliar].answers[l].row_id;
-                                            //csvtext += objRD.pages[j].questions[auxiliar].answers[l].choice_id + "_";
 
 
                                         }
                                         else if (objRD.pages[j].questions[auxiliar].answers[l].text != null)
                                         {
-                                            //QuestionDetail objQD = GetQuestionDetails(survey.id, objRD.pages[j].id, objRD.pages[j].questions[auxiliar].id);
                                             if (objQD.family == "open_ended" && objQD.subtype == "multi")
                                             {
                                                 for (int b = 0; b < objQD.answers.rows.Count; b++)
@@ -1697,7 +1664,7 @@ namespace SurveyMonkeyImplementation
             File.WriteAllText(fileforEtlPath, heading);
             return true;
         }
-        static bool ResponsesToCSVPriorTo(SurveyForm survey, string num_registros)//Este es el bueno
+        static bool ResponsesToCSVPriorTo(SurveyForm survey, string num_registros)
         {
             string filePath = "";
             loadSettings();
@@ -1764,7 +1731,6 @@ namespace SurveyMonkeyImplementation
                                     {
                                         if (objRD.pages[j].questions[auxiliar].answers[l].choice_id != null)
                                         {
-                                            //QuestionDetail objQD = GetQuestionDetails(survey.id, objRD.pages[j].id, objRD.pages[j].questions[auxiliar].id);
                                             if (tmprow_id != objRD.pages[j].questions[auxiliar].answers[l].row_id && (l != 0))
                                             {
                                                 csvtext += " || ";
@@ -1773,23 +1739,19 @@ namespace SurveyMonkeyImplementation
                                             {
                                                 if (objQD.answers.choices[q].id == objRD.pages[j].questions[auxiliar].answers[l].choice_id)
                                                 {
-                                                    //csvtext += "\"" + objQD.answers.choices[q].text + "\", ";
                                                     string Content = RemoveLineEndings(objQD.answers.choices[q].text);
                                                     string newCont = Regex.Replace(Content, @"\t|\n|\r|,", "");
-                                                    //temporal += newCont + "_";
                                                     csvtext += newCont + "_";
 
                                                 }
                                             }
 
                                             tmprow_id = objRD.pages[j].questions[auxiliar].answers[l].row_id;
-                                            //csvtext += objRD.pages[j].questions[auxiliar].answers[l].choice_id + "_";
 
 
                                         }
                                         else if (objRD.pages[j].questions[auxiliar].answers[l].text != null)
                                         {
-                                            //QuestionDetail objQD = GetQuestionDetails(survey.id, objRD.pages[j].id, objRD.pages[j].questions[auxiliar].id);
                                             if (objQD.family == "open_ended" && objQD.subtype == "multi")
                                             {
                                                 for (int b = 0; b < objQD.answers.rows.Count; b++)
@@ -1840,7 +1802,7 @@ namespace SurveyMonkeyImplementation
             File.WriteAllText(fileforEtlPath, heading);
             return true;
         }
-        static bool ResponsesToCSVAfterTo(SurveyForm survey)//Este es el bueno
+        static bool ResponsesToCSVAfterTo(SurveyForm survey)
         {
             string filePath = "";
             loadSettings();
@@ -1865,7 +1827,6 @@ namespace SurveyMonkeyImplementation
             String csvtext = "";
             List<string> listaprueba = new List<string>();
 
-            //listaprueba = BringResponsesIDs(survey.id);
             listaprueba = GetResponseIDListForETLs(survey.id);
             for (int i = 0; i < listaprueba.Count; i++)
             {
@@ -1903,7 +1864,6 @@ namespace SurveyMonkeyImplementation
                                     {
                                         if (objRD.pages[j].questions[auxiliar].answers[l].choice_id != null)
                                         {
-                                            //QuestionDetail objQD = GetQuestionDetails(survey.id, objRD.pages[j].id, objRD.pages[j].questions[auxiliar].id);
                                             if (tmprow_id != objRD.pages[j].questions[auxiliar].answers[l].row_id && (l != 0))
                                             {
                                                 csvtext += " || ";
@@ -1912,23 +1872,19 @@ namespace SurveyMonkeyImplementation
                                             {
                                                 if (objQD.answers.choices[q].id == objRD.pages[j].questions[auxiliar].answers[l].choice_id)
                                                 {
-                                                    //csvtext += "\"" + objQD.answers.choices[q].text + "\", ";
                                                     string Content = RemoveLineEndings(objQD.answers.choices[q].text);
                                                     string newCont = Regex.Replace(Content, @"\t|\n|\r|,", "");
-                                                    //temporal += newCont + "_";
                                                     csvtext += newCont + "_";
 
                                                 }
                                             }
 
                                             tmprow_id = objRD.pages[j].questions[auxiliar].answers[l].row_id;
-                                            //csvtext += objRD.pages[j].questions[auxiliar].answers[l].choice_id + "_";
 
 
                                         }
                                         else if (objRD.pages[j].questions[auxiliar].answers[l].text != null)
                                         {
-                                            //QuestionDetail objQD = GetQuestionDetails(survey.id, objRD.pages[j].id, objRD.pages[j].questions[auxiliar].id);
                                             if (objQD.family == "open_ended" && objQD.subtype == "multi")
                                             {
                                                 for (int b = 0; b < objQD.answers.rows.Count; b++)
@@ -1979,7 +1935,7 @@ namespace SurveyMonkeyImplementation
             File.WriteAllText(fileforEtlPath, heading);
             return true;
         }
-        static bool ResponsesToCSVAfterTo(SurveyForm survey, int num_registros)//Este es el bueno
+        static bool ResponsesToCSVAfterTo(SurveyForm survey, int num_registros)
         {
             string filePath = "";
             loadSettings();
@@ -2046,7 +2002,6 @@ namespace SurveyMonkeyImplementation
                                     {
                                         if (objRD.pages[j].questions[auxiliar].answers[l].choice_id != null)
                                         {
-                                            //QuestionDetail objQD = GetQuestionDetails(survey.id, objRD.pages[j].id, objRD.pages[j].questions[auxiliar].id);
                                             if (tmprow_id != objRD.pages[j].questions[auxiliar].answers[l].row_id && (l != 0))
                                             {
                                                 csvtext += " || ";
@@ -2055,23 +2010,19 @@ namespace SurveyMonkeyImplementation
                                             {
                                                 if (objQD.answers.choices[q].id == objRD.pages[j].questions[auxiliar].answers[l].choice_id)
                                                 {
-                                                    //csvtext += "\"" + objQD.answers.choices[q].text + "\", ";
                                                     string Content = RemoveLineEndings(objQD.answers.choices[q].text);
                                                     string newCont = Regex.Replace(Content, @"\t|\n|\r|,", "");
-                                                    //temporal += newCont + "_";
                                                     csvtext += newCont + "_";
 
                                                 }
                                             }
 
                                             tmprow_id = objRD.pages[j].questions[auxiliar].answers[l].row_id;
-                                            //csvtext += objRD.pages[j].questions[auxiliar].answers[l].choice_id + "_";
 
 
                                         }
                                         else if (objRD.pages[j].questions[auxiliar].answers[l].text != null)
                                         {
-                                            //QuestionDetail objQD = GetQuestionDetails(survey.id, objRD.pages[j].id, objRD.pages[j].questions[auxiliar].id);
                                             if (objQD.family == "open_ended" && objQD.subtype == "multi")
                                             {
                                                 for (int b = 0; b < objQD.answers.rows.Count; b++)
@@ -2120,7 +2071,7 @@ namespace SurveyMonkeyImplementation
             }
             return true;
         }
-        static bool ResponsesToCSVAfterTo(SurveyForm survey, string num_registros)//Este es el bueno
+        static bool ResponsesToCSVAfterTo(SurveyForm survey, string num_registros)
         {
             string filePath = "";
             loadSettings();
@@ -2186,7 +2137,6 @@ namespace SurveyMonkeyImplementation
                                     {
                                         if (objRD.pages[j].questions[auxiliar].answers[l].choice_id != null)
                                         {
-                                            //QuestionDetail objQD = GetQuestionDetails(survey.id, objRD.pages[j].id, objRD.pages[j].questions[auxiliar].id);
                                             if (tmprow_id != objRD.pages[j].questions[auxiliar].answers[l].row_id && (l != 0))
                                             {
                                                 csvtext += " || ";
@@ -2195,23 +2145,19 @@ namespace SurveyMonkeyImplementation
                                             {
                                                 if (objQD.answers.choices[q].id == objRD.pages[j].questions[auxiliar].answers[l].choice_id)
                                                 {
-                                                    //csvtext += "\"" + objQD.answers.choices[q].text + "\", ";
                                                     string Content = RemoveLineEndings(objQD.answers.choices[q].text);
                                                     string newCont = Regex.Replace(Content, @"\t|\n|\r|,", "");
-                                                    //temporal += newCont + "_";
                                                     csvtext += newCont + "_";
 
                                                 }
                                             }
 
                                             tmprow_id = objRD.pages[j].questions[auxiliar].answers[l].row_id;
-                                            //csvtext += objRD.pages[j].questions[auxiliar].answers[l].choice_id + "_";
 
 
                                         }
                                         else if (objRD.pages[j].questions[auxiliar].answers[l].text != null)
                                         {
-                                            //QuestionDetail objQD = GetQuestionDetails(survey.id, objRD.pages[j].id, objRD.pages[j].questions[auxiliar].id);
                                             if (objQD.family == "open_ended" && objQD.subtype == "multi")
                                             {
                                                 for (int b = 0; b < objQD.answers.rows.Count; b++)
@@ -2260,7 +2206,7 @@ namespace SurveyMonkeyImplementation
             }
             return true;
         }
-        static bool ResponsesToCSV(List<string> listOfResponsesIDs)//Este es el bueno
+        static bool ResponsesToCSV(List<string> listOfResponsesIDs)
         {
             string filePath = "";
             if (listOfResponsesIDs.Count == 0)
@@ -2273,7 +2219,6 @@ namespace SurveyMonkeyImplementation
             {
                 rdlist.Add(GetResponseDetails(listOfResponsesIDs[i]));
             }
-            //Debo de poner el heading del csv mejor en otra variable para poder hacer append en caso ya haya un archivo creado
             if (nameGiven == "default")
             {
                 string tmpAux = RemoveLineEndings(DateTime.Today.ToString().Trim());
@@ -2327,7 +2272,6 @@ namespace SurveyMonkeyImplementation
                                 {
                                     if (objRD.pages[j].questions[auxiliar].answers[l].choice_id != null)
                                     {
-                                        //QuestionDetail objQD = GetQuestionDetails(objRD.survey_id, objRD.pages[j].id, objRD.pages[j].questions[auxiliar].id);//Esto se podria mover mas arriba
                                         if (tmprow_id != objRD.pages[j].questions[auxiliar].answers[l].row_id && (l != 0))
                                         {
                                             csvtext += " || ";
@@ -2336,23 +2280,19 @@ namespace SurveyMonkeyImplementation
                                         {
                                             if (objQD.answers.choices[q].id == objRD.pages[j].questions[auxiliar].answers[l].choice_id)
                                             {
-                                                //csvtext += "\"" + objQD.answers.choices[q].text + "\", ";
                                                 string Content = RemoveLineEndings(objQD.answers.choices[q].text);
                                                 string newCont = Regex.Replace(Content, @"\t|\n|\r|,", "");
-                                                //temporal += newCont + "_";
                                                 csvtext += newCont + "_";
 
                                             }
                                         }
 
                                         tmprow_id = objRD.pages[j].questions[auxiliar].answers[l].row_id;
-                                        //csvtext += objRD.pages[j].questions[auxiliar].answers[l].choice_id + "_";
 
 
                                     }
                                     else if (objRD.pages[j].questions[auxiliar].answers[l].text != null)
                                     {
-                                        //QuestionDetail objQD = GetQuestionDetails(objRD.survey_id, objRD.pages[j].id, objRD.pages[j].questions[auxiliar].id);
                                         if (objQD.family == "open_ended" && objQD.subtype == "multi")
                                         {
                                             for (int b = 0; b < objQD.answers.rows.Count; b++)
@@ -2403,7 +2343,7 @@ namespace SurveyMonkeyImplementation
             File.WriteAllText(fileforEtlPath,heading);
             return true;
         }
-        static bool ResponsesToCSVBetween(SurveyForm survey)//Este es el bueno
+        static bool ResponsesToCSVBetween(SurveyForm survey)
         {
             string filePath = "";
             loadSettings();
@@ -2431,7 +2371,6 @@ namespace SurveyMonkeyImplementation
             String csvtext = "";
             List<string> listaprueba = new List<string>();
 
-            //listaprueba = BringResponsesIDs(survey.id);
             listaprueba = GetResponseIDListForETLs(survey.id);
             for (int i = 0; i < listaprueba.Count; i++)
             {
@@ -2469,7 +2408,6 @@ namespace SurveyMonkeyImplementation
                                     {
                                         if (objRD.pages[j].questions[auxiliar].answers[l].choice_id != null)
                                         {
-                                            //QuestionDetail objQD = GetQuestionDetails(survey.id, objRD.pages[j].id, objRD.pages[j].questions[auxiliar].id);
                                             if (tmprow_id != objRD.pages[j].questions[auxiliar].answers[l].row_id && (l != 0))
                                             {
                                                 csvtext += " || ";
@@ -2478,23 +2416,19 @@ namespace SurveyMonkeyImplementation
                                             {
                                                 if (objQD.answers.choices[q].id == objRD.pages[j].questions[auxiliar].answers[l].choice_id)
                                                 {
-                                                    //csvtext += "\"" + objQD.answers.choices[q].text + "\", ";
                                                     string Content = RemoveLineEndings(objQD.answers.choices[q].text);
                                                     string newCont = Regex.Replace(Content, @"\t|\n|\r|,", "");
-                                                    //temporal += newCont + "_";
                                                     csvtext += newCont + "_";
 
                                                 }
                                             }
 
                                             tmprow_id = objRD.pages[j].questions[auxiliar].answers[l].row_id;
-                                            //csvtext += objRD.pages[j].questions[auxiliar].answers[l].choice_id + "_";
 
 
                                         }
                                         else if (objRD.pages[j].questions[auxiliar].answers[l].text != null)
                                         {
-                                            //QuestionDetail objQD = GetQuestionDetails(survey.id, objRD.pages[j].id, objRD.pages[j].questions[auxiliar].id);
                                             if (objQD.family == "open_ended" && objQD.subtype == "multi")
                                             {
                                                 for (int b = 0; b < objQD.answers.rows.Count; b++)
@@ -2545,7 +2479,7 @@ namespace SurveyMonkeyImplementation
             File.WriteAllText(fileforEtlPath, heading);
             return true;
         }
-        static bool ResponsesToCSVBetween(SurveyForm survey, int num_registros)//Este es el bueno
+        static bool ResponsesToCSVBetween(SurveyForm survey, int num_registros)
         {
             string filePath = "";
             loadSettings();
@@ -2615,7 +2549,6 @@ namespace SurveyMonkeyImplementation
                                     {
                                         if (objRD.pages[j].questions[auxiliar].answers[l].choice_id != null)
                                         {
-                                            //QuestionDetail objQD = GetQuestionDetails(survey.id, objRD.pages[j].id, objRD.pages[j].questions[auxiliar].id);
                                             if (tmprow_id != objRD.pages[j].questions[auxiliar].answers[l].row_id && (l != 0))
                                             {
                                                 csvtext += " || ";
@@ -2624,23 +2557,19 @@ namespace SurveyMonkeyImplementation
                                             {
                                                 if (objQD.answers.choices[q].id == objRD.pages[j].questions[auxiliar].answers[l].choice_id)
                                                 {
-                                                    //csvtext += "\"" + objQD.answers.choices[q].text + "\", ";
                                                     string Content = RemoveLineEndings(objQD.answers.choices[q].text);
                                                     string newCont = Regex.Replace(Content, @"\t|\n|\r|,", "");
-                                                    //temporal += newCont + "_";
                                                     csvtext += newCont + "_";
 
                                                 }
                                             }
 
                                             tmprow_id = objRD.pages[j].questions[auxiliar].answers[l].row_id;
-                                            //csvtext += objRD.pages[j].questions[auxiliar].answers[l].choice_id + "_";
 
 
                                         }
                                         else if (objRD.pages[j].questions[auxiliar].answers[l].text != null)
                                         {
-                                            //QuestionDetail objQD = GetQuestionDetails(survey.id, objRD.pages[j].id, objRD.pages[j].questions[auxiliar].id);
                                             if (objQD.family == "open_ended" && objQD.subtype == "multi")
                                             {
                                                 for (int b = 0; b < objQD.answers.rows.Count; b++)
@@ -2691,7 +2620,7 @@ namespace SurveyMonkeyImplementation
             File.WriteAllText(fileforEtlPath, heading);
             return true;
         }
-        static bool ResponsesToCSVBetween(SurveyForm survey, string num_registros)//Este es el bueno
+        static bool ResponsesToCSVBetween(SurveyForm survey, string num_registros)
         {
             string filePath = "";
             loadSettings();
@@ -2760,7 +2689,6 @@ namespace SurveyMonkeyImplementation
                                     {
                                         if (objRD.pages[j].questions[auxiliar].answers[l].choice_id != null)
                                         {
-                                            //QuestionDetail objQD = GetQuestionDetails(survey.id, objRD.pages[j].id, objRD.pages[j].questions[auxiliar].id);
                                             if (tmprow_id != objRD.pages[j].questions[auxiliar].answers[l].row_id && (l != 0))
                                             {
                                                 csvtext += " || ";
@@ -2769,23 +2697,19 @@ namespace SurveyMonkeyImplementation
                                             {
                                                 if (objQD.answers.choices[q].id == objRD.pages[j].questions[auxiliar].answers[l].choice_id)
                                                 {
-                                                    //csvtext += "\"" + objQD.answers.choices[q].text + "\", ";
                                                     string Content = RemoveLineEndings(objQD.answers.choices[q].text);
                                                     string newCont = Regex.Replace(Content, @"\t|\n|\r|,", "");
-                                                    //temporal += newCont + "_";
                                                     csvtext += newCont + "_";
 
                                                 }
                                             }
 
                                             tmprow_id = objRD.pages[j].questions[auxiliar].answers[l].row_id;
-                                            //csvtext += objRD.pages[j].questions[auxiliar].answers[l].choice_id + "_";
 
 
                                         }
                                         else if (objRD.pages[j].questions[auxiliar].answers[l].text != null)
                                         {
-                                            //QuestionDetail objQD = GetQuestionDetails(survey.id, objRD.pages[j].id, objRD.pages[j].questions[auxiliar].id);
                                             if (objQD.family == "open_ended" && objQD.subtype == "multi")
                                             {
                                                 for (int b = 0; b < objQD.answers.rows.Count; b++)
@@ -2836,9 +2760,8 @@ namespace SurveyMonkeyImplementation
             File.WriteAllText(fileforEtlPath, heading);
             return true;
         }
-        static bool ResponsesWithTitlesContainingToCSV()//Este es el bueno
+        static bool ResponsesWithTitlesContainingToCSV()
         {
-            //Debo de poner el heading del csv mejor en otra variable para poder hacer append en caso ya haya un archivo creado
             loadSettings();
             string filePath = "";
             if (nameGiven == "default")
@@ -2899,7 +2822,6 @@ namespace SurveyMonkeyImplementation
                                         {
                                             if (objRD.pages[j].questions[auxiliar].answers[l].choice_id != null)
                                             {
-                                                //QuestionDetail objQD = GetQuestionDetails(SurveyFormDetailsList[b].id, objRD.pages[j].id, objRD.pages[j].questions[auxiliar].id);
                                                 if (tmprow_id != objRD.pages[j].questions[auxiliar].answers[l].row_id && (l != 0))
                                                 {
                                                     csvtext += " || ";
@@ -2908,23 +2830,19 @@ namespace SurveyMonkeyImplementation
                                                 {
                                                     if (objQD.answers.choices[q].id == objRD.pages[j].questions[auxiliar].answers[l].choice_id)
                                                     {
-                                                        //csvtext += "\"" + objQD.answers.choices[q].text + "\", ";
                                                         string Content = RemoveLineEndings(objQD.answers.choices[q].text);
                                                         string newCont = Regex.Replace(Content, @"\t|\n|\r|,", "");
-                                                        //temporal += newCont + "_";
                                                         csvtext += newCont + "_";
 
                                                     }
                                                 }
 
                                                 tmprow_id = objRD.pages[j].questions[auxiliar].answers[l].row_id;
-                                                //csvtext += objRD.pages[j].questions[auxiliar].answers[l].choice_id + "_";
 
 
                                             }
                                             else if (objRD.pages[j].questions[auxiliar].answers[l].text != null)
                                             {
-                                                //QuestionDetail objQD = GetQuestionDetails(SurveyFormDetailsList[b].id, objRD.pages[j].id, objRD.pages[j].questions[auxiliar].id);
                                                 if (objQD.family == "open_ended" && objQD.subtype == "multi")
                                                 {
                                                     for (int v = 0; v < objQD.answers.rows.Count; v++)
