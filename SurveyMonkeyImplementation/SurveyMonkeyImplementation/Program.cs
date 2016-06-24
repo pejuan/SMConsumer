@@ -37,7 +37,6 @@ namespace SurveyMonkeyImplementation
 
         static string baseURL = "https://api.surveymonkey.net/v3/";
         static int responsePageAct = 1;
-        static int ResponsePages = 1;
         static SurveyList survlist;
         static PageList pagelist;
         static QuestionList questlist;
