@@ -52,27 +52,8 @@ namespace SurveyMonkeyImplementation
         {
             loadSettings();
             getRequestCounter();
-            SurveyForm objsurvey = GetSurveyDetailsBySurveyName(defaultSurveyName);
-            if (use==0)
-            {
-                ResponsesToCSV(GetResponseIDListForETLs(objsurvey.id));
-            }
-            else if (use==1)
-            {
-                ResponsesToCSVPriorTo(objsurvey);
-            }
-            else if (use==2)
-            {
-                ResponsesToCSVAfterTo(objsurvey);
-            }
-            else if (use==3)
-            {
-                ResponsesToCSVBetween(objsurvey);
-            }
-            else if (use==4)
-            {
-                ResponsesToCSV(GetResponseIDListForETLs(objsurvey.id));
-            }            
+            SurveysToCSV();
+            QuestionsToCSV();         
             setRequestCounter();
         }
         static bool fillSurveyIDs()
@@ -840,7 +821,11 @@ namespace SurveyMonkeyImplementation
                 {
                     for (int k = 0; k < lista[i].pages[j].questions.Count; k++)
 			        {
-                        csvtext += "\"" + lista[i].id + "\",\"" + "QUESTION" + counter + "\",\"" + lista[i].pages[j].questions[k].headings[0].heading + "\",\"" + lista[i].pages[j].questions[k].family + "\"";
+                        string tmp = RemoveLineEndings(lista[i].pages[j].questions[k].headings[0].heading);
+                        tmp = tmp.Replace('"', ' ');
+                        string tmp2 = RemoveLineEndings(lista[i].pages[j].questions[k].family);
+                        tmp2 = tmp2.Replace('"', ' ');
+                        csvtext += "\"" + lista[i].id + "\",\"" + "QUESTION" + counter + "\",\"" + tmp + "\",\"" + tmp2 + "\"";
                         csvtext += "\n";
                         counter++;
 			        }
@@ -873,8 +858,12 @@ namespace SurveyMonkeyImplementation
             {
                 for (int k = 0; k < survey.pages[j].questions.Count; k++)
                 {
+                    string tmp = RemoveLineEndings(survey.pages[j].questions[k].headings[0].heading);
+                    tmp = tmp.Replace('"', ' ');
+                    string tmp2 = RemoveLineEndings(survey.pages[j].questions[k].family);
+                    tmp2 = tmp.Replace('"', ' ');
                     Console.WriteLine(survey.pages[j].questions[k].headings[0].heading);//Imprime la pregunta
-                    csvtext += "\"" + survey.id + "\",\"" + "QUESTION" + counter + "\",\"" + survey.pages[j].questions[k].headings[0].heading + "\",\"" + survey.pages[j].questions[k].family+"\"";
+                    csvtext += "\"" + survey.id + "\",\"" + "QUESTION" + counter + "\",\"" + tmp + "\",\"" + tmp2+"\"";
                     csvtext += "\n";
                     counter++;
                 }
