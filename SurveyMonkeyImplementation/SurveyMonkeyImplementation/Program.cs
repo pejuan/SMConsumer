@@ -613,7 +613,6 @@ namespace SurveyMonkeyImplementation
                 csvtext += "\"" + lista[i].date_modified + "\",";
                 csvtext += 1 + "\n";
             }
-
             heading += csvtext;
 
             File.WriteAllText(filePath, heading);
